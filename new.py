@@ -1,8 +1,19 @@
 
 import discord
 import random
+from discord.colour import Color
+from discord.embeds import Embed
 from discord.ext import commands, tasks
 from random import choice
+import datetime
+import asyncio
+from discord import DefaultAvatar
+
+from urllib import parse, request
+import re
+
+
+from discord.ext.commands.core import command
 
 
 client = commands.Bot( command_prefix = '&' )
@@ -48,10 +59,6 @@ async def _8ball(ctx,* , question):
 
 
 
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        await ctx.send(' Oops! Command does not exist.')
 
 
 @client.command()
@@ -64,41 +71,168 @@ async def ban( ctx, member : discord.Member,*, reason=None):
     await member.ban(reason=reason)
 
 
-@client.command(name='hello', help='This command returns a random welcome message')
-async def hello(ctx):
-    responses = ['***grumble*** Why did you wake me up?', 'Top of the morning to you lad!', 'Hello, how are you?', 'Hi', '**Wasssuup!**','**Bye.. I am busy**']
-    await ctx.send(choice(responses))
 
 
-@client.command(name='jinx', help='Jinx')
+
+@client.command()
+async def serverinfo(ctx):
+    embed = discord.Embed(title=f"{ctx.guild.name}", description="Server", timestamp=datetime.datetime.utcnow(), color=discord.Color.random())
+    embed.add_field(name="Server created at", value=f"{ctx.guild.created_at}")
+    embed.add_field(name="Server Owner", value=f"{ctx.guild.owner}")
+    embed.add_field(name="Server Region", value=f"{ctx.guild.region}")
+    embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
+    embed.set_thumbnail(url=f"{ctx.guild.icon}")
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/862599394712354831/866541849635323934/unknown.png?width=606&height=606")
+
+    await ctx.send(embed=embed)
+
+
+
+
+@client.command()
+async def hi(ctx):
+    embed = discord.Embed(title="Hello", description="I am Autobot", color=discord.Color.random())
+    embed.add_field(name="Wassup!", value= "Nice to meet you")
+    
+    embed.set_thumbnail(url=f"{ctx.guild.icon}")
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866949734512853012/866949844543209502/unknown.png")
+    
+    await ctx.send(embed=embed)
+
+
+
+@client.command()
 async def jinx(ctx):
-    responses = ['***Jinx*** ', '***Jinx we send the same message!***', '***What??***', '**Uh,Jinx**']
-    await ctx.send(choice(responses))
+    embed = discord.Embed(title="Jinx", description="Jinx we send the same message!", color=discord.Color.random())
+    embed.add_field(name="😂", value= ":)")
+    
+    embed.set_thumbnail(url=f"{ctx.guild.icon}")
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/866949734512853012/866961591512465408/JINX__1_-removebg-preview.png")
+    
+    await ctx.send(embed=embed)
 
 
-@client.command(name='data', help='Send Your Data')
+
+afkdict = {}
+@client.command(name = "afk", brief = "Away From Keyboard",
+                description = "I'll give you the afk status and if someone pings you before you come back, I'll tell "
+                              "them that you are not available. You can add your own afk message!")
+async def afk(ctx, message = "They didn't leave a message!"):
+    global afkdict
+
+    if ctx.message.author in afkdict:
+        afkdict.pop(ctx.message.author)
+        await ctx.send('Welcome back!🔛 You are no longer afk.')
+
+    else:
+        afkdict[ctx.message.author] = message
+        await ctx.send("You are now afk💤!")
+
+
+@client.event
+async def on_message(message):
+    global afkdict
+
+    for member in message.mentions:  
+        if member != message.author:  
+            if member in afkdict:  
+                afkmsg = afkdict[member]  
+                await message.channel.send(f"Oh noes! {member} is afk💤. {afkmsg}")
+    await client.process_commands(message)
+
+
+
+
+
+
+@client.command()
 async def data(ctx):
-    responses = 'Fill Our Form here, https://forms.gle/JuSvVbrVfWZmsaen8 '
-    await ctx.send(responses)
+    embed = discord.Embed(title="Data", description="Send Your Data Here!", color=discord.Color.random())
+    embed.add_field(name="Fill this Form", value= "https://forms.gle/JuSvVbrVfWZmsaen8")
+    
+    embed.set_thumbnail(url=f"{ctx.guild.icon}")
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/866949734512853012/867051963023360030/BigData.png")
+    
+    await ctx.send(embed=embed)
 
 
 
-@client.command(name='die', help='This command returns a random last words')
-async def die(ctx):
-    responses = ['why have you brought my short life to an end', 'i could have done so much more', 'i have a family, kill them instead']
-    await ctx.send(choice(responses))
 
 
-@client.command(name='credits', help='This command returns the credits')
+
+@client.command()
+async def LOL(ctx):
+    embed = discord.Embed(title="LOL", description="Laugh Out Loud", color=discord.Color.random())
+    
+    
+    embed.set_image(url='https://cdn.discordapp.com/attachments/866949734512853012/867307009895956540/JINX-1--unscreen.gif')
+    
+    await ctx.send(embed=embed)
+
+
+
+
+
+
+
+
+
+
+
+@client.command()
+async def github(ctx):
+    embed = discord.Embed(title="Github", description="Our Community!", color=discord.Color.random())
+    embed.add_field(name="Visit Our Community", value= "https://github.com/DivyamSamarwal/Autobot")
+    
+    embed.set_thumbnail(url=f"{ctx.guild.icon}")
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/865177734510411816/867300427153670144/GitHub-logo.png?width=1078&height=606")
+    embed.set_image(url='https://images-ext-1.discordapp.net/external/WphBG90KADvKReGXoSZ1VqjCx3vI3Lgm0LgBnO27AXs/%3Fwidth%3D606%26height%3D606/https/media.discordapp.net/attachments/862599394712354831/866541849635323934/unknown.png?width=375&height=375')
+
+
+    await ctx.send(embed=embed)
+
+
+
+
+
+@client.command()
 async def credits(ctx):
-    await ctx.send('Made by `Musical Pieces`')
+    embed = discord.Embed(title="Credits", description="Created By Musical Pieces", color=discord.Color.random())
+    
+    
+    
+    embed.set_image(url='https://media.discordapp.net/attachments/866949734512853012/867312649287761920/unnamed.png')
 
-@client.command(name='creditz', help='This command returns the TRUE credits')
-async def creditz(ctx):
-    await ctx.send('**No one but me, lozer!**')    
+
+    await ctx.send(embed=embed)
 
 
 
-client.run('ODU4OTY1ODI4NzE2MzMxMDE5.YNl0RA.X5NelU5FRkoynN8_vR-LyK8w06s')
+@client.command()
+async def invite(ctx):
+    embed = discord.Embed(title="Invite", description="Link to invite me", color=discord.Color.random())
+    embed.add_field(name="AutoBot", value= "https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=2147875862&scope=bot")
+    
+    
+    embed.set_image(url='https://media.discordapp.net/attachments/866949734512853012/867614971113898014/9833ce074d47bbc360a05df6c49e0500.png')
+
+
+    await ctx.send(embed=embed)
+
+
+
+@client.command()
+async def avatar(ctx, *, member: discord.Member=None): # set the member object to None
+    if not member: # if member is no mentioned
+        member = ctx.message.author # set member as the author
+    userAvatar = member.avatar_url
+    await ctx.send(userAvatar)
+
+
+
+
+client.run(Token')
+
+
 
 
