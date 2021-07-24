@@ -231,7 +231,7 @@ async def avatar(ctx, *, member: discord.Member=None): # set the member object t
 
 
 
-client.run(Token')
+client.run('Token')
 
 
 
