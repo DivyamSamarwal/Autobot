@@ -378,20 +378,18 @@ async def translate(ctx, lang, *, thing):
 
 #help 
 
-
-client.remove_command("help") 
-
 @client.group(invoke_without_command = True, aliases = ["h", "Help", "HELP"])
 async def help(ctx):
-    em = discord.Embed(title = "Help" , description = "Use **>help** `<command>` for more information about the command and note that our default prefix is **>**.", colour=discord.Colour.random())
+    em = discord.Embed(title = "Help" , description = "Use **>help** `<command>` for more information about the command and note that our default prefix is **>**.", colour=discord.Colour.random(),timestamp=datetime.utcnow())
    
     em.set_image(url="https://media.discordapp.net/attachments/866949734512853012/875315601671876648/0c6f19d924387f617542d93fe3bb0f1e120b4b9ddd39dbd5f95ef0ae07d42a24.gif")
-    em.add_field(name="Change Prefix", value="To change prefix type  <default prefix> changeprefix <new prefix>. ")
-    em.add_field(name="Fun 🎁", value= "`8Ball,Hi,Jinx,Lol`",inline=False)
-    em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Happy`",inline=False)
-    em.add_field(name="Special✨",value="`Reminder,Invite,Imagine,Dm,Translate,afk`",inline=False)
-    em.add_field(name="AutoBot Help ❓",value="https://discord.gg/jKbtPHJ9Ef",inline=False)
-    em.add_field(name="Patreon 💖",value="https://www.patreon.com/musicalpieces",inline=False)
+    em.add_field(name="Change Prefix", value="To change prefix type  `<default prefix>` changeprefix `<new prefix>`. ")
+    em.add_field(name="Fun 🎁", value= "`8Ball,Hi,Jinx,Lol,Happy,Guess,Imagine`",inline=False)
+    em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Compute,Stats,Userinfo`",inline=False)
+    em.add_field(name="Special✨",value="`Reminder,Invite,Bugs,Dm,Translate,afk`",inline=False)
+    em.add_field(name="Music🎵",value="`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`")
+    em.add_field(name="AutoBot Help ❓",value="https://discord.gg/2uah9Bc5XJ",inline=False)
+    em.add_field(name="Patreon 💖",value="https://www.patreon.com/AutoBot0521",inline=False)
     
     em.set_footer(text="Created by MusicalPieces◥▶_◀◤#0009")
     await ctx.send(embed = em) 
