@@ -1,4 +1,6 @@
 # Autobot
-This Bot is actually my first bot.I create this for normal tasks that other bots do.
+I am An All In One Bot Music ,Fun & Some Moderation Commands too.
+Visit:  
+https://divyamsamarwal.wixsite.com/autobot
 
 
