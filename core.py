@@ -1,6 +1,5 @@
 
 
-
 from asyncio.tasks import wait
 from time import time
 from typing import Optional
@@ -19,6 +18,8 @@ import datetime
 import asyncio
 from discord import DefaultAvatar
 
+import googletrans
+from googletrans import Translator
 from urllib import parse, request
 import re
 from datetime import timedelta
@@ -31,9 +32,7 @@ import json
 from discord import Client, Intents, Embed
 from discord import Client, Intents, Embed
 
-import googletrans
 
-from googletrans import Translator
 
 import math
 from webserver import keep_alive
@@ -114,7 +113,7 @@ async def on_message(msg):
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Game(f'>help ● Watching {len(client.guilds)} servers'))
+    await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening , name=f'>help & Watching {len(client.guilds) } Severs  '))
     print(' Hello I am AutoBot. ')
     client.load_extension('dismusic')
     
@@ -254,15 +253,6 @@ async def hi(ctx):
 
 
 
-@client.command(aliases=['Jinx','JINX','JiNx','jInX'])
-async def jinx(ctx):
-    embed = discord.Embed(title="Jinx", description="Jinx we send the same message!", color=discord.Color.random())
-    embed.add_field(name="😂", value= ":)")
-    
-    embed.set_thumbnail(url=f"{ctx.guild.icon}")
-    embed.set_thumbnail(url="https://media.discordapp.net/attachments/866949734512853012/866961591512465408/JINX__1_-removebg-preview.png")
-    
-    await ctx.send(embed=embed)
 
 
 
@@ -296,29 +286,12 @@ async def on_message(message):
     await client.process_commands(message)
                 
 
-@commands.command(name="test")
-async def test(ctx):
-    message = 'Hi'
-    msg = await ctx.send(message)
-    await ctx.message.delete() # Deletes the users message
-    await asyncio.sleep(5) # you want it to wait.
-    await msg.delete() # Deletes the message the bot sends.
- 
-client.add_command(test)
 
 
 
 
 
 
-@client.command(aliases=['lol','Lol','LoL'])
-async def LOL(ctx):
-    embed = discord.Embed(title="LOL", description="Laugh Out Loud", color=discord.Color.random())
-    
-    
-    embed.set_image(url='https://cdn.discordapp.com/attachments/866949734512853012/867307009895956540/JINX-1--unscreen.gif')
-    
-    await ctx.send(embed=embed)
 
 
 
@@ -436,10 +409,6 @@ async def translate(ctx, lang, *, thing):
     translator = Translator()
     translation = translator.translate(thing, dest=lang)
     await ctx.send(translation.text)
-
-
-
-
 
 
 
@@ -669,9 +638,9 @@ async def bugs(ctx):
    
     em.set_image(url="https://media.discordapp.net/attachments/868094887000690700/880474923884249118/My_Post_1.png?width=644&height=644")
     em.set_thumbnail(url="https://media.discordapp.net/attachments/868094887000690700/880475506850553936/unknown.png?width=644&height=644")
-    em.add_field(name="Current Bugs 🐛", value= "Bot stucks between the guess game.",inline=False)
-    em.add_field(name="Future Updates 🔮",value="Trying to simplify bot commands use and updating music commands...",inline=False)
-    em.add_field(name="What to do if you find any bug🐛?",value="Join Our Help Server Or Contact the Creator `(Id:-MusicalPieces◥▶_◀◤#0009)` .",inline=False)
+    em.add_field(name="Current Bugs 🐛", value= "Translator commands error",inline=False)
+    em.add_field(name="Future Updates 🔮",value="Will remove useless commands",inline=False)
+    em.add_field(name="What to do if you find any bug🐛?",value="Join Our Help Server Or Contact the Creator `(Id:-MusicalPieces◥▶_◀◤#2080)` .",inline=False)
     await ctx.send(embed = em) 
 
 
@@ -709,13 +678,13 @@ client.remove_command("help")
 async def help(ctx):
     em = discord.Embed(title = "Help" , description = "Use **>help** `<command>` for more information about the command and note that our default prefix is **>**.", colour=discord.Colour.random(),timestamp=datetime.utcnow())
    
-    em.set_image(url="https://media.discordapp.net/attachments/866949734512853012/875315601671876648/0c6f19d924387f617542d93fe3bb0f1e120b4b9ddd39dbd5f95ef0ae07d42a24.gif")
+    em.set_image(url="https://media.discordapp.net/attachments/891206101566124084/891208477119225866/standard_34.gif")
     em.add_field(name="Change Prefix", value="To change prefix type  `<default prefix>` changeprefix `<new prefix>`. ")
-    em.add_field(name="Fun 🎁", value= "`8Ball,Hi,Jinx,Lol,Happy,Guess,Imagine`",inline=False)
+    em.add_field(name="Fun 🎁", value= "`8Ball,Happy,Guess,Imagine`",inline=False)
     em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Compute,Stats,Userinfo`",inline=False)
     em.add_field(name="Special✨",value="`Reminder,Invite,Bugs,Dm,Translate,afk`",inline=False)
     em.add_field(name="Music🎵",value="`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`")
-    em.add_field(name="AutoBot Help ❓",value="https://discord.gg/2uah9Bc5XJ",inline=False)
+    em.add_field(name="AutoBot Help ❓",value="https://discord.com/invite/aYVsg4wEHE",inline=False)
     em.add_field(name="Patreon 💖",value="https://www.patreon.com/AutoBot0521",inline=False)
     
     em.set_footer(text="Created by MusicalPieces◥▶_◀◤#0009")
@@ -771,7 +740,7 @@ async def _8ball(ctx):
 @help.command(aliases=["tl","TL"])
 async def translate(ctx):
     em=discord.Embed(title="Translate",description="Translates one language to other", colour=discord.Colour.random())
-    em.add_field(name="**Syntax**", value="<command> <language you want to translate > input ")
+    em.add_field(name="**Syntax**", value="<command> `<language you want to translate>` arguments")
     
     await ctx.send(embed=em)
 
@@ -806,6 +775,10 @@ keep_alive()
 
 
 client.run('')
+
+
+
+
 
 
 
