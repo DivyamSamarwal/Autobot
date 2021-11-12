@@ -1,5 +1,4 @@
 
-
 from asyncio.tasks import wait
 from time import time
 from typing import Optional
@@ -69,7 +68,7 @@ async def on_guild_join(guild):
     with open("prefixes.json","r") as f:
         prefixes = json.load(f)
 
-    prefixes[str(guild.id)] = ">" 
+    prefixes[str(guild.id)] = "&" 
    
     with open("prefixes.json","w") as f:
         json.dump(prefixes,f)
@@ -113,7 +112,7 @@ async def on_message(msg):
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening , name=f'>help & Watching {len(client.guilds) } Severs  '))
+    await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening , name=f'&help and Watching {len(client.guilds) } Severs'))
     print(' Hello I am AutoBot. ')
     client.load_extension('dismusic')
     
@@ -130,17 +129,17 @@ async def on_command_error(ctx, error):
 
 
 
-@client.command(aliases=['Ping','PING'],help='Latency')
+
+
+@client.command(aliases=['latency','Ping','PING'])
 @commands.cooldown(3,10,commands.BucketType.user)
 async def ping(ctx):
+    embed = discord.Embed(title="Pong!", description=f'{round(client.latency *1000)}ms', color=discord.Color.random(),timestamp=datetime.utcnow())
     
-    message= await ctx.send('🔌`Intialising connection...`')
-    await message.edit(content="🛠️`Processing...`")
     
-    await message.edit(content=f'🟢 **Pong!  {round(client.latency *1000)  }ms** ')
     
-
-
+  
+    await ctx.send(embed=embed)
 
 
 @client.command(aliases=["Stats","STATS"])
@@ -150,7 +149,7 @@ async def stats(ctx):
     embed.add_field(name="Server Count", value=  len(client.guilds), inline=False)
     embed.add_field(name="Average Latency", value=round(client.latency *1000),inline=False)
     
-    embed.set_thumbnail(url='https://media.discordapp.net/attachments/866949734512853012/871601633061142568/My_Post_3.png?width=606&height=606')
+    embed.set_thumbnail(url='https://cdn.discordapp.com/avatars/858965828716331019/95b08eab5679795f0dd29ab9eb3c3784.webp?size=1024')
 
 
     await ctx.send(embed=embed)
@@ -158,11 +157,8 @@ async def stats(ctx):
 
 
 
-
-    
-@client.command(aliases=['8ball','8Ball'])
-@commands.cooldown(3,10,commands.BucketType.user)
-async def _8ball(ctx,* , question):
+@client.command(aliases=['8ball','8b'])
+async def Eightball(ctx,*,ques):
     responses = ["As I see it, yes.",
                  "Ask again later.", 
                  "Better not tell you now.",
@@ -182,10 +178,29 @@ async def _8ball(ctx,* , question):
                     "Without a doubt.",
                  "Yes.",
                  "Yes – definitely.",
-                  "You may rely on it."]
-    message= await ctx.send('`Going through database🗄️...`')              
-             
-    await message.edit(content=f'*Question:* {question}\n**Answer**: {random.choice(responses)}')
+                  "You may rely on it.",
+                  "*hmm*"]
+    embed = discord.Embed(title=" 🎱8ball ", description="Questions and Answers", color=discord.Color.random())
+    embed.add_field(name="Question", value=f'{ques}',inline=False)
+    embed.add_field(name="Answer", value=f'{random.choice(responses)}',inline=False)
+
+    
+  
+    await ctx.send(embed=embed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @client.command(aliases=['Imagine','IMAGINE'])
@@ -231,10 +246,10 @@ async def serverinfo(ctx):
       timestamp=datetime.utcnow()
     )
   embed.set_thumbnail(url=icon)
-  embed.add_field(name="Owner", value=owner, inline=False)
-  embed.add_field(name="Server ID", value=id, inline=False)
-  embed.add_field(name="Region", value=region, inline=False)
-  embed.add_field(name="Member Count", value=memberCount, inline=False)
+  embed.add_field(name="Owner 👑", value=owner, inline=False)
+  embed.add_field(name="Server ID ㊙️", value=id, inline=False)
+  embed.add_field(name="Region 🌐", value=region, inline=False)
+  embed.add_field(name="Member Count 🤖", value=memberCount, inline=False)
 
   await ctx.send(embed=embed)
 
@@ -288,21 +303,6 @@ async def on_message(message):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @client.command(aliases=['Github','GitHub','GITHUB'])
 async def github(ctx):
     embed = discord.Embed(title="Github", description="Our Community!", color=discord.Color.random())
@@ -317,19 +317,13 @@ async def github(ctx):
 
 
 
-
-
-
-
-
-
 @client.command(aliases=["Invite","INVITE"])
 async def invite(ctx):
     embed = discord.Embed(title="Invite", description="Link to invite me", color=discord.Color.random(),timestamp=datetime.utcnow())
     embed.add_field(name="AutoBot", value= "https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=2147875862&scope=bot")
     
     
-    embed.set_image(url='https://media.discordapp.net/attachments/866949734512853012/871601633061142568/My_Post_3.png?width=606&height=606')
+    embed.set_image(url='https://cdn.discordapp.com/avatars/858965828716331019/d0b08d23409aa892cc213a7ca4bd5937.png?size=4096')
 
 
     await ctx.send(embed=embed)
@@ -387,9 +381,6 @@ async def reminder(ctx, time, *, reminder):
 
 
 
-
-
-
 @client.command(aliases=["HAPPY","Happy"])
 async def happy(ctx):
     test = discord.Embed(title=f"This avatar seems unsual✨...", colour = discord.Color.random(),timestamp=datetime.utcnow())
@@ -404,11 +395,20 @@ async def DM(ctx, user: discord.User, *, message=None):
     await user.send(message)
 
 
+
+
+
 @client.command(aliases=["t","Translate","T","tl","TL","Tl"])
-async def translate(ctx, lang, *, thing):
+async def trans(ctx, lang , * , thing):
+    embed = discord.Embed(title="Translator🔎", description="Translates from inputed language to which you want..", color=discord.Color.random(),timestamp=datetime.utcnow())
     translator = Translator()
     translation = translator.translate(thing, dest=lang)
-    await ctx.send(translation.text)
+    embed.add_field(name="Inputed text", value=thing , inline=False)
+    embed.add_field(name="Translated text", value=translation.text ,inline=False)
+    await ctx.send(embed=embed)
+
+
+
 
 
 
@@ -428,7 +428,7 @@ async def Compute(ctx):
         operator = operator.content
         number_2 = float(number_2.content)
     except:
-        await ctx.send("invalid input")
+        await ctx.send("` Invalid Input`")
         return
     output = None
     if operator == "+":
@@ -445,7 +445,7 @@ async def Compute(ctx):
         output = number_1 // number_2
              
     else:
-        await ctx.send("invalid input")
+        await ctx.send("` Invalid Input`")
         return
     await ctx.send("Answer: " + str(output))
 
@@ -627,6 +627,102 @@ client.lava_nodes = [
 ]
 
 
+def convert(time):
+  pos = ["s","m","h","d"]
+
+  time_dict = {"s" : 1 , "m" : 60 , "h" : 3600 , "d" : 3600*24}
+
+  unit = time[-1]
+
+  if unit not in pos:
+    return -1
+  try:
+    val = int(time[:-1])
+  except:
+    return -2
+
+  return val * time_dict[unit]   
+
+
+@client.command()
+async def giveaway(ctx):
+  await ctx.send("Let's Start the giveaway! Answer these questions within 15 seconds! ")
+
+  questions = ["Which channel should it be hosted in?","What should be the duration of the giveway? (s|m|h|d)","What is the prize of giveaway?"]
+
+  answers = []
+
+  def check(m):
+    return m.author == ctx.author and m.channel == ctx.channel
+
+  for i in questions:
+    await ctx.send(i)
+
+    try:
+      msg = await client.wait_for('message', timeout=15.0 , check=check)
+    except asyncio.TimeoutError:
+        await ctx.send('You didn\'t answer in time, please be quicker next time!')
+        return
+    else:
+      answers.append(msg.content)
+
+  try:
+    c_id = int(answers[0][2:-1])
+  except:
+    await ctx.send(f"You didn't mention a channel properly. Do like this {ctx.channel.mention} again.")
+    return
+  channel =  client.get_channel(c_id)
+
+  time = convert(answers[1])
+  if time == -1:
+    await ctx.send(f"You didn't answer with proper time unit. Use (s|m|h|d) next time.")
+    return
+  elif time == -2:
+    await ctx.send(f"The time must be a integer. Please enter a integer next time.")
+    return
+  prize = answers[2]
+
+  await ctx.send(f"The giveaway will be in {channel.mention} and will last {answers[1]}!")
+
+  embed = discord.Embed(title="Giveaway!" ,  description = f"{prize}" , colour=discord.Colour.random())
+
+  embed.add_field(name = "Hosted By:" ,  value = ctx.author.mention)
+
+  embed.set_footer(text = f"Ends {answers[1]} from now!")
+
+  my_msg = await ctx.send(embed = embed)
+
+  await my_msg.add_reaction("🎉")
+
+  await asyncio.sleep(time) 
+
+  new_msg = await channel.fetch_message(my_msg.id)
+
+  users = await new_msg.reactions[0].users().flatten()
+  users.pop(users.index(client.users))
+
+  winner = random.choice(users)
+
+  await ctx.send(f"Congratulations! {winner.mention} won {prize} !")
+
+@client.command()
+async def reroll(ctx , channel : discord.TextChannel , id :int):
+  try:
+    new_msg = await channel.fetch_message(id_)
+  except:
+    await ctx.send("The Id was entered incorrectly.")
+    return
+    
+  users = await new_msg.reactions[0].users().flatten()
+  users.pop(users.index(client.users))
+
+  winner = random.choice(users)
+
+
+
+
+
+
 
 
 
@@ -634,32 +730,29 @@ client.lava_nodes = [
 
 @client.command(aliases=['Bugs','BUGS','futureupdates'])
 async def bugs(ctx):
-    em = discord.Embed(title = "Bugs & Future" , description = "`A bug` is a coding error in a computer program.", colour=discord.Colour.random(),timestamp=datetime.utcnow())
+    em = discord.Embed(title = "Bugs & Future " , description = "`A bug` is a coding error in a computer program.", colour=discord.Colour.random(),timestamp=datetime.utcnow())
    
     em.set_image(url="https://media.discordapp.net/attachments/868094887000690700/880474923884249118/My_Post_1.png?width=644&height=644")
     em.set_thumbnail(url="https://media.discordapp.net/attachments/868094887000690700/880475506850553936/unknown.png?width=644&height=644")
-    em.add_field(name="Current Bugs 🐛", value= "Translator commands error",inline=False)
-    em.add_field(name="Future Updates 🔮",value="Will remove useless commands",inline=False)
+    em.add_field(name="Current Bugs 🐛", value= "All commands working well ✅",inline=False)
+    em.add_field(name="Future Updates 🔮",value="Idk",inline=False)
     em.add_field(name="What to do if you find any bug🐛?",value="Join Our Help Server Or Contact the Creator `(Id:-MusicalPieces◥▶_◀◤#2080)` .",inline=False)
     await ctx.send(embed = em) 
 
 
 
 
+@client.command(aliases=['purge'])
+@commands.has_permissions(administrator=True)
+async def clean(ctx, limit: int):
+        await ctx.channel.purge(limit=limit)
+        await ctx.send(f' {limit} message(s) cleared by  {ctx.author.mention}')
+        await ctx.message.delete()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+@clean.error
+async def clear_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("  You do not have permission to use the `purge` command. Missing : `Administrator`")
 
 
 
@@ -687,7 +780,7 @@ async def help(ctx):
     em.add_field(name="AutoBot Help ❓",value="https://discord.com/invite/aYVsg4wEHE",inline=False)
     em.add_field(name="Patreon 💖",value="https://www.patreon.com/AutoBot0521",inline=False)
     
-    em.set_footer(text="Created by MusicalPieces◥▶_◀◤#0009")
+    em.set_footer(text="Created by MusicalPieces◥▶_◀◤#7854")
     await ctx.send(embed = em) 
 
 
@@ -775,6 +868,10 @@ keep_alive()
 
 
 client.run('')
+
+
+
+
 
 
 
