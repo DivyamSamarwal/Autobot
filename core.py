@@ -356,28 +356,17 @@ async def on_message(message):
 
 @client.command(aliases=['Github','GitHub','GITHUB'])
 async def github(ctx):
-    embed = discord.Embed(title="Github", description="Our Community!", color=discord.Color.random())
-    embed.add_field(name="Visit Me", value= "https://github.com/DivyamSamarwal")
+    embed = discord.Embed(title="ABOUT AUTOBOT", description="Our Community!", color=discord.Color.random())
+    embed.add_field(name="Visit Me", value= "https://github.com/DivyamSamarwal/Autobot")
     embed.add_field(name="About me",value="I am Musical Pieces (Software Dev) I am owner of non profit organization named PokeMedia... Nowadays, I am working on my projects like Autobot and PokeMedia. I mostly use python for coding bots..")
     embed.set_thumbnail(url=f"{ctx.guild.icon}")
     embed.set_thumbnail(url="https://media.discordapp.net/attachments/865177734510411816/867300427153670144/GitHub-logo.png?width=1078&height=606")
-    embed.set_image(url='https://media.discordapp.net/attachments/866949734512853012/868778562763759626/circle-cropped.png')
+   
 
 
     await ctx.send(embed=embed)
 
 
-
-@client.command(aliases=["Invite","INVITE"])
-async def invite(ctx):
-    embed = discord.Embed(title="Invite", description="Link to invite me", color=discord.Color.random(),timestamp=datetime.utcnow())
-    embed.add_field(name="AutoBot", value= "https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=2147875862&scope=bot")
-    embed.add_field(name="For / commands",value="https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands")
-    
-    embed.set_image(url='https://cdn.discordapp.com/avatars/858965828716331019/d0b08d23409aa892cc213a7ca4bd5937.png?size=4096')
-
-
-    await ctx.send(embed=embed)
 
 
 
@@ -516,51 +505,7 @@ async def cat(ctx):
 
 
 
-#compute
-@slash.slash(name="calc",description="Helps in solving problems")
-async def calc(ctx):
-    def check(m):
-        return len(m.content) >= 1 and m.author != client.user
 
-    embed = discord.Embed(title="Number 1", description="", color=discord.Color.random())
-    await ctx.send(embed=embed)
-    number_1 = await client.wait_for("message", check=check)
-
-    embed = discord.Embed(title="Operator", description="For example:-[+, -, *, **, /, //]", color=discord.Color.random())
-    await ctx.send(embed=embed)
-    operator = await client.wait_for("message", check=check)
-
-    embed = discord.Embed(title="Number 2", description="", color=discord.Color.random())
-    await ctx.send(embed=embed)
-    number_2 = await client.wait_for("message", check=check)
-    try:
-        number_1 = float(number_1.content)
-        operator = operator.content
-        number_2 = float(number_2.content)
-    except:
-        embed = discord.Embed(title="❌Invalid Input", description="**Number 1** & **Number 2** should be an *integer*" , color=discord.Color.random())
-        await ctx.send(embed=embed)
-        return
-    output = None
-    if operator == "+":
-        output = number_1 + number_2
-    elif operator == "-":
-        output = number_1 - number_2
-    elif operator == "/":
-        output = number_1 / number_2
-    elif operator == "*":
-        output = number_1 * number_2
-    elif operator == "**":
-        output = number_1 ** number_2 
-    elif operator == "//":
-        output = number_1 // number_2
-             
-    else:
-        embed = discord.Embed(title="❌Invalid Input", description="**Number 1** & **Number 2** should be an *integer* \n Operators like `+`,`-`,`/`,`*`,`**`,`//`", color=discord.Color.random())
-        await ctx.send(embed=embed)
-        return
-    embed = discord.Embed(title="Answer✔️", description=f'{str(output)}', color=discord.Color.random())
-    await ctx.send(embed=embed) 
 
 #userinfo
 
@@ -850,7 +795,17 @@ async def lock(ctx, channel : discord.TextChannel=None):
     em.set_thumbnail(url="https://media.discordapp.net/attachments/905072151680405544/916228759470891008/unknown.png")
     await ctx.send(embed =em)
 
-
+@client.command()
+@commands.has_permissions(manage_channels=True)
+async def unlock(ctx, channel : discord.TextChannel=None):
+    channel = channel or ctx.channel
+    overwrite = channel.overwrites_for(ctx.guild.default_role)
+    overwrite.send_messages = True
+    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+    em = discord.Embed(title ="UNLOCKED🔓" , description = "**To unlock the channel**\n For eg.`&unlock #channelname`", colour=discord.Colour.random(),timestamp=datetime.utcnow())
+    em.add_field(name="Channel Succesfully unlocked ✅", value=f'By:- {ctx.author.mention}')
+    em.set_thumbnail(url="https://cdn.discordapp.com/attachments/895281704443465768/924537916938653706/unknown.png")
+    await ctx.send(embed =em)
 
 
 #------BUGS
@@ -871,7 +826,8 @@ async def bugs(ctx):
 @commands.has_permissions(administrator=True)
 async def clean(ctx, limit: int):
         await ctx.channel.purge(limit=limit)
-        await ctx.send(f' {limit} message(s) cleared by  {ctx.author.mention}')
+        embed = discord.Embed(title = "Messages Purged✅", description =f' {limit} message(s) cleared by  {ctx.author.mention}',colour=discord.Colour.random(),timestamp=datetime.utcnow())
+        await ctx.send(embed = embed)
         await ctx.message.delete()
 
 
@@ -922,13 +878,13 @@ async def help(ctx):
    
     em.set_image(url="https://cdn.discordapp.com/attachments/865177734510411816/913701789965123594/standard_2.gif")
     em.add_field(name="Change Prefix", value="To change prefix type  `<default prefix>` changeprefix `<new prefix>`. ")
-    em.add_field(name="Fun 🎁", value= "`8Ball,Happy,Guess,Imagine,Giveaway`,`dog`,`cat`",inline=False)
-    em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Compute,Stats,Userinfo`",inline=False)
-    em.add_field(name="Special✨",value="`Reminder,Invite,Bugs,Translate,afk`,`lock`",inline=False)
+    em.add_field(name="Fun 🎁", value= "`8Ball,Happy,Guess,Imagine,Giveaway,dog,cat,meme`",inline=False)
+    em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Stats,Userinfo`",inline=False)
+    em.add_field(name="Special✨",value="`Reminder,Bugs,Translate,afk,lock,unlock`",inline=False)
     em.add_field(name="Music🎵",value="`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`")
     em.add_field(name="AutoBot Help ❓",value="https://discord.com/invite/aYVsg4wEHE",inline=False)
     em.add_field(name="Patreon 💖",value="https://www.patreon.com/AutoBot0521",inline=False)
-    
+    em.add_field(name="Invite me",value="[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)")
     em.set_footer(text="Created by MusicalPieces◥▶_◀◤#7854")
     await ctx.send(embed = em) 
 
@@ -943,13 +899,13 @@ async def help(ctx):
    
     em.set_image(url="https://cdn.discordapp.com/attachments/865177734510411816/913701789965123594/standard_2.gif")
     em.add_field(name="Change Prefix", value="To change prefix type  `<default prefix>` changeprefix `<new prefix>`. ")
-    em.add_field(name="Fun 🎁", value= "`8Ball,Happy,Guess,Imagine,Giveaway`,`dog`,`cat`",inline=False)
-    em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Compute,Stats,Userinfo`",inline=False)
-    em.add_field(name="Special✨",value="`Reminder,Invite,Bugs,Translate,afk`,`lock`",inline=False)
+    em.add_field(name="Fun 🎁", value= "`8Ball,Happy,Guess,Imagine,Giveaway,dog,cat,meme`",inline=False)
+    em.add_field(name="Info㊙️",value="`Avatar,Serverinfo,Github,Stats,Userinfo`",inline=False)
+    em.add_field(name="Special✨",value="`Reminder,Bugs,Translate,afk,lock,unlock`",inline=False)
     em.add_field(name="Music🎵",value="`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`")
     em.add_field(name="AutoBot Help ❓",value="https://discord.com/invite/aYVsg4wEHE",inline=False)
     em.add_field(name="Patreon 💖",value="https://www.patreon.com/AutoBot0521",inline=False)
-    
+    em.add_field(name="Invite me",value="[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)")
     em.set_footer(text="Created by MusicalPieces◥▶_◀◤#7854")
     await ctx.send(embed = em) 
 
@@ -1034,15 +990,6 @@ keep_alive()
 
 
 client.run('YOUR_BOT_TOKEN')
-
-
-
-
-
-
-
-
-
 
 
 
