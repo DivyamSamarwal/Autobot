@@ -941,28 +941,22 @@ async def giveaway(ctx):
 
 @help.command()
 async def afk(ctx):
-    em=discord.Embed(title="Afk",description="Away from keys", colour=discord.Colour.random())
-    em.add_field(name="**Syntax**", value="   `Bot Prefix` afk")
-    await ctx.send(embed=em)
-
-@help.command()
-async def _8ball(ctx):
-    em=discord.Embed(title="8ball",description="Your Question and Bot Answer", colour=discord.Colour.random())
-    em.add_field(name="**Syntax**", value="`Bot Prefix` <command name> `question`")
+    em=discord.Embed(title="Commands Settings",description="AFK :- Away from keys", colour=discord.Colour.random())
+    em.add_field(name="**Set an AFK status to display when you are mentioned⚙️**", value="<prefix>afk")
     await ctx.send(embed=em)
 
 
 @help.command(aliases=["tl","TL"])
 async def translate(ctx):
-    em=discord.Embed(title="Translate",description="Translates one language to other", colour=discord.Colour.random())
-    em.add_field(name="**Syntax**", value="<command>`<language you want to translate>`arguments")
+    em=discord.Embed(title="Commands Settings",description="Translates one language to other", colour=discord.Colour.random())
+    em.add_field(name="**Translator⚙️**", value="<language you want to translate>arguments")
     
     await ctx.send(embed=em)
 
 @help.command()
 async def reminder(ctx):
-    em=discord.Embed(title="Reminder",description="Reminds at specific time ", colour=discord.Colour.random())
-    em.add_field(name="**Syntax**", value="`prefix command`<[amount of time in digits] seconds of s , minutes of m and hours for h>`<your message>`" )
+    em=discord.Embed(title="Commands Setting",description="Reminds at specific time ", colour=discord.Colour.random())
+    em.add_field(name="** Set a reminder ⚙️**", value="`prefix command`<[amount of time in digits] seconds of s , minutes of m and hours for h , days for d>`<your message>`" )
     await ctx.send(embed=em)
 
 
