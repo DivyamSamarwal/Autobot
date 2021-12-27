@@ -322,6 +322,7 @@ async def hi(ctx):
 
 
 
+
 afkdict = {}
 @client.command(name = "afk", brief = "Away From Keyboard",
                 description = "I'll give you the afk status and if someone pings you before you come back, I'll tell "
@@ -331,11 +332,13 @@ async def afk(ctx, message = "They didn't leave a message!"):
 
     if ctx.message.author in afkdict:
         afkdict.pop(ctx.message.author)
+        
         await ctx.send('Welcome back!🥱  You are no longer afk.')
 
     else:
         afkdict[ctx.message.author] = message
         await ctx.send("You are now afk😴!")
+
 
 
 @client.event
