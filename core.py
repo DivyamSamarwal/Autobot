@@ -869,6 +869,20 @@ async def lumine(ctx):
 
   await ctx.send(embed = em) 
 
+@genshin.command(aliases=["tier list"])
+async def tierlist(ctx):
+    em= discord.Embed(title="Genshin  Impact",description="Charactes Tier List",colour=discord.Colour.random(),timestamp=datetime.utcnow())
+    em.add_field(name="__SS Tier__",value="`Shenhe | Itto | Raiden | Ayaka | Zhongli | Ganyu | Kazuha | Venti | Xiao | Bennett | Hu Tao | Xingqiu`",inline=False)
+    em.add_field(name="__S Tier__",value="`Kokomi | Yoimiya | Jean | Diona | Klee | Eula | Mona | Sucrose | Chongyun | Albedo | Diluc | Targitalia | Xiangling`",inline=False)
+    em.add_field(name="__A Tier__",value="`Yun Jin | Gorou | Thoma | Aloy | Kujou | Sayu | Qiqi | Beidou | Keqing | Nigguang | Fischl`",inline=False)
+    em.add_field(name="__B Tier__",value="`Kaeya | Razor | Yanfei | Barbara | Noelle | Rosaria | Traveler(Geo/Electro)`",inline=False)
+    em.add_field(name="__C Tier__",value="`Lisa | Amber | Xinyan | Traveler(Anemo)`",inline=False)
+    
+    await ctx.send(embed = em)
+    
+    
+    
+
 
 
 
