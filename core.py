@@ -1272,7 +1272,7 @@ async def guess(ctx):
 
 extensions=[
 
-            'anime'
+            'cogs.anime'
             
 ]
 if __name__ == "__main__":
