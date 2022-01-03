@@ -1086,6 +1086,12 @@ async def help(ctx):
                  value="`Reminder,Bugs,Translate,afk,lock,unlock`",
                  inline=False)
     em.add_field(
+        name="Anime"
+        value=
+        "`anime , character , animenews`",
+        inline=False
+    )    
+    em.add_field(
         name="Music🎵",
         value=
         "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`"
@@ -1135,6 +1141,12 @@ async def help(ctx):
     em.add_field(name="Special✨",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock`",
                  inline=False)
+    em.add_field(
+        name="Anime"
+        value=
+        "`anime , character , animenews`",
+        inline=False
+    )
     em.add_field(
         name="Music🎵",
         value=
