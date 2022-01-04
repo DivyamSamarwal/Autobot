@@ -1284,6 +1284,30 @@ if __name__ == "__main__":
             traceback.print_exc()
 
 
+@client.command()
+@is_owner()
+async def check_cogs(ctx, cog_name):
+    try:
+        client.load_extension(f"cogs.{cog_name}")
+    except commands.ExtensionAlreadyLoaded:
+        await ctx.send("Cog is loaded")
+    except commands.ExtensionNotFound:
+        await ctx.send("Cog not found")
+    else:
+        await ctx.send("Cog is unloaded")
+        client.unload_extension(f"cogs.{cog_name}")
+
+@check_cogs.error
+async def check_cogs_error(ctx, error):
+    if isinstance(error, commands.NotOwner):
+        embed = discord.Embed(
+            title="Permmissiond Denied ❌",
+            description=
+            "Umm , How do you know this command?\n 💠 You are not Shogunate of this bot. ",
+            colour=discord.Colour.random(),
+            timestamp=datetime.utcnow())
+        await ctx.send(embed=embed)
+
 keep_alive()
 
 client.run('YOUR_BOT_TOKEN')
