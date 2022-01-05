@@ -1284,13 +1284,15 @@ if __name__ == "__main__":
             traceback.print_exc()
 
 
-@client.command()
+client.command()
 @is_owner()
 async def check_cogs(ctx, cog_name):
     try:
         client.load_extension(f"cogs.{cog_name}")
     except commands.ExtensionAlreadyLoaded:
-        await ctx.send("Cog is loaded")
+        message = await ctx.send('`💎` You are the `Jishaku` of this bot. \n あなたはこのボットのジシャクです。')
+        await message.edit(content="https://cdn.discordapp.com/attachments/858354774810689557/928230806059618375/3339_loading.gif")
+        await message.edit(content=f' {cog_name} Cog is loaded')
     except commands.ExtensionNotFound:
         await ctx.send("Cog not found")
     else:
@@ -1301,12 +1303,13 @@ async def check_cogs(ctx, cog_name):
 async def check_cogs_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         embed = discord.Embed(
-            title="Permmissiond Denied ❌",
+            title="Permmissions Denied ❌",
             description=
-            "Umm , How do you know this command?\n 💠 You are not Shogunate of this bot. ",
+            "`💠` You are not `Shogunate` of this bot.\n `💠` あなたはこのボットの幕府ではありません。 ",
             colour=discord.Colour.random(),
             timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
+
 
 keep_alive()
 
