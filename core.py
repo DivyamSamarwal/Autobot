@@ -1069,7 +1069,7 @@ async def help(ctx):
 
     em.set_image(
         url=
-        "https://cdn.discordapp.com/attachments/865177734510411816/913701789965123594/standard_2.gif"
+        "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
     em.add_field(
         name="Change Prefix",
@@ -1125,7 +1125,7 @@ async def help(ctx):
 
     em.set_image(
         url=
-        "https://cdn.discordapp.com/attachments/865177734510411816/913701789965123594/standard_2.gif"
+        "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
     em.add_field(
         name="Change Prefix",
