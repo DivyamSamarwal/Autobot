@@ -1107,7 +1107,8 @@ async def help(ctx):
         value=
         "[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)"
     )
-    em.set_footer(text="Created by MusicalPieces◥▶_◀◤#7854")
+    em.set_footer(text=f"Requested by {ctx.author}",
+                     icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
 
 
@@ -1163,7 +1164,8 @@ async def help(ctx):
         value=
         "[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)"
     )
-    em.set_footer(text="Created by MusicalPieces◥▶_◀◤#7854")
+    em.set_footer(text=f"Requested by {ctx.author}",
+                     icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
 
 
