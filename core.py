@@ -516,6 +516,20 @@ async def trans(ctx, lang, *, thing):
     await ctx.reply(embed=embed)
 
 
+@trans.error
+async def trans_error(ctx, error):
+    if isinstance(error, commands.CommandInvokeError):
+        embed = discord.Embed(
+            title="API Error",
+            description=
+            "API => `googletrans==3.1.0a0` invoked so many errors that bot owner got tired while solving and broke the hosting server caused so much damage.\n Help us in recovering damage.\n https://www.patreon.com/AutoBot0521",
+            colour=discord.Colour.random(),
+            timestamp=datetime.utcnow())
+        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/906314638428348528.gif?size=56&quality=lossless")    
+        await ctx.send(embed=embed)
+
+
+
 #meme
 @client.command(pass_context=True)
 async def meme(ctx):
@@ -983,6 +997,14 @@ async def clear_error(ctx, error):
         await ctx.send(embed=embed)
 
 
+
+
+
+
+
+
+
+
 ##Genshin
 @client.group(invoke_without_command=True,
               aliases=["GENSHIN", "Genshin", "gs"])
@@ -1085,12 +1107,10 @@ async def help(ctx):
     em.add_field(name="Special✨",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock`",
                  inline=False)
-    em.add_field(
-        name="Anime"
-        value=
-        "`anime , character , animenews`",
-        inline=False
-    )    
+    em.add_field(name="Anime♨️",
+                 value="`anime , character , animenews`",
+                 inline=False)
+    
     em.add_field(
         name="Music🎵",
         value=
@@ -1108,7 +1128,7 @@ async def help(ctx):
         "[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)"
     )
     em.set_footer(text=f"Requested by {ctx.author}",
-                     icon_url=ctx.author.avatar_url)
+                    icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
 
 
@@ -1142,12 +1162,10 @@ async def help(ctx):
     em.add_field(name="Special✨",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock`",
                  inline=False)
-    em.add_field(
-        name="Anime"
-        value=
-        "`anime , character , animenews`",
-        inline=False
-    )
+    em.add_field(name="Anime♨️",
+                 value="`anime , character , animenews`",
+                 inline=False)    
+    
     em.add_field(
         name="Music🎵",
         value=
@@ -1165,7 +1183,7 @@ async def help(ctx):
         "[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)"
     )
     em.set_footer(text=f"Requested by {ctx.author}",
-                     icon_url=ctx.author.avatar_url)
+                    icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
 
 
@@ -1272,7 +1290,7 @@ async def guess(ctx):
     await ctx.send(embed=embed_var_helpme)
 
 
-extensions=[
+extensions=[ 
 
             'cogs.anime'
             
@@ -1286,7 +1304,9 @@ if __name__ == "__main__":
             traceback.print_exc()
 
 
-client.command()
+
+
+@client.command()
 @is_owner()
 async def check_cogs(ctx, cog_name):
     try:
@@ -1312,7 +1332,6 @@ async def check_cogs_error(ctx, error):
             timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
 
-
 keep_alive()
 
-client.run('YOUR_BOT_TOKEN')
+client.run('Your_Bot_token')
