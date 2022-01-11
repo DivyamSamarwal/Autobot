@@ -1078,7 +1078,6 @@ async def tierlist(ctx):
 
     await ctx.send(embed=em)
 
-
 #help
 @slash.slash(name="help", description="Get to know about my commands")
 async def help(ctx):
@@ -1094,7 +1093,7 @@ async def help(ctx):
         "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
     em.add_field(
-        name="Change Prefix",
+        name="Change Prefix⚙️",
         value=
         "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
     )
@@ -1114,19 +1113,16 @@ async def help(ctx):
     em.add_field(
         name="Music🎵",
         value=
-        "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`"
+        "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`",
+        inline=False
     )
-    em.add_field(name="AutoBot Help ❓",
-                 value="https://discord.com/invite/aYVsg4wEHE",
-                 inline=False)
-    em.add_field(name="Patreon 💖",
-                 value="https://www.patreon.com/AutoBot0521",
-                 inline=False)
     em.add_field(
-        name="Invite me",
+        name="Other 📜",
         value=
-        "[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)"
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/aYVsg4wEHE) , [Patreon 💖](https://www.patreon.com/AutoBot0521)",
+        inline=False    
     )
+
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
@@ -1149,7 +1145,7 @@ async def help(ctx):
         "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
     em.add_field(
-        name="Change Prefix",
+        name="Change Prefix⚙️",
         value=
         "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
     )
@@ -1169,23 +1165,18 @@ async def help(ctx):
     em.add_field(
         name="Music🎵",
         value=
-        "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`"
+        "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`",
+        inline=False
     )
-    em.add_field(name="AutoBot Help ❓",
-                 value="https://discord.com/invite/aYVsg4wEHE",
-                 inline=False)
-    em.add_field(name="Patreon 💖",
-                 value="https://www.patreon.com/AutoBot0521",
-                 inline=False)
     em.add_field(
-        name="Invite me",
+        name="Other 📜",
         value=
-        "[here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)"
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/aYVsg4wEHE) , [Patreon 💖](https://www.patreon.com/AutoBot0521)",
+        inline=False    
     )
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
-
 
 #help inbuilds
 
