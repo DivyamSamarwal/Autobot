@@ -1,7 +1,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/divyamsamarwal/autobot/badge)](https://www.codefactor.io/repository/github/divyamsamarwal/autobot)
 
 Here is full guide of commands of Autobot:-
-![image](https://user-images.githubusercontent.com/72195951/148525505-b06a09e6-5630-4780-8fe2-c78a1108db7b.png)
+![image](https://user-images.githubusercontent.com/72195951/150083086-98925b21-96f3-41f1-965a-da0ea27a5aa0.png)
+
 
 
 
