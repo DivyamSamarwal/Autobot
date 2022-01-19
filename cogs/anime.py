@@ -37,7 +37,7 @@ class Anime(commands.Cog, name='Anime'):
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["char","animecharacter"])
-    async def image(self,ctx,*,query):
+    async def character(self,ctx,*,query):
         try:
             char = animec.Charsearch(query)
         except:
@@ -63,6 +63,28 @@ class Anime(commands.Cog, name='Anime'):
         await ctx.send(embed = embed)
 
 
+    @commands.command()
+    async def slowmode(self,ctx,time:int):
+        if (not ctx.author.guild_permissions.manage_messages):
+            embed = discord.Embed(title="Permission error" , description="This requires `Manage Message Permission`.You don't have that!",color=discord.Colour.dark_red())
+            await ctx.send(embed=embed)
+            return
+        try:
+            if time == 0:
+                embed1 = discord.Embed(title="Slowmode succesfully off", description="If time has been set to 0 seconds then slowmode would be off.",color=discord.Colour.dark_teal())
+                await ctx.send(embed=embed1)
+                await ctx.channel.edit(slowmode_delay = 0)
+            elif time > 21600:
+                emb = discord.Embed(title="Time Error" , description="You can not set the slowmode above `6 hours`",color=discord.Colour.red())
+                emb.add_field(name="Quick Conversions", value="1 min =  60 seconds \n 2 min = 120 seconds \n 5 min = 300 seconds \n 1 hour = 3600 seconds \n 6 hours = 21600 seconds")
+                await ctx.send(embed=emb)
+                return
+            else:
+                await ctx.channel.edit(slowmode_delay = time)
+                em = discord.Embed(title="Succesfully set!", description=f"Slowmode set to {time} seconds" , color= discord.Colour.teal())
+                await ctx.send(embed=em)
+        except Exception:
+            await print("Oops!")
 
        
 def setup(client):
