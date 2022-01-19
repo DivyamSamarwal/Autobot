@@ -1078,7 +1078,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo`",
                  inline=False)
     em.add_field(name="Special✨",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock`",
+                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode`",
                  inline=False)
     em.add_field(name="Anime♨️",
                  value="`anime,character,animenews`",
@@ -1130,7 +1130,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo`",
                  inline=False)
     em.add_field(name="Special✨",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock`",
+                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode`",
                  inline=False)
     em.add_field(name="Anime♨️",
                  value="`anime,character,animenews`",
