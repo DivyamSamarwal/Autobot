@@ -174,26 +174,6 @@ async def stats(ctx):
     await ctx.send(embed=embed)
 
 
-@client.command(aliases=["Stats", "STATS"])
-@commands.cooldown(3, 10, commands.BucketType.user)
-async def stats(ctx):
-    embed = discord.Embed(title="AutoBot Stats",
-                          description="",
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-    embed.add_field(name="Server Count",
-                    value=len(client.guilds),
-                    inline=False)
-    embed.add_field(name="Average Latency",
-                    value=round(client.latency * 1000),
-                    inline=False)
-
-    embed.set_thumbnail(
-        url=
-        'https://cdn.discordapp.com/avatars/858965828716331019/95b08eab5679795f0dd29ab9eb3c3784.webp?size=1024'
-    )
-
-    await ctx.send(embed=embed)
 
 
 #eightball
@@ -364,25 +344,7 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-@client.command(aliases=['Github', 'GitHub', 'GITHUB'])
-async def github(ctx):
-    embed = discord.Embed(title="ABOUT AUTOBOT",
-                          description="Our Community!",
-                          color=discord.Color.random())
-    embed.add_field(name="Visit Me",
-                    value="https://github.com/DivyamSamarwal/Autobot")
-    embed.add_field(
-        name="About me",
-        value=
-        "I am Musical Pieces (Software Dev) I am owner of non profit organization named PokeMedia... Nowadays, I am working on my projects like Autobot and PokeMedia. I mostly use python for coding bots.."
-    )
-    embed.set_thumbnail(url=f"{ctx.guild.icon}")
-    embed.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/865177734510411816/867300427153670144/GitHub-logo.png?width=1078&height=606"
-    )
 
-    await ctx.send(embed=embed)
 
 
 @client.command(aliases=["Avatar", "AVATAR", "AV", "av"])
@@ -997,7 +959,18 @@ async def clear_error(ctx, error):
         await ctx.send(embed=embed)
 
 
+#info
+@client.command()
+async def info(ctx):
 
+    em = discord.Embed(title = "Autobot", description = "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)", colour=discord.Color.random(), timestamp=datetime.utcnow())
+    em.add_field(name="Developer", value="Divyam#0001" , inline=False)
+    em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \n Guilds :- {len(client.guilds)} ', inline=False)
+    em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
+    em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling , watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
+    em.set_thumbnail(url="https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024")
+    em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
+    await ctx.send(embed=em)
 
 
 
@@ -1078,6 +1051,7 @@ async def tierlist(ctx):
 
     await ctx.send(embed=em)
 
+
 #help
 @slash.slash(name="help", description="Get to know about my commands")
 async def help(ctx):
@@ -1101,13 +1075,13 @@ async def help(ctx):
                  value="`8Ball,Happy,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
     em.add_field(name="Info㊙️",
-                 value="`Avatar,Serverinfo,Github,Stats,Userinfo`",
+                 value="`Avatar,Serverinfo,info,Stats,Userinfo`",
                  inline=False)
     em.add_field(name="Special✨",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock`",
                  inline=False)
     em.add_field(name="Anime♨️",
-                 value="`anime , character , animenews`",
+                 value="`anime,character,animenews`",
                  inline=False)
     
     em.add_field(
@@ -1153,13 +1127,13 @@ async def help(ctx):
                  value="`8Ball,Happy,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
     em.add_field(name="Info㊙️",
-                 value="`Avatar,Serverinfo,Github,Stats,Userinfo`",
+                 value="`Avatar,Serverinfo,info,Stats,Userinfo`",
                  inline=False)
     em.add_field(name="Special✨",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock`",
                  inline=False)
     em.add_field(name="Anime♨️",
-                 value="`anime , character , animenews`",
+                 value="`anime,character,animenews`",
                  inline=False)    
     
     em.add_field(
@@ -1177,6 +1151,7 @@ async def help(ctx):
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
+
 
 #help inbuilds
 
