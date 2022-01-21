@@ -1300,4 +1300,4 @@ async def check_cogs_error(ctx, error):
 
 keep_alive()
 
-client.run('Your_Bot_token')
+client.run('YOUR_BOT_TOKEN')
