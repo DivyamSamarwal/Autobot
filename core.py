@@ -413,7 +413,7 @@ async def reminder(ctx, time, *, reminder):
         await ctx.send(
             f"Alright, I will remind {user} about {reminder} in {counter}.")
         await asyncio.sleep(seconds)
-        await ctx.send(
+        await ctx.reply(
             f"Hi, you asked me to remind you about {user} {reminder} {counter} ago."
         )
         return
