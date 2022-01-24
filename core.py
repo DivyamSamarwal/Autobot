@@ -1093,7 +1093,7 @@ async def help(ctx):
     em.add_field(
         name="Other 📜",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/aYVsg4wEHE) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
         inline=False    
     )
 
@@ -1145,7 +1145,7 @@ async def help(ctx):
     em.add_field(
         name="Other 📜",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/aYVsg4wEHE) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
         inline=False    
     )
     em.set_footer(text=f"Requested by {ctx.author}",
