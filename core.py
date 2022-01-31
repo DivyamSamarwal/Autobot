@@ -347,7 +347,7 @@ async def on_message(message):
 
 
 
-@client.command(aliases=["Avatar", "AVATAR", "AV", "av"])
+"""@client.command(aliases=["Avatar", "AVATAR", "AV", "av"])
 async def avatar(
         ctx,
         *,
@@ -358,7 +358,7 @@ async def avatar(
     await ctx.send(userAvatar)
 
 
-datetime.utcnow()
+datetime.utcnow()"""
 
 
 @client.command(case_insensitive=True,
