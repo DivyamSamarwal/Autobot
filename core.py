@@ -967,11 +967,11 @@ async def info(ctx):
     em.add_field(name="Developer", value="Divyam#0001" , inline=False)
     em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \n Guilds :- {len(client.guilds)} ', inline=False)
     em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
+    em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
     em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling , watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
     em.set_thumbnail(url="https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024")
     em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
     await ctx.send(embed=em)
-
 
 
 
