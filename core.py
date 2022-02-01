@@ -345,19 +345,6 @@ async def on_message(message):
 
 
 
-
-
-@client.command(aliases=["Avatar", "AVATAR", "AV", "av"])
-async def avatar(
-        ctx,
-        *,
-        member: discord.Member = None):  # set the member object to None
-    if not member:  # if member is no mentioned
-        member = ctx.message.author  # set member as the author
-    userAvatar = member.avatar_url
-    await ctx.send(userAvatar)
-
-
 datetime.utcnow()
 
 
@@ -424,23 +411,32 @@ async def reminder(ctx, time, *, reminder):
 
 
 @slash.slash(name="Avatar", description="Shows avatar of the user")
-async def happy(ctx):
-    test = discord.Embed(title=f"This avatar seems unusual✨...",
-                         colour=discord.Color.random(),
-                         timestamp=datetime.utcnow())
-    test.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    test.set_image(url=ctx.author.avatar_url)
-    await ctx.send(embed=test)
+async def avatar(ctx, * , user: discord.Member=None):
+        if user is None:
+            user = ctx.message.author
+        embed = discord.Embed( title="This avatar seems unsual✨...",
+            color=discord.Colour.random() ,timestamp=datetime.utcnow()
+        )
+        
+        embed.add_field(name="Avatar Formats",value=f" **[Png Link]({user.avatar_url_as(format='png')})** | **[Jpg Link]({user.avatar_url_as(format='jpg')})** | **[Webp Link]({user.avatar_url_as(format='webp')})**" , inline=False)
+        embed.set_image(url=user.avatar_url)
+        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
+        await ctx.send(embed=embed)    
 
 
-@client.command(aliases=["HAPPY", "Happy"])
-async def happy(ctx):
-    test = discord.Embed(title=f"This avatar seems unsual✨...",
-                         colour=discord.Color.random(),
-                         timestamp=datetime.utcnow())
-    test.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    test.set_image(url=ctx.author.avatar_url)
-    await ctx.reply(embed=test)
+@client.command()
+
+async def avatar(ctx, * , user: discord.Member=None):
+        if user is None:
+            user = ctx.message.author
+        embed = discord.Embed( title="This avatar seems unsual✨...",
+            color=discord.Colour.random() ,timestamp=datetime.utcnow()
+        )
+        
+        embed.add_field(name="Avatar Formats",value=f" **[Png Link]({user.avatar_url_as(format='png')})** | **[Jpg Link]({user.avatar_url_as(format='jpg')})** | **[Webp Link]({user.avatar_url_as(format='webp')})**" , inline=False)
+        embed.set_image(url=user.avatar_url)
+        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
+        await ctx.send(embed=embed)    
 
 
 #translator
@@ -914,7 +910,7 @@ async def bugs(ctx):
     em.add_field(
         name="What to do if you find any bug🐛?",
         value=
-        "Join Our Help Server Or Contact the Creator `(Id:-MusicalPieces◥▶_◀◤#7854)` .",
+        "Join Our Help Server Or Contact the Creator `(Id:-Divyam#0001)` .",
         inline=False)
     await ctx.send(embed=em)
 
@@ -968,10 +964,12 @@ async def info(ctx):
     em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \n Guilds :- {len(client.guilds)} ', inline=False)
     em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
     em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
-    em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling , watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
+    em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling, watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
     em.set_thumbnail(url="https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024")
     em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
     await ctx.send(embed=em)
+
+
 
 
 
@@ -1072,7 +1070,7 @@ async def help(ctx):
         "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
     )
     em.add_field(name="Fun 🎁",
-                 value="`8Ball,Happy,Guess,Imagine,Giveaway,dog,cat,meme`",
+                 value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
     em.add_field(name="Info㊙️",
                  value="`Avatar,Serverinfo,info,Stats,Userinfo`",
@@ -1093,7 +1091,7 @@ async def help(ctx):
     em.add_field(
         name="Other 📜",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
         inline=False    
     )
 
@@ -1124,7 +1122,7 @@ async def help(ctx):
         "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
     )
     em.add_field(name="Fun 🎁",
-                 value="`8Ball,Happy,Guess,Imagine,Giveaway,dog,cat,meme`",
+                 value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
     em.add_field(name="Info㊙️",
                  value="`Avatar,Serverinfo,info,Stats,Userinfo`",
@@ -1145,7 +1143,7 @@ async def help(ctx):
     em.add_field(
         name="Other 📜",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.com/invite/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
         inline=False    
     )
     em.set_footer(text=f"Requested by {ctx.author}",
@@ -1300,4 +1298,4 @@ async def check_cogs_error(ctx, error):
 
 keep_alive()
 
-client.run('YOUR_BOT_TOKEN')
+client.run('Your bot token')
