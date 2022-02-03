@@ -1,3 +1,4 @@
+Autobot
 aiohttp==3.7.4.post0
 akinator.py==5.0.0
 async-timeout==3.0.1
