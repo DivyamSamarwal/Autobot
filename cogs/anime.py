@@ -62,7 +62,7 @@ class Anime(commands.Cog, name='Anime'):
             embed.add_field(name= f"{i+1}) {titles[i]}", value=f"{descriptions[i][:200]}...\n[Read more]({links[i]})",inline=False)
         await ctx.send(embed = embed)
 
-
+#slowmode
     @commands.command()
     async def slowmode(self,ctx,time:int):
         if (not ctx.author.guild_permissions.manage_messages):
