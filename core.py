@@ -1103,7 +1103,6 @@ async def help(ctx):
     em.add_field(name="Anime♨️",
                  value="`anime,character,animenews`",
                  inline=False)
-    
     em.add_field(
         name="Music🎵",
         value=
@@ -1257,7 +1256,22 @@ async def reminder(ctx):
     )
     await ctx.send(embed=em)
 
+@help.command()
+async def lockdown(ctx):
+    em = discord.Embed(title="Server Lockdown",
+                       description="Locks the whole server. ",
+                       colour=discord.Colour.random())
+    em.add_field(
+        name="**Usage ⚙️**",
+        value=
+        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> use this wisely(not for checking)` \n>> `you have to unlock each channel.`"    
+    )
+    await ctx.send(embed=em)
 
+    
+
+    
+    
 @help.command()
 async def guess(ctx):
     desc_helpme = '__**HOW TO PLAY**__\n\nUse the `<prefix>guess` command followed by the game mode you want to play. Here is ' \
