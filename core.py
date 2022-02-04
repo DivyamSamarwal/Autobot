@@ -1264,7 +1264,7 @@ async def lockdown(ctx):
     em.add_field(
         name="**Usage ⚙️**",
         value=
-        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> use this wisely(not for checking)` \n>> `you have to unlock each channel.`"    
+        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> `use this wisely(not for checking)` \n>> `you have to unlock each channel.`"    
     )
     await ctx.send(embed=em)
 
