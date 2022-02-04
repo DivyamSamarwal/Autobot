@@ -970,7 +970,28 @@ async def info(ctx):
     await ctx.send(embed=em)
 
 
-
+@client.command()
+async def lockdown(ctx, channel : discord.TextChannel=None,setting=None):
+    if setting=='--server':
+        for channel in ctx.guild.channels:
+            await channel.set_permissions(ctx.guild.default_role, reason=f'{ctx.author.name} locked {channel.name} with --server',send_messages=False)
+            embed=discord.Embed(
+                timestamp=ctx.message.created_at, 
+                title = "LOCKED THE SERVER 🔒",
+                description=f"successfully locked the whole server by {ctx.author.mention}",
+                color=ctx.author.color, 
+               )
+        await ctx.send(embed=embed)
+    if channel is None:
+        channel = ctx.message.channel
+        await channel.set_permissions(ctx.guild.default_role, reason=f'{ctx.author.name} locked {channel.name}',send_messages=False)
+        embed=discord.Embed(
+            timestamp=ctx.message.created_at, 
+                title = "LOCKDOWN 🔒",
+                description=f"successfully locked the channel {ctx.author.mention}",
+                color=ctx.author.color, 
+               )
+        await ctx.send(embed=embed)
 
 
 
