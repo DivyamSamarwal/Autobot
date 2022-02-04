@@ -971,6 +971,7 @@ async def info(ctx):
 
 
 @client.command()
+@commands.has_permissions(administrator=True)
 async def lockdown(ctx, channel : discord.TextChannel=None,setting=None):
     if setting=='--server':
         for channel in ctx.guild.channels:
