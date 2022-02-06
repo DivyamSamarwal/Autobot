@@ -85,7 +85,6 @@ class Anime(commands.Cog, name='Anime'):
                 await ctx.send(embed=em)
         except Exception:
             await print("Oops!")
-
     @commands.command(pass_context=True)
     async def poll(self, ctx, question, *options: str):
         if len(options) <= 1:
@@ -100,10 +99,11 @@ class Anime(commands.Cog, name='Anime'):
         else:
             reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣', '8⃣', '9⃣', '🔟']
 
+
         description = []
         for x, option in enumerate(options):
             description += '\n {} {}'.format(reactions[x], option)
-        embed = discord.Embed(title=question, description=''.join(description))
+        embed = discord.Embed(title=question, description=''.join(description), color=discord.Colour.random())
         react_message = await ctx.send(embed=embed)
         for reaction in reactions[:len(options)]:
             await react_message.add_reaction(reaction)
@@ -129,9 +129,10 @@ class Anime(commands.Cog, name='Anime'):
                     if reactor.id not in voters:
                         tally[reaction.emoji] += 1
                         voters.append(reactor.id)
-        output = f"Results of the poll for '{embed.title}':\n" + '\n'.join(['{}: {}'.format(opt_dict[key], tally[key]) for key in tally.keys()])
+        output = f"Results of the poll for **{embed.title}** :\n" + '\n'.join(['{}: {}'.format(opt_dict[key], tally[key]) for key in tally.keys()])
         await ctx.send(output)
-   
+        
+        
 def setup(client):
     client.add_cog(Anime(client))
     print("Anime cog is Loaded!")
