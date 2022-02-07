@@ -2,7 +2,7 @@
 
 Here is full guide of commands of Autobot:-
 
-![image](https://user-images.githubusercontent.com/72195951/151958893-2066fa22-54cb-4f13-a7aa-bb17ec4fa58a.png)
+![image](https://user-images.githubusercontent.com/72195951/152726916-27e50801-fc16-4c11-8f5a-cccd52389f90.png)
 
 
 
