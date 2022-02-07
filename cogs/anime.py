@@ -1,6 +1,7 @@
 import discord
 import animec
 import datetime
+from datetime import datetime
 from discord.ext import commands
 
 class Anime(commands.Cog, name='Anime'):
@@ -62,7 +63,7 @@ class Anime(commands.Cog, name='Anime'):
             embed.add_field(name= f"{i+1}) {titles[i]}", value=f"{descriptions[i][:200]}...\n[Read more]({links[i]})",inline=False)
         await ctx.send(embed = embed)
 
-#slowmode
+
     @commands.command()
     async def slowmode(self,ctx,time:int):
         if (not ctx.author.guild_permissions.manage_messages):
@@ -71,20 +72,23 @@ class Anime(commands.Cog, name='Anime'):
             return
         try:
             if time == 0:
-                embed1 = discord.Embed(title="Slowmode succesfully off", description="If time has been set to 0 seconds then slowmode would be off.",color=discord.Colour.dark_teal())
+                embed1 = discord.Embed(title="Slowmode succesfully off", description="If time has been set to 0 seconds then slowmode would be off. <a:tick:940195528103325726>",color=discord.Colour.dark_teal())
                 await ctx.send(embed=embed1)
                 await ctx.channel.edit(slowmode_delay = 0)
             elif time > 21600:
-                emb = discord.Embed(title="Time Error" , description="You can not set the slowmode above `6 hours`",color=discord.Colour.red())
+                emb = discord.Embed(title="Time Error <a:wrong:940200609326444594>" , description="You can not set the slowmode above `6 hours`",color=discord.Colour.red())
                 emb.add_field(name="Quick Conversions", value="1 min =  60 seconds \n 2 min = 120 seconds \n 5 min = 300 seconds \n 1 hour = 3600 seconds \n 6 hours = 21600 seconds")
                 await ctx.send(embed=emb)
                 return
             else:
                 await ctx.channel.edit(slowmode_delay = time)
-                em = discord.Embed(title="Succesfully set!", description=f"Slowmode set to {time} seconds" , color= discord.Colour.teal())
+                em = discord.Embed(title="Succesfully set! <a:tick:940195528103325726>", description=f"Slowmode set to {time} seconds" , color= discord.Colour.teal())
                 await ctx.send(embed=em)
         except Exception:
             await print("Oops!")
+#polls
+
+
     @commands.command(pass_context=True)
     async def poll(self, ctx, question, *options: str):
         if len(options) <= 1:
@@ -98,8 +102,6 @@ class Anime(commands.Cog, name='Anime'):
             reactions = ['✅', '❌']
         else:
             reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣', '8⃣', '9⃣', '🔟']
-
-
         description = []
         for x, option in enumerate(options):
             description += '\n {} {}'.format(reactions[x], option)
@@ -131,8 +133,9 @@ class Anime(commands.Cog, name='Anime'):
                         voters.append(reactor.id)
         output = f"Results of the poll for **{embed.title}** :\n" + '\n'.join(['{}: {}'.format(opt_dict[key], tally[key]) for key in tally.keys()])
         await ctx.send(output)
-        
-        
+
+
 def setup(client):
     client.add_cog(Anime(client))
     print("Anime cog is Loaded!")
+    
