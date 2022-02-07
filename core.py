@@ -31,7 +31,7 @@ import json
 from discord import Client, Intents, Embed
 from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
-
+from typing import Union
 import math
 from webserver import keep_alive
 
@@ -44,6 +44,7 @@ from akinator.async_aki import Akinator
 from discord.ext.commands import BucketType
 import requests
 import aiohttp
+intents = discord.Intents.all()
 
 my_default_prefix = "&"
 
@@ -266,7 +267,7 @@ async def serverinfo(ctx):
     await ctx.send(embed=embed)
 
 
-@client.command(aliases=["Serverinfo", "aboutserver", "server"])
+@client.command(aliases=["Serverinfo", "aboutserver"])
 async def serverinfo(ctx):
     name = str(ctx.guild.name)
     description = str(ctx.guild.description)
@@ -289,6 +290,8 @@ async def serverinfo(ctx):
     embed.add_field(name="Member Count 🤖", value=memberCount, inline=False)
 
     await ctx.send(embed=embed)
+
+
 
 
 @client.command(
@@ -804,7 +807,7 @@ async def giveaway(ctx):
 
     my_msg = await channel.send(embed=embed)
 
-    await my_msg.add_reaction('🎉')
+    await my_msg.add_reaction('<a:giveaway:940195992349863976>')
 
     await asyncio.sleep(time)
 
@@ -877,6 +880,19 @@ async def unlock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
+#steal
+@client.command(aliases=['emojisteal', 'addemoji', 'steal'])
+
+async def stealemoji(ctx: commands.Context, emoji: Union[discord.Emoji, discord.PartialEmoji], *, name: str):
+       
+        try:
+            emoji_bytes = await emoji.read()
+            emoji_create = await ctx.guild.create_custom_emoji(image=emoji_bytes, name=name)
+            await ctx.send(embed=discord.Embed(description=f"**<:tick:897382645321850920> Successfully created emoji - {emoji_create} with name: `{name}`**", color=discord.Color.green()))
+            
+        except Exception as e:
+            error = str(e).capitalize()
+            return await ctx.send(embed=discord.Embed(description=f"**<:error:897382665781669908> An error occurred while creating the emoji\n`{error}`**", color=discord.Color.red()))
 
 #------BUGS
 
@@ -953,6 +969,7 @@ async def clear_error(ctx, error):
             colour=discord.Colour.random(),
             timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
+#server
 
 
 #info
@@ -960,7 +977,7 @@ async def clear_error(ctx, error):
 async def info(ctx):
 
     em = discord.Embed(title = "Autobot", description = "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-    em.add_field(name="Developers", value="Divyam#0001 \n Thunder_AB0106💜#4548" , inline=False)
+    em.add_field(name="Developers", value="Divyam#0001 \nThunder_AB0106💜#4548" , inline=False)
     em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \n Guilds :- {len(client.guilds)} ', inline=False)
     em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
     em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
@@ -993,7 +1010,6 @@ async def lockdown(ctx, channel : discord.TextChannel=None,setting=None):
                 color=ctx.author.color, 
                )
         await ctx.send(embed=embed)
-
 
 
 
@@ -1087,24 +1103,25 @@ async def help(ctx):
         "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
     em.add_field(
-        name="Change Prefix⚙️",
+        name="Change Prefix <a:settings:940198899715555359>",
         value=
         "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
     )
-    em.add_field(name="Fun 🎁",
+    em.add_field(name="Fun <a:fun:940198380309737472>",
                  value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
-    em.add_field(name="Info㊙️",
-                 value="`Avatar,Serverinfo,info,Stats,Userinfo`",
+    em.add_field(name="Info <:Inform:940198203435929710>",
+                 value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
-    em.add_field(name="Special✨",
+    em.add_field(name="Special <a:Special:940197538810720266>",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode`",
                  inline=False)
-    em.add_field(name="Anime♨️",
+    em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews`",
                  inline=False)
+    
     em.add_field(
-        name="Music🎵",
+        name="Music <a:music:940196835052646411>",
         value=
         "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`",
         inline=False
@@ -1112,7 +1129,7 @@ async def help(ctx):
     em.add_field(
         name="Other 📜",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019) ,[Terra Music Bot](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
         inline=False    
     )
 
@@ -1138,25 +1155,25 @@ async def help(ctx):
         "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
     em.add_field(
-        name="Change Prefix⚙️",
+        name="Change Prefix <a:settings:940198899715555359>",
         value=
         "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
     )
-    em.add_field(name="Fun 🎁",
+    em.add_field(name="Fun <a:fun:940198380309737472>",
                  value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
-    em.add_field(name="Info㊙️",
-                 value="`Avatar,Serverinfo,info,Stats,Userinfo`",
+    em.add_field(name="Info <:Inform:940198203435929710>",
+                 value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
-    em.add_field(name="Special✨",
+    em.add_field(name="Special <a:Special:940197538810720266>",
                  value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode`",
                  inline=False)
-    em.add_field(name="Anime♨️",
+    em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews`",
-                 inline=False)    
+                 inline=False)
     
     em.add_field(
-        name="Music🎵",
+        name="Music <a:music:940196835052646411>",
         value=
         "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`",
         inline=False
@@ -1164,7 +1181,7 @@ async def help(ctx):
     em.add_field(
         name="Other 📜",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019)",
+        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019) , [Terra Music Bot](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
         inline=False    
     )
     em.set_footer(text=f"Requested by {ctx.author}",
@@ -1232,6 +1249,18 @@ async def afk(ctx):
         value="<prefix>afk")
     await ctx.send(embed=em)
 
+@help.command()
+async def lockdown(ctx):
+    em = discord.Embed(title="Server Lockdown",
+                       description="Locks the whole server. ",
+                       colour=discord.Colour.random())
+    em.add_field(
+        name="**Usage ⚙️**",
+        value=
+        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> `use this wisely(not for checking)` \n>> `you have to unlock each channel.`"    
+    )
+    await ctx.send(embed=em)
+
 
 @help.command(aliases=["tl", "TL"])
 async def translate(ctx):
@@ -1256,22 +1285,7 @@ async def reminder(ctx):
     )
     await ctx.send(embed=em)
 
-@help.command()
-async def lockdown(ctx):
-    em = discord.Embed(title="Server Lockdown",
-                       description="Locks the whole server. ",
-                       colour=discord.Colour.random())
-    em.add_field(
-        name="**Usage ⚙️**",
-        value=
-        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> `use this wisely(not for checking)` \n>> `you have to unlock each channel.`"    
-    )
-    await ctx.send(embed=em)
 
-    
-
-    
-    
 @help.command()
 async def guess(ctx):
     desc_helpme = '__**HOW TO PLAY**__\n\nUse the `<prefix>guess` command followed by the game mode you want to play. Here is ' \
@@ -1313,8 +1327,8 @@ async def check_cogs(ctx, cog_name):
         client.load_extension(f"cogs.{cog_name}")
     except commands.ExtensionAlreadyLoaded:
         message = await ctx.send('`💎` You are the `Jishaku` of this bot. \n あなたはこのボットのジシャクです。')
-        await message.edit(content="https://cdn.discordapp.com/attachments/858354774810689557/928230806059618375/3339_loading.gif")
-        await message.edit(content=f' {cog_name} Cog is loaded')
+        await message.edit(content="<a:settings:940198899715555359>")
+        await message.edit(content=f'**{cog_name}** cog is loaded <a:settings:940198899715555359>')
     except commands.ExtensionNotFound:
         await ctx.send("Cog not found")
     else:
@@ -1325,7 +1339,7 @@ async def check_cogs(ctx, cog_name):
 async def check_cogs_error(ctx, error):
     if isinstance(error, commands.NotOwner):
         embed = discord.Embed(
-            title="Permmissions Denied ❌",
+            title="Permmissions Denied <a:wrong:940200609326444594>",
             description=
             "`💠` You are not `Shogunate` of this bot.\n `💠` あなたはこのボットの幕府ではありません。 ",
             colour=discord.Colour.random(),
@@ -1334,4 +1348,4 @@ async def check_cogs_error(ctx, error):
 
 keep_alive()
 
-client.run('Your bot token')
+client.run('token')
