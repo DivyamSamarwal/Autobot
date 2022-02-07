@@ -19,7 +19,7 @@ def home():
 
 def run():
 
-  app.run(host='0.0.0.0',port=1000)
+  app.run(host='IP Here',port="Must be an integer")
 
 
 
