@@ -1011,7 +1011,13 @@ async def lockdown(ctx, channel : discord.TextChannel=None,setting=None):
                )
         await ctx.send(embed=embed)
 
-
+#nickname
+@client.command(pass_context=True)
+@commands.has_permissions(manage_nicknames=True)
+async def nick(ctx, member: discord.Member, nick):
+    await member.edit(nick=nick)
+    embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
+    await ctx.send(embed=embed)
 
 
 ##Genshin
