@@ -241,59 +241,6 @@ async def imagine(ctx):
 
 #serverinfo
 
-
-@slash.slash(name="Serverinfo", description="Shows info about server")
-async def serverinfo(ctx):
-    name = str(ctx.guild.name)
-    description = str(ctx.guild.description)
-
-    owner = str(ctx.guild.owner)
-    id = str(ctx.guild.id)
-    region = str(ctx.guild.region)
-    memberCount = str(ctx.guild.member_count)
-
-    icon = str(ctx.guild.icon_url)
-
-    embed = discord.Embed(title=name + " Server Information",
-                          description="",
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-    embed.set_thumbnail(url=icon)
-    embed.add_field(name="Owner 👑", value=owner, inline=False)
-    embed.add_field(name="Server ID ㊙️", value=id, inline=False)
-    embed.add_field(name="Region 🌐", value=region, inline=False)
-    embed.add_field(name="Member Count 🤖", value=memberCount, inline=False)
-
-    await ctx.send(embed=embed)
-
-
-@client.command(aliases=["Serverinfo", "aboutserver"])
-async def serverinfo(ctx):
-    name = str(ctx.guild.name)
-    description = str(ctx.guild.description)
-
-    owner = str(ctx.guild.owner)
-    id = str(ctx.guild.id)
-    region = str(ctx.guild.region)
-    memberCount = str(ctx.guild.member_count)
-
-    icon = str(ctx.guild.icon_url)
-
-    embed = discord.Embed(title=name + " Server Information",
-                          description="",
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-    embed.set_thumbnail(url=icon)
-    embed.add_field(name="Owner 👑", value=owner, inline=False)
-    embed.add_field(name="Server ID ㊙️", value=id, inline=False)
-    embed.add_field(name="Region 🌐", value=region, inline=False)
-    embed.add_field(name="Member Count 🤖", value=memberCount, inline=False)
-
-    await ctx.send(embed=embed)
-
-
-
-
 @client.command(
     aliases=["hello", "HI", "Hi", "Hello", "HELLO", "こんにちは", "नमस्ते", "你好"])
 async def hi(ctx):
