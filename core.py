@@ -840,7 +840,42 @@ async def stealemoji(ctx: commands.Context, emoji: Union[discord.Emoji, discord.
         except Exception as e:
             error = str(e).capitalize()
             return await ctx.send(embed=discord.Embed(description=f"**<:error:897382665781669908> An error occurred while creating the emoji\n`{error}`**", color=discord.Color.red()))
+#weather
+# Api key from openweathermag.org
 
+api_key = ""
+base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
+@client.command()
+async def weather(ctx, *, city: str):
+    city_name = city
+    complete_url = base_url + "appid=" + api_key + "&q=" + city_name
+    response = requests.get(complete_url)
+    x = response.json()
+    channel = ctx.message.channel
+    if x["cod"] != "404":
+      async with channel.typing():
+            y = x["main"]
+            current_temperature = y["temp"]
+            current_temperature_celsiuis = str(round(current_temperature - 273.15))
+            current_pressure = y["pressure"]
+            current_humidity = y["humidity"]
+            z = x["weather"]
+            weather_description = z[0]["description"]
+          
+            embed = discord.Embed(title=f"Weather in {city_name}",
+                              color=ctx.guild.me.top_role.color,
+                              timestamp=ctx.message.created_at,)
+            embed.add_field(name="Descripition", value=f"**{weather_description}**", inline=False)
+            embed.add_field(name="Temperature(C)", value=f"**{current_temperature_celsiuis}°C**", inline=False)
+            embed.add_field(name="Humidity(%)", value=f"**{current_humidity}%**", inline=False)
+            embed.add_field(name="Atmospheric Pressure(hPa)", value=f"**{current_pressure}hPa**", inline=False)
+            embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
+            embed.set_footer(text=f"Requested by {ctx.author.name}")
+            await channel.send(embed=embed)
+    else:
+        await channel.send("City not found.") 
+        
 #------BUGS
 
     
@@ -1067,7 +1102,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
     em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode`",
+                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews`",
@@ -1119,7 +1154,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
     em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode`",
+                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews`",
