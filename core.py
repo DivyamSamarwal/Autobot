@@ -458,6 +458,36 @@ async def trans_error(ctx, error):
         embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/906314638428348528.gif?size=56&quality=lossless")    
         await ctx.send(embed=embed)
 
+#pokemon
+
+URL_API = 'https://pokeapi.co/api/v2/pokemon/'
+
+#pokemon
+@client.command()
+async def pokemon(ctx, *, args):
+  
+    pokeName = args.lower()
+    try:
+        r = requests.get(f'{URL_API}{pokeName}')
+        packages_json = r.json()
+        packages_json.keys()
+
+        embed = discord.Embed(title="Pokemon", color=discord.Color.random())
+        embed.add_field(name="Name", value=packages_json['name'], inline=True)
+        embed.add_field(name="Pokedex Order", value=packages_json['order'], inline=False)
+
+        embed.set_thumbnail(url= f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')     
+        embed.add_field(name="Weight (kg)", value=packages_json['weight']/10, inline=False)
+        embed.add_field(name="Height (m)", value=packages_json['height']/10, inline=False)
+   
+        embed.add_field(name="Base XP", value=packages_json['base_experience'], inline=False)
+        for type in packages_json['types']: #FOR TO GET A TYPE OF A POKEMON
+            embed.add_field(name="Types", value= type['type']['name'], inline=False)
+        embed.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url )
+        await ctx.send(embed=embed)
+    except:
+        await ctx.send("Pokemon not found!")
+
 
 
 #meme
@@ -886,7 +916,7 @@ async def weather(ctx, *, city: str):
             weather_description = z[0]["description"]
           
             embed = discord.Embed(title=f"Weather in {city_name}",
-                              color=ctx.guild.me.top_role.color,
+                              color=discord.Color.random(),
                               timestamp=ctx.message.created_at,)
             embed.add_field(name="Descripition", value=f"**{weather_description}**", inline=False)
             embed.add_field(name="Temperature(C)", value=f"**{current_temperature_celsiuis}°C**", inline=False)
