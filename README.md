@@ -1,4 +1,3 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/divyamsamarwal/autobot/badge)](https://www.codefactor.io/repository/github/divyamsamarwal/autobot)
 
 Here is full guide of commands of Autobot:-
 
