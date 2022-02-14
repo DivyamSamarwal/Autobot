@@ -46,64 +46,9 @@ import requests
 import aiohttp
 intents = discord.Intents.all()
 
-my_default_prefix = "&"
 
-
-def get_prefix(client, message):  # declare lol
-    with open("prefixes.json", "r") as f:  # opening the file ofc
-        prefixes = json.load(f)
-    try:
-        prefix = prefixes[str(
-            message.guild.id)]  # trying to get the prefix ( if exists )
-    except KeyError:  # catching the error
-        prefix = my_default_prefix  # if no prefix found, setting prefix as default prefix
-
-    return prefix  # returning the prefix Ez
-
-
-client = commands.Bot(command_prefix=get_prefix)
+client = commands.Bot( command_prefix = '&')
 slash = SlashCommand(client, sync_commands=True)
-
-
-@client.event
-async def on_guild_join(guild):
-    with open("prefixes.json", "r") as f:
-        prefixes = json.load(f)
-
-    prefixes[str(guild.id)] = "&"
-
-    with open("prefixes.json", "w") as f:
-        json.dump(prefixes, f)
-
-
-@client.command()
-@commands.has_permissions(administrator=True)
-async def changeprefix(ctx, prefix):
-    with open("prefixes.json", "r") as f:
-        prefixes = json.load(f)
-
-    prefixes[str(ctx.guild.id)] = prefix
-
-    with open("prefixes.json", "w") as f:
-        json.dump(prefixes, f)
-
-    await ctx.send(f"The prefix was changed to {prefix}")
-
-
-@client.event
-async def on_message(message):
-
-    mention = f'<@!{client.user.id}>'
-    if message.content == mention:
-        with open(
-                'prefixes.json', 'r'
-        ) as f:  ##we open and read the prefixes.json, assuming it's in the same file
-            prefixes = json.load(f)  #load the json as prefixes
-        prefix = prefixes[str(message.guild.id)]
-        await message.channel.send(
-            f"You called? My prefix for this server is `{prefix}`. Admins can change it by using `{prefix}changeprefix <new prefix>`"
-        )
-    await client.process_commands(message)
 
 
 @client.event
@@ -111,18 +56,10 @@ async def on_ready():
     await client.change_presence(
         status=discord.Status.online,
         activity=discord.Activity(
-            type=discord.ActivityType.listening,
-            name=f'&help and Watching {len(client.guilds) } Severs'))
+            type=discord.ActivityType.playing,
+            name=f'/help | &help'))
     print(' Hello I am AutoBot. ')
     client.load_extension('dismusic')
-
-
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        msg = '**Still on Cooldown**,please try again in ** {:.2f}s **'.format(
-            error.retry_after)
-        await ctx.send(msg)
 
      
 #on_guild_join
@@ -154,7 +91,6 @@ async def on_guild_join(guild):
 
 #ping
 @slash.slash(name="Ping", description="Shows the latency of the bot")
-@commands.cooldown(3, 10, commands.BucketType.user)
 async def pong(ctx):
     embed = discord.Embed(title="Pong!",
                           description=f'{round(client.latency *1000)}ms',
@@ -165,7 +101,6 @@ async def pong(ctx):
 
 
 @client.command(aliases=['latency', 'Ping', 'PING'])
-@commands.cooldown(3, 10, commands.BucketType.user)
 async def ping(ctx):
     embed = discord.Embed(title="Pong!",
                           description=f'{round(client.latency *1000)}ms',
@@ -247,7 +182,6 @@ async def Eightball(ctx, *, ques):
 
 
 @client.command(aliases=['Imagine', 'IMAGINE'])
-@commands.cooldown(3, 10, commands.BucketType.user)
 async def imagine(ctx):
     responses = [
         "https://media.discordapp.net/attachments/862895445381218334/871692994955329567/My_Post.png?width=1078&height=606",
@@ -259,25 +193,6 @@ async def imagine(ctx):
     await message.edit(content=" `50% complete`")
     await message.edit(content=" `100% complete`")
     await message.edit(content=f' {random.choice(responses)}')
-
-
-#serverinfo
-
-@client.command(
-    aliases=["hello", "HI", "Hi", "Hello", "HELLO", "こんにちは", "नमस्ते", "你好"])
-async def hi(ctx):
-    embed = discord.Embed(title="Hello",
-                          description="I am Autobot",
-                          color=discord.Color.random())
-    embed.add_field(name="Wassup!", value="Nice to meet you")
-
-    embed.set_thumbnail(url=f"{ctx.guild.icon}")
-    embed.set_thumbnail(
-        url=
-        "https://cdn.discordapp.com/attachments/866949734512853012/866949844543209502/unknown.png"
-    )
-
-    await ctx.send(embed=embed)
 
 
 afkdict = {}
@@ -327,7 +242,7 @@ async def reminder(ctx, time, *, reminder):
     print(time)
     print(reminder)
     user = ctx.message.author
-    embed = discord.Embed(color=0x55a7f7, timestamp=datetime.utcnow())
+    embed = discord.Embed(color=discord.Colour.random(), timestamp=datetime.utcnow())
     embed.set_footer(
         text=
         "If you have any questions, suggestions or bug reports, please join our support Discord Server: Link in help command.",
@@ -397,7 +312,6 @@ async def avatar(ctx, * , user: discord.Member=None):
 
 
 @client.command()
-
 async def avatar(ctx, * , user: discord.Member=None):
         if user is None:
             user = ctx.message.author
@@ -705,18 +619,6 @@ async def guess(ctx, *, extra):
                                    description=desc_loss,
                                    colour=discord.Color.random())
         await ctx.reply(embed=embed_loss)
-
-
-#music
-
-client.lava_nodes = [{
-    'host': 'lava.link',
-    'port': 80,
-    'rest_uri': f'http://lava.link:80',
-    'identifier': 'MAIN',
-    'password': 'anything',
-    'region': 'singapore'
-}]
 
 
 def convert(time):
@@ -1134,19 +1036,14 @@ async def help(ctx):
     em = discord.Embed(
         title="Help",
         description=
-        "Use **&help** `<command>` for more information about the command and note that our default prefix is **&**.",
+        "Use **&help** `<command>` for more information about the command.",
         colour=discord.Colour.random(),
         timestamp=datetime.utcnow())
 
     em.set_image(
         url=
-        "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
-    )
-    em.add_field(
-        name="Change Prefix <a:settings:940198899715555359>",
-        value=
-        "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
-    )
+        "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif")
+
     em.add_field(name="Fun <a:fun:940198380309737472>",
                  value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
@@ -1186,7 +1083,7 @@ async def help(ctx):
     em = discord.Embed(
         title="Help",
         description=
-        "Use **&help** `<command>` for more information about the command and note that our default prefix is **&**.",
+        "Use **&help** `<command>` for more information about the command",
         colour=discord.Colour.random(),
         timestamp=datetime.utcnow())
 
@@ -1194,11 +1091,7 @@ async def help(ctx):
         url=
         "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
     )
-    em.add_field(
-        name="Change Prefix <a:settings:940198899715555359>",
-        value=
-        "To change prefix type  `<default prefix>` changeprefix `<new prefix>`. "
-    )
+
     em.add_field(name="Fun <a:fun:940198380309737472>",
                  value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
@@ -1343,6 +1236,8 @@ async def guess(ctx):
                                      colour=discord.Color.random())
     await ctx.send(embed=embed_var_helpme)
 
+import traceback
+import sys
 
 extensions=[ 
 
