@@ -297,7 +297,7 @@ class Anime(commands.Cog, name='Anime'):
         async with request("GET", url, headers={}) as response:
             if response.status == 200:
                 data = await  response.json()
-                embed = discord.Embed(description=f"<:keqing:939052537699512340>",color=discord.Colour.random())
+                embed = discord.Embed(description=f"<:keqing:939052537699512340> Requested by {ctx.author.name}",color=discord.Colour.random())
                 embed.set_image(url=data['url'])
                 await ctx.send(embed=embed)
             else:
