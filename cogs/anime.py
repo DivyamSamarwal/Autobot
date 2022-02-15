@@ -286,24 +286,23 @@ class Anime(commands.Cog, name='Anime'):
                 await ctx.send(embed=embed)
             else:
                 embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)    
-
+                await ctx.send(embed=embed)
+                
     @commands.command(name="waifu")
     async def waifu(self, ctx: commands.Context, * , reason=None):
         """Anime Cry for something"""
-        
+
 
         url = "https://api.waifu.pics/sfw/waifu"
         async with request("GET", url, headers={}) as response:
             if response.status == 200:
                 data = await  response.json()
-                embed = discord.Embed(description=f"<:keqing:939052537699512340> Requested by {ctx.author.name}",color=discord.Colour.random())
+                embed = discord.Embed(description=f"<:keqing:939052537699512340> Requested by {ctx.author.name}",color=discord.Colour.random(),timestamp=datetime.utcnow())
                 embed.set_image(url=data['url'])
                 await ctx.send(embed=embed)
             else:
                 embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
                 await ctx.send(embed=embed)
-
 
 
 def setup(client):
