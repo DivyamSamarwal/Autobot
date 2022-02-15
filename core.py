@@ -61,7 +61,7 @@ async def on_ready():
     print(' Hello I am AutoBot. ')
     client.load_extension('dismusic')
 
-     
+  
 #on_guild_join
 @client.event
 async def on_guild_join(guild):
@@ -1054,7 +1054,7 @@ async def help(ctx):
                  value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
-                 value="`anime,character,animenews`",
+                 value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
                  inline=False)
     
     em.add_field(
@@ -1102,7 +1102,7 @@ async def help(ctx):
                  value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
-                 value="`anime,character,animenews`",
+                 value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
                  inline=False)
     
     em.add_field(
