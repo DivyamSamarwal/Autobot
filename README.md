@@ -1,7 +1,8 @@
 
 Here is full guide of commands of Autobot:-
+v1.3.0a0
+![image](https://user-images.githubusercontent.com/72195951/154223056-998bdda9-824f-4b51-8047-73a11d3cfdab.png)
 
-![image](https://user-images.githubusercontent.com/72195951/152798466-aa482dae-c14d-41dd-b684-a50a129c2a4d.png)
 
 
 
