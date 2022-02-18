@@ -913,7 +913,7 @@ async def clear_error(ctx, error):
 async def info(ctx):
 
     em = discord.Embed(title = "Autobot", description = "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-    em.add_field(name="Developers", value="Divyam#0001 \nThunder_AB0106💜#4548" , inline=False)
+    em.add_field(name="Developers", value="<@!780721106838618112> & <@!466569674335846400>" , inline=False)
     em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \n Guilds :- {len(client.guilds)} ', inline=False)
     em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
     em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
