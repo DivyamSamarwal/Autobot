@@ -96,3 +96,7 @@ Here is full guide of commands of Autobot:- [Invite link](https://discord.com/ap
 > Weather
 
 ![image](https://user-images.githubusercontent.com/72195951/154651972-12ca85cf-f1ee-49fc-874e-47464a5fc094.png)
+
+
+This will help you to use commands & other commands are easy to use.
+
