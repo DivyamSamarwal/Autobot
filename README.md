@@ -7,7 +7,7 @@ Here is full guide of commands of Autobot:- [Invite link](https://discord.com/ap
 `8Ball,Guess,Imagine,Giveaway,dog,cat,meme`
 
 > Info㊙️
-`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`
+`Avatar,info,Stats,Userinfo,poll,tally`
 
 > Special✨
 `Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`
@@ -41,6 +41,31 @@ Here is full guide of commands of Autobot:- [Invite link](https://discord.com/ap
 ![image](https://user-images.githubusercontent.com/72195951/154223056-998bdda9-824f-4b51-8047-73a11d3cfdab.png)
 
 
+## Info Commands
+
+> Avatar
+
+![image](https://user-images.githubusercontent.com/72195951/154650214-20fcb005-6996-4dfa-9ad5-6a37cdf42145.png)
+
+> Info
+
+![image](https://user-images.githubusercontent.com/72195951/154650390-ae182911-9061-4ff0-a009-554301e1c50c.png)
+
+> Stats (slash only)
+
+![image](https://user-images.githubusercontent.com/72195951/154650489-383fcdb8-6ec0-4918-8759-bab0f4d3e59e.png)
+
+> Userinfo
+
+![image](https://user-images.githubusercontent.com/72195951/154650703-969017f9-3973-4ccc-b7c7-20076f68a24d.png)
+
+> Poll
+
+![image](https://user-images.githubusercontent.com/72195951/154650865-8c781b81-6532-43fe-9795-b23d4426de5b.png)
+
+> Tally
+
+![image](https://user-images.githubusercontent.com/72195951/154650988-89ecd782-6939-4ad7-a2d0-4acae2a93857.png)
 
 
 
