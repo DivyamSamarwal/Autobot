@@ -1,6 +1,6 @@
 
 Here is full guide of commands of Autobot:- [Invite link](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)
-
+[For more information join help server](https://discord.gg/nUFxsaGMQq)
 ## v1.3.0a0
 
 > Fun 🎁
