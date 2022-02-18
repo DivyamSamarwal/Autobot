@@ -1,5 +1,6 @@
 
-Here is full guide of commands of Autobot:-
+Here is full guide of commands of Autobot:- [Invite link](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)
+
 v1.3.0a0
 
 > Fun 🎁
@@ -27,4 +28,3 @@ v1.3.0a0
 
 
 
-[Invite link](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)
