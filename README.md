@@ -4,12 +4,16 @@ v1.3.0a0
 
 > Fun 🎁
 `8Ball,Guess,Imagine,Giveaway,dog,cat,meme`
+
 > Info㊙️
 `Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`
+
 > Special✨
 `Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`
+
 > Anime♨️
 `anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`
+
 > Music🎵
 `Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`
 
