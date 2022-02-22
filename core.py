@@ -1009,7 +1009,7 @@ async def weather(ctx, *, city: str):
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
     response = requests.get(complete_url)
     x = response.json()
-    channel = ctx.message.channel
+
     if x["cod"] != "404":
  
             y = x["main"]
@@ -1022,16 +1022,16 @@ async def weather(ctx, *, city: str):
           
             embed = discord.Embed(title=f"Weather in {city_name}",
                               color=discord.Color.random(),
-                              timestamp=ctx.message.created_at,)
+                              timestamp=datetime.utcnow())
             embed.add_field(name="Descripition", value=f"**{weather_description}**", inline=False)
             embed.add_field(name="Temperature(C)", value=f"**{current_temperature_celsiuis}°C**", inline=False)
             embed.add_field(name="Humidity(%)", value=f"**{current_humidity}%**", inline=False)
             embed.add_field(name="Atmospheric Pressure(hPa)", value=f"**{current_pressure}hPa**", inline=False)
             embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
             embed.set_footer(text=f"Requested by {ctx.author.name}")
-            await channel.send(embed=embed)
+            await ctx.send(embed=embed)
     else:
-        await channel.send("City not found.")       
+        await ctx.send("City not found.")       
 #------BUGS
 
     
