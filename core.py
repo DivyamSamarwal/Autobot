@@ -584,7 +584,7 @@ async def userinfo(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 #slash userinfo
-@client.command(aliases=["ui"])
+@slash.slash(name="userinfo",description="shows the description about a specific user")
 async def userinfo(ctx, member: discord.Member = None):
     member = ctx.author if not member else member
     roles = [role for role in member.roles]
