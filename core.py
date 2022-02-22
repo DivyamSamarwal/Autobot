@@ -94,7 +94,7 @@ async def on_guild_join(guild):
 
 
 client.lavalink_nodes = [
-    {"host": "Host", "port": 1000, "password": "Password"},
+    {"host": "host", "port": 1000, "password": "password"},
     # Can have multiple nodes here
 ]
 
@@ -308,12 +308,13 @@ async def reminder(ctx, time, *, reminder):
         return
     await ctx.send(embed=embed)
 
-#slash reminder
+#slash
+
 @slash.slash(name="Reminder",description="Reminds you after a specific time")
 async def reminder(ctx, time, *, reminder):
     print(time)
     print(reminder)
-    user = ctx.message.author
+    
     embed = discord.Embed(color=discord.Colour.random(), timestamp=datetime.utcnow())
     embed.set_footer(
         text=
@@ -357,13 +358,14 @@ async def reminder(ctx, time, *, reminder):
         )
     else:
         await ctx.send(
-            f"Alright, I will remind {user} about {reminder} in {counter}.")
+            f"Alright, I will remind about {reminder} in {counter}.")
         await asyncio.sleep(seconds)
         await ctx.reply(
-            f"Hi, you asked me to remind you about {user} {reminder} {counter} ago."
+            f"Hi, you asked me to remind you about {reminder} {counter} ago."
         )
         return
     await ctx.send(embed=embed)
+
 #avatar
 
 
@@ -472,10 +474,10 @@ async def pokemon(ctx, *, args):
     except:
         await ctx.send("Pokemon not found!")
 
-#slash pokemon
+#pokemon
 @slash.slash(name="pokemon",description="Shows about of pokemon.")
 async def pokemon(ctx, *, args):
-  
+
     pokeName = args.lower()
     try:
         r = requests.get(f'{URL_API}{pokeName}')
@@ -489,7 +491,7 @@ async def pokemon(ctx, *, args):
         embed.set_thumbnail(url= f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')     
         embed.add_field(name="Weight (kg)", value=packages_json['weight']/10, inline=False)
         embed.add_field(name="Height (m)", value=packages_json['height']/10, inline=False)
-   
+
         embed.add_field(name="Base XP", value=packages_json['base_experience'], inline=False)
         for type in packages_json['types']: #FOR TO GET A TYPE OF A POKEMON
             embed.add_field(name="Types", value= type['type']['name'], inline=False)
@@ -497,6 +499,7 @@ async def pokemon(ctx, *, args):
         await ctx.send(embed=embed)
     except:
         await ctx.send("Pokemon not found!")
+
 
 #meme
 @client.command(pass_context=True)
@@ -583,14 +586,14 @@ async def userinfo(ctx, member: discord.Member = None):
 
     await ctx.send(embed=embed)
 
-#slash userinfo
+#slash
 @slash.slash(name="userinfo",description="shows the description about a specific user")
 async def userinfo(ctx, member: discord.Member = None):
     member = ctx.author if not member else member
     roles = [role for role in member.roles]
 
     embed = discord.Embed(colour=discord.Color.random(),
-                          timestamp=ctx.message.created_at)
+                          timestamp=datetime.utcnow())
 
     embed.set_author(name=f"User Info - {member}")
     embed.set_thumbnail(url=member.avatar_url)
@@ -889,8 +892,7 @@ async def lock(ctx, channel: discord.TextChannel = None):
         "https://media.discordapp.net/attachments/905072151680405544/916228759470891008/unknown.png"
     )
     await ctx.send(embed=em)
-
-#slash lock
+#slash
 @slash.slash(name="lock",description="Locks a specific channel.")
 @commands.has_permissions(manage_channels=True)
 async def lock(ctx, channel: discord.TextChannel = None):
@@ -931,7 +933,7 @@ async def unlock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
-#unlock slash
+#unlock 
 @slash.slash(name="unlock",description="Unlocks a locked channel")
 @commands.has_permissions(manage_channels=True)
 async def unlock(ctx, channel: discord.TextChannel = None):
@@ -951,8 +953,6 @@ async def unlock(ctx, channel: discord.TextChannel = None):
         "https://cdn.discordapp.com/attachments/895281704443465768/924537916938653706/unknown.png"
     )
     await ctx.send(embed=em)
-
-
 #steal
 @client.command(aliases=['emojisteal', 'addemoji', 'steal'])
 
@@ -969,7 +969,7 @@ async def stealemoji(ctx: commands.Context, emoji: Union[discord.Emoji, discord.
 #weather
 # Api key from openweathermag.org
 
-api_key = "you_api_key"
+api_key = ""
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
 @client.command()
@@ -1002,16 +1002,16 @@ async def weather(ctx, *, city: str):
     else:
         await channel.send("City not found.") 
 
-#slash weather
+#slash
 @slash.slash(name="weather",description="shows the current weather if specified location")
 async def weather(ctx, *, city: str):
     city_name = city
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
     response = requests.get(complete_url)
     x = response.json()
-
+    
     if x["cod"] != "404":
- 
+
             y = x["main"]
             current_temperature = y["temp"]
             current_temperature_celsiuis = str(round(current_temperature - 273.15))
@@ -1019,7 +1019,7 @@ async def weather(ctx, *, city: str):
             current_humidity = y["humidity"]
             z = x["weather"]
             weather_description = z[0]["description"]
-          
+
             embed = discord.Embed(title=f"Weather in {city_name}",
                               color=discord.Color.random(),
                               timestamp=datetime.utcnow())
@@ -1031,7 +1031,7 @@ async def weather(ctx, *, city: str):
             embed.set_footer(text=f"Requested by {ctx.author.name}")
             await ctx.send(embed=embed)
     else:
-        await ctx.send("City not found.")       
+        await ctx.send("City not found.")         
 #------BUGS
 
     
@@ -1124,7 +1124,7 @@ async def info(ctx):
     em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
     await ctx.send(embed=em)
 
-#slash info
+#slash
 @slash.slash(name="info",description="shows the bot info")
 async def info(ctx):
 
@@ -1170,17 +1170,16 @@ async def nick(ctx, member: discord.Member, nick):
     embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
     await ctx.send(embed=embed)
 
-#slash nickname
+#slash
 @slash.slash(name="nick",description="changes the nickname of given user")
 @commands.has_permissions(manage_nicknames=True)
 async def nick(ctx, member: discord.Member, nick):
     await member.edit(nick=nick)
     embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
     await ctx.send(embed=embed)
-
 #anime slash
 @slash.slash(name="waifu",description="shows waifu")
-async def waifu(ctx: commands.Context, * , reason=None):
+async def waifu(ctx,* , reason=None):
         """Waifu"""
 
 
@@ -1243,9 +1242,6 @@ async def cuddle_(ctx: commands.Context, user: discord.Member):
             else:
                 embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
                 await ctx.send(embed=embed)
-
-
-
 ##Genshin
 @client.group(invoke_without_command=True,
               aliases=["gs"])
@@ -1586,4 +1582,4 @@ async def check_cogs_error(ctx, error):
 
 keep_alive()
 
-client.run('Client token')
+client.run('token')
