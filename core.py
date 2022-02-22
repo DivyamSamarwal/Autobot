@@ -37,7 +37,7 @@ from webserver import keep_alive
 import sys
 import traceback
 import os
-
+from aiohttp import request
 import akinator
 from discord.ext import commands
 from akinator.async_aki import Akinator
@@ -1177,6 +1177,74 @@ async def nick(ctx, member: discord.Member, nick):
     await member.edit(nick=nick)
     embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
     await ctx.send(embed=embed)
+
+#anime slash
+@slash.slash(name="waifu",description="shows waifu")
+async def waifu(ctx: commands.Context, * , reason=None):
+        """Waifu"""
+
+
+        url = "https://api.waifu.pics/sfw/waifu"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"<:keqing:939052537699512340> Requested by {ctx.author.name}",color=discord.Colour.random(),timestamp=datetime.utcnow())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)
+
+@slash.slash(name="kiss",description="kiss someone")
+
+async def kiss_(ctx: commands.Context, user: discord.Member):
+        """Kiss someone"""
+        
+
+        url = "https://api.waifu.pics/sfw/kiss"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} kisses {user.mention}",color=discord.Colour.green())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)
+
+@slash.slash(name="cry",description="cry for someting")
+async def cry_(ctx: commands.Context, * , reason=None):
+        """Anime Cry for something"""
+        
+
+        url = "https://api.waifu.pics/sfw/cry"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} is crying for \n reason : **{reason}**",color=discord.Colour.green())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)
+
+@slash.slash(name="cuddle",description="cudddle someone")
+async def cuddle_(ctx: commands.Context, user: discord.Member):
+        """Cuddle Someone"""
+        
+
+        url = "https://api.waifu.pics/sfw/cuddle"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} cuddles {user.mention}",color=discord.Colour.green())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)
+
+
 
 ##Genshin
 @client.group(invoke_without_command=True,
