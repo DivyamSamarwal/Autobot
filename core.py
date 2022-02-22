@@ -303,7 +303,7 @@ async def reminder(ctx, time, *, reminder):
         await ctx.send(embed=embed)
         await asyncio.sleep(seconds)
         await ctx.reply(
-            f"{ctx.author.mention}|`{counter} ago` Reminder:**{reminder}.**"
+            f"{ctx.author.mention},`{counter} ago` You asked me to remind you about **{reminder}**"
         )
         return
     await ctx.send(embed=embed)
@@ -361,7 +361,7 @@ async def reminder(ctx, time, *, reminder):
         await ctx.send(embed=embed)
         await asyncio.sleep(seconds)
         await ctx.reply(
-            f"{ctx.author.mention}|`{counter} ago` Reminder:**{reminder}.**"
+            f"{ctx.author.mention},`{counter} ago` You asked me to remind you about **{reminder}**"
         )
         return
     await ctx.send(embed=embed)
