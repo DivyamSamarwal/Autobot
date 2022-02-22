@@ -34,7 +34,8 @@ from discord_slash import SlashCommand
 from typing import Union
 import math
 from webserver import keep_alive
-
+import sys
+import traceback
 import os
 
 import akinator
@@ -45,9 +46,7 @@ from discord.ext.commands import BucketType
 import requests
 import aiohttp
 intents = discord.Intents.all()
-
-
-client = commands.Bot( command_prefix = '&')
+client = commands.Bot( command_prefix = '&',intents=intents,case_insensitive=True)
 slash = SlashCommand(client, sync_commands=True)
 
 
@@ -61,7 +60,15 @@ async def on_ready():
     print(' Hello I am AutoBot. ')
     client.load_extension('dismusic')
 
-  
+@client.event
+async def on_message(message):
+
+    mention = "<@!858965828716331019>"
+    if message.content == mention:
+
+        await message.channel.send("My prefix is **&**")
+
+     
 #on_guild_join
 @client.event
 async def on_guild_join(guild):
@@ -86,6 +93,15 @@ async def on_guild_join(guild):
         await channel.send(embed=em)
 
 
+client.lavalink_nodes = [
+    {"host": "Host", "port": 1000, "password": "Password"},
+    # Can have multiple nodes here
+]
+
+client.spotify_credentials = {
+    'client_id': '', 
+    'client_secret': ''}
+
 
 
 
@@ -100,7 +116,7 @@ async def pong(ctx):
     await ctx.send(embed=embed)
 
 
-@client.command(aliases=['latency', 'Ping', 'PING'])
+@client.command(aliases=['latency'])
 async def ping(ctx):
     embed = discord.Embed(title="Pong!",
                           description=f'{round(client.latency *1000)}ms',
@@ -181,7 +197,7 @@ async def Eightball(ctx, *, ques):
     await ctx.send(embed=embed)
 
 
-@client.command(aliases=['Imagine', 'IMAGINE'])
+@client.command()
 async def imagine(ctx):
     responses = [
         "https://media.discordapp.net/attachments/862895445381218334/871692994955329567/My_Post.png?width=1078&height=606",
@@ -235,8 +251,7 @@ async def on_message(message):
 datetime.utcnow()
 
 
-@client.command(case_insensitive=True,
-                aliases=["remind", "remindme", "remind_me", "Reminder"])
+@client.command()
 @commands.bot_has_permissions(attach_files=True, embed_links=True)
 async def reminder(ctx, time, *, reminder):
     print(time)
@@ -293,7 +308,62 @@ async def reminder(ctx, time, *, reminder):
         return
     await ctx.send(embed=embed)
 
-
+#slash reminder
+@slash.slash(name="Reminder",description="Reminds you after a specific time")
+async def reminder(ctx, time, *, reminder):
+    print(time)
+    print(reminder)
+    user = ctx.message.author
+    embed = discord.Embed(color=discord.Colour.random(), timestamp=datetime.utcnow())
+    embed.set_footer(
+        text=
+        "If you have any questions, suggestions or bug reports, please join our support Discord Server: Link in help command.",
+        icon_url=f"{client.user.avatar_url}")
+    seconds = 0
+    if reminder is None:
+        embed.add_field(
+            name='Warning',
+            value='Please specify what do you want me to remind you about.'
+        )  # Error message
+    if time.lower().endswith("d"):
+        seconds += int(time[:-1]) * 60 * 60 * 24
+        counter = f"{seconds // 60 // 60 // 24} days"
+    if time.lower().endswith("h"):
+        seconds += int(time[:-1]) * 60 * 60
+        counter = f"{seconds // 60 // 60} hours"
+    elif time.lower().endswith("m"):
+        seconds += int(time[:-1]) * 60
+        counter = f"{seconds // 60} minutes"
+    elif time.lower().endswith("s"):
+        seconds += int(time[:-1])
+        counter = f"{seconds} seconds"
+    if seconds == 0:
+        embed.add_field(
+            name='Warning',
+            value=
+            'Please specify a proper duration, send `help reminder` for more information.'
+        )
+    elif seconds < 180:
+        embed.add_field(
+            name='Warning',
+            value=
+            'You have specified a too short duration!\nMinimum duration is 3 minutes.'
+        )
+    elif seconds > 7776000:
+        embed.add_field(
+            name='Warning',
+            value=
+            'You have specified a too long duration!\nMaximum duration is 90 days.'
+        )
+    else:
+        await ctx.send(
+            f"Alright, I will remind {user} about {reminder} in {counter}.")
+        await asyncio.sleep(seconds)
+        await ctx.reply(
+            f"Hi, you asked me to remind you about {user} {reminder} {counter} ago."
+        )
+        return
+    await ctx.send(embed=embed)
 #avatar
 
 
@@ -344,7 +414,7 @@ async def trans(ctx, lang, *, thing):
     await ctx.send(embed=embed)
 
 
-@client.command(aliases=["translate", "Translate", "tl", "TL", "Tl"])
+@client.command(aliases=["translate","tl"])
 async def trans(ctx, lang, *, thing):
     embed = discord.Embed(
         title="Translator🔎",
@@ -402,7 +472,31 @@ async def pokemon(ctx, *, args):
     except:
         await ctx.send("Pokemon not found!")
 
+#slash pokemon
+@slash.slash(name="pokemon",description="Shows about of pokemon.")
+async def pokemon(ctx, *, args):
+  
+    pokeName = args.lower()
+    try:
+        r = requests.get(f'{URL_API}{pokeName}')
+        packages_json = r.json()
+        packages_json.keys()
 
+        embed = discord.Embed(title="Pokemon", color=discord.Color.random())
+        embed.add_field(name="Name", value=packages_json['name'], inline=True)
+        embed.add_field(name="Pokedex Order", value=packages_json['order'], inline=False)
+
+        embed.set_thumbnail(url= f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')     
+        embed.add_field(name="Weight (kg)", value=packages_json['weight']/10, inline=False)
+        embed.add_field(name="Height (m)", value=packages_json['height']/10, inline=False)
+   
+        embed.add_field(name="Base XP", value=packages_json['base_experience'], inline=False)
+        for type in packages_json['types']: #FOR TO GET A TYPE OF A POKEMON
+            embed.add_field(name="Types", value= type['type']['name'], inline=False)
+        embed.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url )
+        await ctx.send(embed=embed)
+    except:
+        await ctx.send("Pokemon not found!")
 
 #meme
 @client.command(pass_context=True)
@@ -452,7 +546,7 @@ async def cat(ctx):
 #userinfo
 
 
-@client.command(aliases=["Userinfo", "ui", "UserInfo"])
+@client.command(aliases=["ui"])
 async def userinfo(ctx, member: discord.Member = None):
     member = ctx.author if not member else member
     roles = [role for role in member.roles]
@@ -489,7 +583,43 @@ async def userinfo(ctx, member: discord.Member = None):
 
     await ctx.send(embed=embed)
 
+#slash userinfo
+@client.command(aliases=["ui"])
+async def userinfo(ctx, member: discord.Member = None):
+    member = ctx.author if not member else member
+    roles = [role for role in member.roles]
 
+    embed = discord.Embed(colour=discord.Color.random(),
+                          timestamp=ctx.message.created_at)
+
+    embed.set_author(name=f"User Info - {member}")
+    embed.set_thumbnail(url=member.avatar_url)
+    embed.set_footer(text=f"Requested by {ctx.author}",
+                     icon_url=ctx.author.avatar_url)
+
+    embed.add_field(name="ID:-", value=member.id, inline=False)
+    embed.add_field(name="Guild Name:-",
+                    value=member.display_name,
+                    inline=False)
+
+    embed.add_field(
+        name="Created At:-",
+        value=member.created_at.strftime("%a , %#d %B %Y, %I:%M %p UTC"),
+        inline=False)
+    embed.add_field(
+        name="Joined At:-",
+        value=member.joined_at.strftime("%a , %#d %B %Y, %I:%M %p  UTC"),
+        inline=False)
+
+    embed.add_field(name=f"Roles:- ({len(roles)})",
+                    value="".join([role.mention for role in roles]),
+                    inline=False)
+    embed.add_field(name="Top Role:-",
+                    value=member.top_role.mention,
+                    inline=False)
+    embed.add_field(name="Bot?", value=member.bot, inline=False)
+
+    await ctx.send(embed=embed)
 #   ----------------AKINATOR
 
 
@@ -638,7 +768,7 @@ def convert(time):
     return val * time_dict[unit]
 
 
-@client.command(aliases=["gw", "GW", "Giveaway"])
+@client.command(aliases=["gw"])
 @commands.has_permissions(manage_messages=True)
 async def giveaway(ctx):
     await ctx.send(
@@ -760,6 +890,26 @@ async def lock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
+#slash lock
+@slash.slash(name="lock",description="Locks a specific channel.")
+@commands.has_permissions(manage_channels=True)
+async def lock(ctx, channel: discord.TextChannel = None):
+    channel = channel or ctx.channel
+    overwrite = channel.overwrites_for(ctx.guild.default_role)
+    overwrite.send_messages = False
+    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+    em = discord.Embed(
+        title="LOCKDOWN🔒",
+        description="**To lock the channel**\n For eg.`&lock #channelname`",
+        colour=discord.Colour.random(),
+        timestamp=datetime.utcnow())
+    em.add_field(name="Channel Succesfully locked ✅",
+                 value=f'By:- {ctx.author.mention}')
+    em.set_thumbnail(
+        url=
+        "https://media.discordapp.net/attachments/905072151680405544/916228759470891008/unknown.png"
+    )
+    await ctx.send(embed=em)
 
 @client.command()
 @commands.has_permissions(manage_channels=True)
@@ -781,6 +931,28 @@ async def unlock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
+#unlock slash
+@slash.slash(name="unlock",description="Unlocks a locked channel")
+@commands.has_permissions(manage_channels=True)
+async def unlock(ctx, channel: discord.TextChannel = None):
+    channel = channel or ctx.channel
+    overwrite = channel.overwrites_for(ctx.guild.default_role)
+    overwrite.send_messages = True
+    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+    em = discord.Embed(
+        title="UNLOCKED🔓",
+        description="**To unlock the channel**\n For eg.`&unlock #channelname`",
+        colour=discord.Colour.random(),
+        timestamp=datetime.utcnow())
+    em.add_field(name="Channel Succesfully unlocked ✅",
+                 value=f'By:- {ctx.author.mention}')
+    em.set_thumbnail(
+        url=
+        "https://cdn.discordapp.com/attachments/895281704443465768/924537916938653706/unknown.png"
+    )
+    await ctx.send(embed=em)
+
+
 #steal
 @client.command(aliases=['emojisteal', 'addemoji', 'steal'])
 
@@ -797,7 +969,7 @@ async def stealemoji(ctx: commands.Context, emoji: Union[discord.Emoji, discord.
 #weather
 # Api key from openweathermag.org
 
-api_key = ""
+api_key = "you_api_key"
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
 @client.command()
@@ -829,7 +1001,37 @@ async def weather(ctx, *, city: str):
             await channel.send(embed=embed)
     else:
         await channel.send("City not found.") 
-        
+
+#slash weather
+@slash.slash(name="weather",description="shows the current weather if specified location")
+async def weather(ctx, *, city: str):
+    city_name = city
+    complete_url = base_url + "appid=" + api_key + "&q=" + city_name
+    response = requests.get(complete_url)
+    x = response.json()
+    channel = ctx.message.channel
+    if x["cod"] != "404":
+ 
+            y = x["main"]
+            current_temperature = y["temp"]
+            current_temperature_celsiuis = str(round(current_temperature - 273.15))
+            current_pressure = y["pressure"]
+            current_humidity = y["humidity"]
+            z = x["weather"]
+            weather_description = z[0]["description"]
+          
+            embed = discord.Embed(title=f"Weather in {city_name}",
+                              color=discord.Color.random(),
+                              timestamp=ctx.message.created_at,)
+            embed.add_field(name="Descripition", value=f"**{weather_description}**", inline=False)
+            embed.add_field(name="Temperature(C)", value=f"**{current_temperature_celsiuis}°C**", inline=False)
+            embed.add_field(name="Humidity(%)", value=f"**{current_humidity}%**", inline=False)
+            embed.add_field(name="Atmospheric Pressure(hPa)", value=f"**{current_pressure}hPa**", inline=False)
+            embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
+            embed.set_footer(text=f"Requested by {ctx.author.name}")
+            await channel.send(embed=embed)
+    else:
+        await channel.send("City not found.")       
 #------BUGS
 
     
@@ -922,6 +1124,19 @@ async def info(ctx):
     em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
     await ctx.send(embed=em)
 
+#slash info
+@slash.slash(name="info",description="shows the bot info")
+async def info(ctx):
+
+    em = discord.Embed(title = "Autobot", description = "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)", colour=discord.Color.random(), timestamp=datetime.utcnow())
+    em.add_field(name="Developers", value="<@!780721106838618112> & <@!466569674335846400>" , inline=False)
+    em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \nGuilds :- {len(client.guilds)} \nUsers :- {(len(client.users))} ', inline=False)
+    em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
+    em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
+    em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling, watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
+    em.set_thumbnail(url="https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024")
+    em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
+    await ctx.send(embed=em)
 
 @client.command()
 @commands.has_permissions(administrator=True)
@@ -955,10 +1170,17 @@ async def nick(ctx, member: discord.Member, nick):
     embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
     await ctx.send(embed=embed)
 
+#slash nickname
+@slash.slash(name="nick",description="changes the nickname of given user")
+@commands.has_permissions(manage_nicknames=True)
+async def nick(ctx, member: discord.Member, nick):
+    await member.edit(nick=nick)
+    embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
+    await ctx.send(embed=embed)
 
 ##Genshin
 @client.group(invoke_without_command=True,
-              aliases=["GENSHIN", "Genshin", "gs"])
+              aliases=["gs"])
 async def genshin(ctx):
     em = discord.Embed(
         title="Genshin Impact",
@@ -1072,7 +1294,7 @@ async def help(ctx):
 
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
-    
+
     embe = discord.Embed(
         title="Update for Autobot v1.3",
         description=
@@ -1083,12 +1305,10 @@ async def help(ctx):
     await ctx.send(embed=em)
     await ctx.send(embed=embe)
 
-
-
 client.remove_command("help")
 
 
-@client.group(invoke_without_command=True, aliases=["h", "Help", "HELP"])
+@client.group(invoke_without_command=True)
 async def help(ctx):
     em = discord.Embed(
         title="Help",
@@ -1114,7 +1334,6 @@ async def help(ctx):
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
                  inline=False)
-    
     em.add_field(
         name="Music <a:music:940196835052646411>",
         value=
@@ -1129,19 +1348,14 @@ async def help(ctx):
     )
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
-    
     embe = discord.Embed(
         title="Update for Autobot v1.3",
         description=
         "Rewriting bot with buttons,slash commands & new libs. \n Some of the commands might not be working. Apologies for that.\nThank you for your patience. \n By <@!780721106838618112> & <@!466569674335846400> \n [For more information join help server](https://discord.gg/nUFxsaGMQq)",
         colour=discord.Colour.random(),
         timestamp=datetime.utcnow())
-                        
     await ctx.send(embed=em)
     await ctx.send(embed=embe)
-
-
-
 #help inbuilds
 
 
@@ -1301,6 +1515,7 @@ async def check_cogs_error(ctx, error):
             timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
 
+
 keep_alive()
 
-client.run('token')
+client.run('Client token')
