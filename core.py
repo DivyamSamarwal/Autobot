@@ -299,11 +299,11 @@ async def reminder(ctx, time, *, reminder):
             'You have specified a too long duration!\nMaximum duration is 90 days.'
         )
     else:
-        await ctx.send(
-            f"Alright, I will remind {user} about {reminder} in {counter}.")
+        embed=discord.Embed(title="Reminder ⏲️",description=f"I'll will remind you in `{counter}` about **{reminder}**",color=discord.Colour.random() ,timestamp=datetime.utcnow())
+        await ctx.send(embed=embed)
         await asyncio.sleep(seconds)
         await ctx.reply(
-            f"Hi, you asked me to remind you about {user} {reminder} {counter} ago."
+            f"{ctx.author.mention}|`{counter} ago` Reminder:**{reminder}.**"
         )
         return
     await ctx.send(embed=embed)
@@ -357,11 +357,11 @@ async def reminder(ctx, time, *, reminder):
             'You have specified a too long duration!\nMaximum duration is 90 days.'
         )
     else:
-        await ctx.send(
-            f"Alright, I will remind about {reminder} in {counter}.")
+        embed=discord.Embed(title="Reminder ⏲️",description=f"I'll will remind you in `{counter}` about **{reminder}**",color=discord.Colour.random() ,timestamp=datetime.utcnow())
+        await ctx.send(embed=embed)
         await asyncio.sleep(seconds)
         await ctx.reply(
-            f"Hi, you asked me to remind you about {reminder} {counter} ago."
+            f"{ctx.author.mention}|`{counter} ago` Reminder:**{reminder}.**"
         )
         return
     await ctx.send(embed=embed)
