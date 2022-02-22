@@ -46,6 +46,8 @@ from discord.ext.commands import BucketType
 import requests
 import aiohttp
 intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.members = True
 client = commands.Bot( command_prefix = '&',intents=intents,case_insensitive=True)
 slash = SlashCommand(client, sync_commands=True)
 
@@ -367,6 +369,32 @@ async def reminder(ctx, time, *, reminder):
     await ctx.send(embed=embed)
 
 #avatar
+#serverinfo
+@client.command()
+async def serverinfo(ctx):
+    name = str(ctx.guild.name)
+    description = str(ctx.guild.description)
+
+    owner = str(ctx.guild.owner)
+    id = str(ctx.guild.id)
+    region = str(ctx.guild.region)
+    memberCount = str(ctx.guild.member_count)
+    roles=str(ctx.guild.roles)
+
+    icon = str(ctx.guild.icon_url)
+
+    embed = discord.Embed(title=name,
+                          description="",
+                          color=discord.Color.random(),
+                          timestamp=datetime.utcnow())
+    embed.set_thumbnail(url=icon)
+    embed.add_field(name="Owner", value=owner, inline=True)
+    embed.add_field(name="Server", value=id, inline=True)
+    embed.add_field(name="Region", value=region, inline=True)
+    embed.add_field(name="Members", value=memberCount, inline=True)
+    embed.add_field(name="Roles",value=roles,inline=False)
+
+    await ctx.send(embed=embed)
 
 
 @slash.slash(name="Avatar", description="Shows avatar of the user")
