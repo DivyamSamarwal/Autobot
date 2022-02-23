@@ -33,6 +33,8 @@ from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
 from typing import Union
 import math
+
+from sqlalchemy import desc
 from webserver import keep_alive
 import sys
 import traceback
@@ -1255,7 +1257,7 @@ async def cry_(ctx: commands.Context, * , reason=None):
                 embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
                 await ctx.send(embed=embed)
 
-@slash.slash(name="cuddle",description="cudddle someone")
+@slash.slash(name="cuddle",description="cuddle someone")
 async def cuddle_(ctx: commands.Context, user: discord.Member):
         """Cuddle Someone"""
         
@@ -1270,6 +1272,129 @@ async def cuddle_(ctx: commands.Context, user: discord.Member):
             else:
                 embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
                 await ctx.send(embed=embed)
+
+@slash.slash(name="bully",description="bully someone")
+
+async def bully_(ctx: commands.Context, user: discord.Member):
+        """Bully Someone"""
+        
+
+        url = "https://api.waifu.pics/sfw/bully"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} bullies {user.mention}",color=discord.Colour.green())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed) 
+
+@slash.slash(name="wink",description="hehe")
+
+async def wink_(ctx: commands.Context):
+        """wink your eye"""
+        
+
+        url = "https://api.waifu.pics/sfw/wink"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} Your wink is unique",color=discord.Colour.green())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)               
+                #await ctx.send(f"API ERRORS {response.status}status.")
+
+@slash.slash(name="slap",description="slap someone")
+async def slap_(ctx: commands.Context, user: discord.Member):
+        """Slap someone"""
+        if user.bot:
+            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't slap a bot.**", color=discord.Colour.red()))
+        if user == ctx.author:
+            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't slap yourself! Try slapping someone else.**", color=discord.Colour.red()))
+
+        url = "https://neko-love.xyz/api/v1/slap"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} slaps {user.mention}",color=discord.Colour.green())
+                embed.set_image(url=data['url'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)               
+                #await ctx.send(f"API ERRORS {response.status}status.")
+
+@slash.slash(name="hug",description="hug someone")
+   
+async def hug_(ctx: commands.Context, user: discord.Member):
+        """Hug someone"""
+        if user.bot:
+            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't hug a bot.**", color=discord.Colour.red()))
+        if user == ctx.author:
+            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't hug yourself! Try hugging someone else.**", color=discord.Colour.red()))
+
+        url = "https://some-random-api.ml/animu/hug"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed = discord.Embed(description=f"{ctx.author.mention} hugs {user.mention}",color=discord.Colour.green())
+                embed.set_image(url=data['link'])
+                await ctx.send(embed=embed)
+            else:
+                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)               
+                #await ctx.send(f"API ERRORS {response.status}status.")
+
+@slash.slash(name="pat",description="pat someone")
+ 
+async def pat_(ctx: commands.Context, user: discord.Member):
+        """Pat someone"""
+        if user.bot:
+            return await ctx.send(embed=discord.Embed(description="** <a:wrong:940200609326444594> You can't pat a bot.**", color=discord.Colour.red()))
+        if user == ctx.author:
+            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't pat yourself! Try patting someone else.**", color=discord.Colour.red()))
+
+        url = "https://some-random-api.ml/animu/pat"
+        async with request("GET", url, headers={}) as response:
+            if response.status == 200:
+                data = await  response.json()
+                embed= discord.Embed(description=f'{ctx.author.mention} patted {user.mention}',color=discord.Colour.green())
+                embed.set_image(url=data['link'])
+                await ctx.send(embed=embed)
+                
+            else:
+                embed = discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
+                await ctx.send(embed=embed)
+                #await ctx.send(f"API ERRORS {response.status}status.")
+
+#slash slowmode
+@slash.slash(name="slowmode",description="set customized slowmode")
+async def slowmode(ctx,time:int):
+        if (not ctx.author.guild_permissions.manage_messages):
+            embed = discord.Embed(title="Permission error" , description="This requires `Manage Message Permission`.You don't have that!",color=discord.Colour.dark_red())
+            await ctx.send(embed=embed)
+            return
+        try:
+            if time == 0:
+                embed1 = discord.Embed(title="Slowmode succesfully off", description="If time has been set to 0 seconds then slowmode would be off. <a:tick:940195528103325726>",color=discord.Colour.dark_teal())
+                await ctx.send(embed=embed1)
+                await ctx.channel.edit(slowmode_delay = 0)
+            elif time > 21600:
+                emb = discord.Embed(title="Time Error <a:wrong:940200609326444594>" , description="You can not set the slowmode above `6 hours`",color=discord.Colour.red())
+                emb.add_field(name="Quick Conversions", value="1 min =  60 seconds \n 2 min = 120 seconds \n 5 min = 300 seconds \n 1 hour = 3600 seconds \n 6 hours = 21600 seconds")
+                await ctx.send(embed=emb)
+                return
+            else:
+                await ctx.channel.edit(slowmode_delay = time)
+                em = discord.Embed(title="Succesfully set! <a:tick:940195528103325726>", description=f"Slowmode set to {time} seconds" , color= discord.Colour.teal())
+                await ctx.send(embed=em)
+        except Exception:
+            await print("Oops!")
+
 ##Genshin
 @client.group(invoke_without_command=True,
               aliases=["gs"])
