@@ -1,6 +1,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/divyamsamarwal/webnext/badge)](https://www.codefactor.io/repository/github/divyamsamarwal/webnext)
 
-[![Discord Bots](https://top.gg/api/widget/858965828716331019.svg)(https://top.gg/bot/858965828716331019)
+[![Discord Bots](https://top.gg/api/widget/858965828716331019.svg)(https://top.gg/bot/858965828716331019)]
 
 Here is full guide of commands of Autobot:- [Invite link](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)
 & [For more information join help server](https://discord.gg/nUFxsaGMQq)
