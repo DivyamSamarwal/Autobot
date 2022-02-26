@@ -1610,7 +1610,7 @@ async def math(ctx):
                  value="`Number 1` / `Number 2` = **Quotient** ",
                  inline=False)
     em.add_field(name="For Exponential :-",
-                 value="`Number 1`**`Number 2` = **number1^number2** ",
+                 value="`Number 1`^`Number 2` = **number1^number2**",
                  inline=False)
     em.add_field(
         name="For Remainder :-",
