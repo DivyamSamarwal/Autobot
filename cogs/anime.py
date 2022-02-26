@@ -290,7 +290,7 @@ class Anime(commands.Cog, name='Anime'):
                 
     @commands.command(name="waifu")
     async def waifu(self, ctx: commands.Context, * , reason=None):
-        """Anime Cry for something"""
+        """Waifu"""
 
 
         url = "https://api.waifu.pics/sfw/waifu"
