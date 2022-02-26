@@ -1589,8 +1589,8 @@ async def help(ctx):
 #help inbuilds
 
 
-@help.command(aliases=["calc", "compute"])
-async def Compute(ctx):
+@help.command()
+async def math(ctx):
     em = discord.Embed(
         title="Calculator",
         description=
@@ -1601,7 +1601,7 @@ async def Compute(ctx):
                  value="`Number 1` + `Number 2` = **Sum** ",
                  inline=False)
     em.add_field(name="For Subtraction :-",
-                 value="`Number 1` - `Number 2` = **Differnce** ",
+                 value="`Number 1` - `Number 2` = **Difference** ",
                  inline=False)
     em.add_field(name="For Multiplication :-",
                  value="`Number 1` * `Number 2` = **Product** ",
@@ -1610,7 +1610,7 @@ async def Compute(ctx):
                  value="`Number 1` / `Number 2` = **Quotient** ",
                  inline=False)
     em.add_field(name="For Exponential :-",
-                 value="`Number 1`^ `Number 2` = **number1^number2** ",
+                 value="`Number 1`**`Number 2` = **number1^number2** ",
                  inline=False)
     em.add_field(
         name="For Remainder :-",
