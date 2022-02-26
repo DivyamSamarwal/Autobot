@@ -251,51 +251,17 @@ async def on_message(message):
     await client.process_commands(message)
 
 #math
-@slash.slash(name="math",description="Helps in solving problems")
-async def math(ctx):
-    def check(m):
-        return len(m.content) >= 1 and m.author != client.user
+@client.command()
+async def math(ctx, *, expression:str):
+    calculation = eval(expression)
+    await ctx.send('Expression: {}\nAnswer: {}'.format(expression, calculation))
 
-    embed = discord.Embed(title="Number 1", description="", color=discord.Color.random())
+@slash.slash(name="math",description="helps you in solving problems")
+async def math(ctx, *, expression:str):
+    calculation = eval(expression)
+    embed=discord.Embed(title="Math",description='Math: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
     await ctx.send(embed=embed)
-    number_1 = await client.wait_for("message", check=check)
-
-    embed = discord.Embed(title="Operator", description="For example:-[+, -, *, **, /, //]", color=discord.Color.random())
-    await ctx.send(embed=embed)
-    operator = await client.wait_for("message", check=check)
-
-    embed = discord.Embed(title="Number 2", description="", color=discord.Color.random())
-    await ctx.send(embed=embed)
-    number_2 = await client.wait_for("message", check=check)
-    try:
-        number_1 = float(number_1.content)
-        operator = operator.content
-        number_2 = float(number_2.content)
-    except:
-        embed = discord.Embed(title="❌Invalid Input", description="**Number 1** & **Number 2** should be an *integer*" , color=discord.Color.random())
-        await ctx.send(embed=embed)
-        return
-    output = None
-    if operator == "+":
-        output = number_1 + number_2
-    elif operator == "-":
-        output = number_1 - number_2
-    elif operator == "/":
-        output = number_1 / number_2
-    elif operator == "*":
-        output = number_1 * number_2
-    elif operator == "**":
-        output = number_1 ** number_2 
-    elif operator == "//":
-        output = number_1 // number_2
-             
-    else:
-        embed = discord.Embed(title="❌Invalid Input", description="**Number 1** & **Number 2** should be an *integer* \n Operators like `+`,`-`,`/`,`*`,`**`,`//`", color=discord.Color.random())
-        await ctx.send(embed=embed)
-        return
-    embed = discord.Embed(title="Answer✔️", description=f'{str(output)}', color=discord.Color.random())
-    await ctx.send(embed=embed)
-
+    await ctx.send('Expression: {}\nAnswer: {}'.format(expression, calculation))
 
 datetime.utcnow()
 
@@ -1106,7 +1072,7 @@ async def weather(ctx, *, city: str):
             embed.set_footer(text=f"Requested by {ctx.author.name}")
             await ctx.send(embed=embed)
     else:
-        await ctx.send("City not found.")         
+        await ctx.send("City not found.") 
 #------BUGS
 
     
@@ -1535,7 +1501,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
     em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`",
+                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather,math`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
@@ -1591,7 +1557,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
     em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`",
+                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather,math`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
