@@ -1111,7 +1111,35 @@ async def bugs(ctx):
         inline=False)
     await ctx.send(embed=em)
 
+#role
+@client.command()
+@commands.has_permissions(administrator=True) #permissions
+async def role(ctx, user : discord.Member, *, role : discord.Role):
+  if role.position > ctx.author.top_role.position:
+    embed=discord.Embed(title="Hierarchy Error <a:wrong:940200609326444594>",description="That role is above your top role!",colour=discord.Colour.random(),timestamp=datetime.utcnow())  
+    return await ctx.send(embed=embed) 
+  if role in user.roles:
+      await user.remove_roles(role) 
+      embed=discord.Embed(title="Role Removed <a:tick:940195528103325726>",description=f"Removed {role} from {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
+      await ctx.send(embed=embed)
+  else:
+      await user.add_roles(role)
+      embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
 
+
+@slash.slash(name="role",description="add/remove a role from a user")
+@commands.has_permissions(administrator=True) #permissions
+async def role(ctx, user : discord.Member, *, role : discord.Role):
+  if role.position > ctx.author.top_role.position:
+    embed=discord.Embed(title="Hierarchy Error <a:wrong:940200609326444594>",description="That role is above your top role!",colour=discord.Colour.random(),timestamp=datetime.utcnow())  
+    return await ctx.send(embed=embed) 
+  if role in user.roles:
+      await user.remove_roles(role) 
+      embed=discord.Embed(title="Role Removed <a:tick:940195528103325726>",description=f"Removed {role} from {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
+      await ctx.send(embed=embed)
+  else:
+      await user.add_roles(role)
+      embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow()) 
 
 
 @slash.slash(name="Purge", description="Clean unwanted messages or spam(s)")
