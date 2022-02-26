@@ -254,14 +254,16 @@ async def on_message(message):
 @client.command()
 async def math(ctx, *, expression:str):
     calculation = eval(expression)
-    await ctx.send('Expression: {}\nAnswer: {}'.format(expression, calculation))
+    embed=discord.Embed(title="Math",description='Math: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
+    await ctx.send(embed=embed)    
+ 
 
 @slash.slash(name="math",description="helps you in solving problems")
 async def math(ctx, *, expression:str):
     calculation = eval(expression)
     embed=discord.Embed(title="Math",description='Math: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
     await ctx.send(embed=embed)
-    await ctx.send('Expression: {}\nAnswer: {}'.format(expression, calculation))
+
 
 datetime.utcnow()
 
