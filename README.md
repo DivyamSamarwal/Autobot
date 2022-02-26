@@ -13,7 +13,7 @@ Here is full guide of commands of Autobot:- [Invite link](https://discord.com/ap
 `Avatar,info,Stats,Userinfo,poll,tally`
 
 > Special✨
-`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather`
+`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather,math`
 
 > Anime♨️
 `anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`
