@@ -1776,4 +1776,5 @@ async def check_cogs_error(ctx, error):
 
 keep_alive()
 
-client.run('token')
+my_secret = os.environ['Token']
+client.run(my_secret)
