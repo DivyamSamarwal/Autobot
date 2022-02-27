@@ -1125,7 +1125,7 @@ async def role(ctx, user : discord.Member, *, role : discord.Role):
   else:
       await user.add_roles(role)
       embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
-
+      await ctx.send(embed=embed)
 
 @slash.slash(name="role",description="add/remove a role from a user")
 @commands.has_permissions(administrator=True) #permissions
@@ -1140,6 +1140,7 @@ async def role(ctx, user : discord.Member, *, role : discord.Role):
   else:
       await user.add_roles(role)
       embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow()) 
+      await ctx.send(embed=embed)
 
 
 @slash.slash(name="Purge", description="Clean unwanted messages or spam(s)")
