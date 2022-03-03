@@ -64,6 +64,7 @@ async def on_ready():
             name=f'/help | &help'))
     print(' Hello I am AutoBot. ')
     client.load_extension('dismusic')
+    client.load_extension('jishaku')
 
 @client.event
 async def on_message(message):
@@ -225,7 +226,7 @@ afkdict = {}
     description=
     "I'll give you the afk status and if someone pings you before you come back, I'll tell "
     "them that you are not available. You can add your own afk message!")
-async def afk(ctx, message="They didn't leave a message!"):
+async def afk(ctx,*, message="They didn't leave a message!"):
     global afkdict
 
     if ctx.message.author in afkdict:
