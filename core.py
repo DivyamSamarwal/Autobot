@@ -1,9 +1,10 @@
 from asyncio.tasks import wait
+from http import server
 from time import time
 from typing import Optional
 import discord
 import random
-from discord import colour
+from discord import Guild, colour
 from discord import embeds
 from discord import message
 from discord import role
@@ -388,26 +389,30 @@ async def reminder(ctx, time, *, reminder):
 @client.command()
 async def serverinfo(ctx):
     name = str(ctx.guild.name)
-    description = str(ctx.guild.description)
+
 
     owner = str(ctx.guild.owner)
     id = str(ctx.guild.id)
     region = str(ctx.guild.region)
     memberCount = str(ctx.guild.member_count)
-    roles=str(ctx.guild.roles)
+   
 
     icon = str(ctx.guild.icon_url)
 
     embed = discord.Embed(title=name,
-                          description="",
+                          description=f"ID :{id}",
                           color=discord.Color.random(),
                           timestamp=datetime.utcnow())
     embed.set_thumbnail(url=icon)
     embed.add_field(name="Owner", value=owner, inline=True)
-    embed.add_field(name="Server", value=id, inline=True)
+    embed.add_field(name="Created at",value=ctx.guild.created_at.strftime("%a , %#d %B %Y, %I:%M %p UTC"))
     embed.add_field(name="Region", value=region, inline=True)
     embed.add_field(name="Members", value=memberCount, inline=True)
-    embed.add_field(name="Roles",value=roles,inline=False)
+    embed.add_field(name="Categories", value=len(ctx.guild.categories), inline=True)
+    embed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
+    embed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
+    embed.add_field(name="Roles",value=len(ctx.guild.roles),inline=True)
+    embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
 
     await ctx.send(embed=embed)
 
