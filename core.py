@@ -550,6 +550,7 @@ async def pokemon(ctx, *, args):
         await ctx.send("Pokemon not found!")
 
 
+
 #meme
 @client.command(pass_context=True)
 async def meme(ctx):
@@ -1560,15 +1561,8 @@ async def help(ctx):
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
 
-    embe = discord.Embed(
-        title="Update for Autobot v1.3",
-        description=
-        "Rewriting bot with buttons,slash commands & new libs. \n Some of the commands might not be working. Apologies for that.\nThank you for your patience. \n By <@!780721106838618112> & <@!466569674335846400> \n [For more information join help server](https://discord.gg/nUFxsaGMQq)",
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
-                        
     await ctx.send(embed=em)
-    await ctx.send(embed=embe)
+
 
 client.remove_command("help")
 
@@ -1613,14 +1607,9 @@ async def help(ctx):
     )
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
-    embe = discord.Embed(
-        title="Update for Autobot v1.3",
-        description=
-        "Rewriting bot with buttons,slash commands & new libs. \n Some of the commands might not be working. Apologies for that.\nThank you for your patience. \n By <@!780721106838618112> & <@!466569674335846400> \n [For more information join help server](https://discord.gg/nUFxsaGMQq)",
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
+
     await ctx.send(embed=em)
-    await ctx.send(embed=embe)
+
 #help inbuilds
 
 
