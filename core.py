@@ -1082,41 +1082,7 @@ async def weather(ctx, *, city: str):
             await ctx.send(embed=embed)
     else:
         await ctx.send("City not found.") 
-#------BUGS
 
-    
-
-@client.command()
-
-async def bugs(ctx):
-  
-    em = discord.Embed(
-        title="Bugs & Future ",
-        description="`A bug` is a coding error in a computer program.",
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
-
-    em.set_image(
-        url=
-        "https://media.discordapp.net/attachments/868094887000690700/880474923884249118/My_Post_1.png?width=644&height=644"
-    )
-    em.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/868094887000690700/880475506850553936/unknown.png?width=644&height=644"
-    )
-    em.add_field(name="Current Bugs 🐛",
-                 value="All commands working well ✅",
-                 inline=False)
-    em.add_field(
-        name="Future Updates 🔮",
-        value="Adding new pokemon info commands and genhin character builds.",
-        inline=False)
-    em.add_field(
-        name="What to do if you find any bug🐛?",
-        value=
-        "Join Our Help Server Or Contact the Creator `(Id:-Divyam#0001)` .",
-        inline=False)
-    await ctx.send(embed=em)
 
 #role
 @client.command()
@@ -1536,10 +1502,10 @@ async def help(ctx):
                  value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
                  inline=False)
     em.add_field(name="Info <:Inform:940198203435929710>",
-                 value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
+                 value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally,nick`",
                  inline=False)
     em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather,math`",
+                 value="`Reminder,role,Translate,afk,lock,unlock,slowmode,weather,math`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
@@ -1548,7 +1514,7 @@ async def help(ctx):
     em.add_field(
         name="Music <a:music:940196835052646411>",
         value=
-        "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`",
+        "`connect,disconnect,play,skip,pause,resume,seek <seconds>,volume <vol>,loop,nowplaying,queue.`",
         inline=False
     )
     em.add_field(
@@ -1588,7 +1554,7 @@ async def help(ctx):
                  value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
                  inline=False)
     em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,Bugs,Translate,afk,lock,unlock,slowmode,weather,math`",
+                 value="`Reminder,nick,Translate,afk,lock,unlock,slowmode,weather,math`",
                  inline=False)
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
@@ -1596,7 +1562,7 @@ async def help(ctx):
     em.add_field(
         name="Music <a:music:940196835052646411>",
         value=
-        "`Connect,Disconnect,Play,Skip,Pause,Resume,Seek <seconds>,Volume <vol>,Loop,Nowplaying,Queue,Equalizer`",
+        "`connect,disconnect,play,skip,pause,resume,seek <seconds>,volume <vol>,loop,nowplaying,queue.`",
         inline=False
     )
     em.add_field(
