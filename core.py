@@ -1684,7 +1684,7 @@ async def guess(ctx):
 import traceback
 import sys
 
-extensions=[ 'cogs.anime', 'cogs.utility']
+extensions=[ 'cogs.anime', 'cogs.utility','cogs.general']
 
 if __name__ == "__main__":
     for extension in extensions:
