@@ -122,15 +122,6 @@ async def pong(ctx):
     await ctx.send(embed=embed)
 
 
-@client.command(aliases=['latency'])
-async def ping(ctx):
-    embed = discord.Embed(title="Pong!",
-                          description=f'{round(client.latency *1000)}ms',
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-
-    await ctx.send(embed=embed)
-
 
 #Stats
 @slash.slash(name="Stats", description="Shows stats of the bot")
@@ -1693,11 +1684,8 @@ async def guess(ctx):
 import traceback
 import sys
 
-extensions=[ 
+extensions=[ 'cogs.anime', 'cogs.utility']
 
-            'cogs.anime'
-            
-]
 if __name__ == "__main__":
     for extension in extensions:
         try:
