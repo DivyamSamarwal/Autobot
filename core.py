@@ -1,5 +1,6 @@
 from asyncio.tasks import wait
 from http import server
+from ntpath import join
 from time import time
 from typing import Optional
 import discord
@@ -330,7 +331,7 @@ async def reminder(ctx, time, *, reminder):
 async def serverinfo(ctx):
     name = str(ctx.guild.name)
 
-
+    screate = f"<t:{round(ctx.guild.created_at.timestamp())}:F>"
     owner = str(ctx.guild.owner)
     id = str(ctx.guild.id)
     region = str(ctx.guild.region)
@@ -345,7 +346,7 @@ async def serverinfo(ctx):
                           timestamp=datetime.utcnow())
     embed.set_thumbnail(url=icon)
     embed.add_field(name="Owner", value=owner, inline=True)
-    embed.add_field(name="Created at",value=ctx.guild.created_at.strftime("%a , %#d %B %Y, %I:%M %p UTC"))
+    embed.add_field(name="Created at",value=f"{screate}")
     embed.add_field(name="Region", value=region, inline=True)
     embed.add_field(name="Members", value=memberCount, inline=True)
     embed.add_field(name="Categories", value=len(ctx.guild.categories), inline=True)
@@ -538,10 +539,13 @@ async def cat(ctx):
 #userinfo
 
 
+
 @client.command(aliases=["ui"])
 async def userinfo(ctx, member: discord.Member = None):
     member = ctx.author if not member else member
     roles = [role for role in member.roles]
+    create = f"<t:{round(member.created_at.timestamp())}:F>"
+    joined = f"<t:{round(member.joined_at.timestamp())}:F>"
 
     embed = discord.Embed(colour=discord.Color.random(),
                           timestamp=ctx.message.created_at)
@@ -558,11 +562,11 @@ async def userinfo(ctx, member: discord.Member = None):
 
     embed.add_field(
         name="Created At:-",
-        value=member.created_at.strftime("%a , %#d %B %Y, %I:%M %p UTC"),
+        value=f"{create}",
         inline=False)
     embed.add_field(
         name="Joined At:-",
-        value=member.joined_at.strftime("%a , %#d %B %Y, %I:%M %p  UTC"),
+        value=f"{joined}",
         inline=False)
 
     embed.add_field(name=f"Roles:- ({len(roles)})",
