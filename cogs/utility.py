@@ -5,6 +5,8 @@ from discord.ext import commands
 from aiohttp import request
 datetime.utcnow()
 import asyncio
+import googletrans
+from googletrans import Translator
 class Utility(commands.Cog, name='Utility'):
     """Utility commands"""
 
@@ -87,7 +89,28 @@ class Utility(commands.Cog, name='Utility'):
         embed=discord.Embed(title="Math",description='Math: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
         await ctx.send(embed=embed)   
 
-    
+    @commands.command(aliases=["translate","tl"])
+    async def trans(self,ctx, lang, *, thing):
+        embed = discord.Embed(title="Translator🔎",description="Translates from inputed language to which you want..",
+        color=discord.Color.random(),
+        timestamp=datetime.utcnow())
+        translator = Translator()
+        translation = translator.translate(thing, dest=lang)
+        embed.add_field(name="Inputed text", value=thing, inline=False)
+        embed.add_field(name="Translated text",
+                    value=translation.text,
+                    inline=False)
+        await ctx.reply(embed=embed)
+    @trans.error
+    async def trans_error(self,ctx, error):
+        if isinstance(error, commands.CommandInvokeError):
+            embed = discord.Embed(title="API Error",
+            description=
+            "API => `googletrans==3.1.0a0` invoked so many errors that bot owner got tired while solving and broke the hosting server caused so much damage.\n Help us in recovering damage.\n https://www.patreon.com/AutoBot0521",
+            colour=discord.Colour.random(),
+            timestamp=datetime.utcnow())
+        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/906314638428348528.gif?size=56&quality=lossless")    
+        await ctx.send(embed=embed)
 
 def setup(client):
     client.add_cog(Utility(client))

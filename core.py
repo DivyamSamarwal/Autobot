@@ -404,35 +404,6 @@ async def trans(ctx, lang, *, thing):
                     inline=False)
     await ctx.send(embed=embed)
 
-
-@client.command(aliases=["translate","tl"])
-async def trans(ctx, lang, *, thing):
-    embed = discord.Embed(
-        title="Translator🔎",
-        description="Translates from inputed language to which you want..",
-        color=discord.Color.random(),
-        timestamp=datetime.utcnow())
-    translator = Translator()
-    translation = translator.translate(thing, dest=lang)
-    embed.add_field(name="Inputed text", value=thing, inline=False)
-    embed.add_field(name="Translated text",
-                    value=translation.text,
-                    inline=False)
-    await ctx.reply(embed=embed)
-
-
-@trans.error
-async def trans_error(ctx, error):
-    if isinstance(error, commands.CommandInvokeError):
-        embed = discord.Embed(
-            title="API Error",
-            description=
-            "API => `googletrans==3.1.0a0` invoked so many errors that bot owner got tired while solving and broke the hosting server caused so much damage.\n Help us in recovering damage.\n https://www.patreon.com/AutoBot0521",
-            colour=discord.Colour.random(),
-            timestamp=datetime.utcnow())
-        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/906314638428348528.gif?size=56&quality=lossless")    
-        await ctx.send(embed=embed)
-
 #pokemon
 
 URL_API = 'https://pokeapi.co/api/v2/pokemon/'
