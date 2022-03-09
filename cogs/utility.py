@@ -4,7 +4,7 @@ from datetime import datetime
 from discord.ext import commands
 from aiohttp import request
 datetime.utcnow()
-
+import asyncio
 class Utility(commands.Cog, name='Utility'):
     """Utility commands"""
 
@@ -81,8 +81,13 @@ class Utility(commands.Cog, name='Utility'):
         output = f"Results of the poll for **{embed.title}** :\n" + '\n'.join(['{}: {}'.format(opt_dict[key], tally[key]) for key in tally.keys()])
         await ctx.send(output)
 
+    @commands.command()
+    async def math(self,ctx, *, expression:str):
+        calculation = eval(expression)
+        embed=discord.Embed(title="Math",description='Math: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
+        await ctx.send(embed=embed)   
 
-
+    
 
 def setup(client):
     client.add_cog(Utility(client))
