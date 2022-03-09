@@ -51,7 +51,7 @@ import aiohttp
 intents = discord.Intents.all()
 intents = discord.Intents.default()
 intents.members = True
-client = commands.Bot( command_prefix = '&',intents=intents,case_insensitive=True)
+client = commands.Bot(commands.when_mentioned_or('&'),intents=intents,case_insensitive=True)
 slash = SlashCommand(client, sync_commands=True)
 
 
@@ -66,13 +66,6 @@ async def on_ready():
     client.load_extension('dismusic')
     client.load_extension('jishaku')
 
-@client.event
-async def on_message(message):
-
-    mention = "<@!858965828716331019>"
-    if message.content == mention:
-
-        await message.channel.send("My prefix is **&**")
 
      
 #on_guild_join
@@ -80,24 +73,20 @@ async def on_message(message):
 async def on_guild_join(guild):
     try:
         channel = guild.system_channel
-        em = discord.Embed(title = "Thanks for adding AutoBot#0521", description = "You can also add my friend `Terra#0969` , it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-        em.add_field(name="Config", value="My default prefix is **&** \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.", inline=False)
+        em = discord.Embed(title = "Thanks for adding AutoBot#0521", description = "You can also add my friend **Terra#0969**, it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)", colour=discord.Color.random(), timestamp=datetime.utcnow())
+        em.add_field(name="Config", value="My default prefix is **&** or **when_mentioned** <@!858965828716331019> \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.", inline=False)
         em.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2PV16r98prv5VZyrJ8WL0usihP-cVCnw4FXAUbhtEwU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?width=670&height=670")
         
-        em.set_footer(text="Created by `Divyam#0001` & `Thunder_AB0106💜#4548`")
         await channel.send(embed=em)
         
         
-
     except:
         channel = guild.text_channels[0]
-        em = discord.Embed(title = "Thanks for adding AutoBot#0521", description = "You can also add my friend `Terra#0969` , it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-        em.add_field(name="Config", value="My default prefix is **&** \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.", inline=False)
+        em = discord.Embed(title = "Thanks for adding AutoBot#0521", description = "You can also add my friend **Terra#0969**, it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)", colour=discord.Color.random(), timestamp=datetime.utcnow())
+        em.add_field(name="Config", value="My default prefix is **&** or **when_mentioned** <@!858965828716331019> \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.", inline=False)
         em.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2PV16r98prv5VZyrJ8WL0usihP-cVCnw4FXAUbhtEwU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?width=670&height=670")
         
-        em.set_footer(text="Created by `Divyam#0001` & `Thunder_AB0106💜#4548`")
         await channel.send(embed=em)
-
 
 client.lavalink_nodes = [
     {"host": "host", "port": 1000, "password": "password"},
