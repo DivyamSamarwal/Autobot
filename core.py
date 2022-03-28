@@ -35,7 +35,7 @@ from discord import Client, Intents, Embed
 from discord_slash import SlashCommand
 from typing import Union
 import math
-
+import time
 from sqlalchemy import desc
 from webserver import keep_alive
 import sys
@@ -53,6 +53,7 @@ intents = discord.Intents.all()
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(commands.when_mentioned_or('&'),intents=intents,case_insensitive=True)
+client.launch_time = datetime.utcnow()
 slash = SlashCommand(client, sync_commands=True)
 
 
@@ -90,7 +91,7 @@ async def on_guild_join(guild):
         await channel.send(embed=em)
 
 client.lavalink_nodes = [
-    {"host": "host", "port": 1000, "password": "password"},
+    {"host": "", "port": 1000, "password": ""},
     # Can have multiple nodes here
 ]
 
@@ -98,8 +99,23 @@ client.spotify_credentials = {
     'client_id': '', 
     'client_secret': ''}
 
+#important
+import psutil
+@client.command()
+async def usage(ctx):
+    bedem = discord.Embed(title = 'System Resource Usage', description = 'See CPU and memory usage of the system.')
+    bedem.add_field(name = 'CPU Usage', value = f'{psutil.cpu_percent()}%', inline = False)
+    bedem.add_field(name = 'Memory Usage', value = f'{psutil.virtual_memory().percent}%', inline = False)
+    bedem.add_field(name = 'Available Memory', value = f'{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total}%', inline = False)
+    await ctx.send(embed = bedem)
 
-
+@client.command()
+async def uptime(ctx):
+    delta_uptime = datetime.utcnow() - client.launch_time
+    hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    days, hours = divmod(hours, 24)
+    await ctx.send(f"{days}d, {hours}h, {minutes}m, {seconds}s")
 
 #ping
 @slash.slash(name="Ping", description="Shows the latency of the bot")
@@ -135,6 +151,13 @@ async def stats(ctx):
     await ctx.send(embed=embed)
 
 
+@slash.slash(name="Invite", description="Invite Autobot!")
+async def invite(ctx):
+    embed = discord.Embed(title="Invite",
+                          description="[Click Here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)",
+                          color=discord.Color.random(),
+                          timestamp=datetime.utcnow())
+    await ctx.send(embed=embed)
 
 
 #eightball
