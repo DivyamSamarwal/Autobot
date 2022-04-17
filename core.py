@@ -65,7 +65,6 @@ async def on_ready():
             type=discord.ActivityType.playing,
             name=f'/help | &help'))
     print(' Hello I am AutoBot. ')
-    client.load_extension('dismusic')
     client.load_extension('jishaku')
 
 
@@ -90,14 +89,6 @@ async def on_guild_join(guild):
         
         await channel.send(embed=em)
 
-client.lavalink_nodes = [
-    {"host": "", "port": 1000, "password": ""},
-    # Can have multiple nodes here
-]
-
-client.spotify_credentials = {
-    'client_id': '', 
-    'client_secret': ''}
 
 #important
 import psutil
@@ -1447,13 +1438,7 @@ async def help(ctx):
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
                  inline=False)
-    
-    em.add_field(
-        name="Music <a:music:940196835052646411>",
-        value=
-        "`connect,disconnect,play,skip,pause,resume,seek <seconds>,volume <vol>,loop,nowplaying,queue.`",
-        inline=False
-    )
+
     em.add_field(
         name="Other 📜",
         value=
@@ -1496,12 +1481,6 @@ async def help(ctx):
     em.add_field(name="Anime <:keqing:939052537699512340>",
                  value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
                  inline=False)
-    em.add_field(
-        name="Music <a:music:940196835052646411>",
-        value=
-        "`connect,disconnect,play,skip,pause,resume,seek <seconds>,volume <vol>,loop,nowplaying,queue.`",
-        inline=False
-    )
     em.add_field(
         name="Other 📜",
         value=
