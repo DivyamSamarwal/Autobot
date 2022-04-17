@@ -9,8 +9,11 @@ Here is full guide of commands of Autobot:- [Invite link](https://discord.com/ap
 
 
 > Fun : 8Ball,Guess,Imagine,Giveaway,dog,cat,meme
+
 > Info : Avatar,Serverinfo,info,Stats,Userinfo,poll,tally,nick
+
 > Special : Reminder,role,Translate,afk,lock,unlock,slowmode,weather,math
+
 > Anime : anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat
 
 
