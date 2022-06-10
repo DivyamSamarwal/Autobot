@@ -1416,36 +1416,35 @@ async def tierlist(ctx):
 @slash.slash(name="help", description="Get to know about my commands")
 async def help(ctx):
     em = discord.Embed(
-        title="Help",
+        title="HELP <:settings:984688397400551436> ",
         description=
-        "Use **&help** `<command>` for more information about the command.",
+        "Use **&help** `<command>` for more information about the command!!",
         colour=discord.Colour.random(),
         timestamp=datetime.utcnow())
 
-    em.set_image(
+    em.set_thumbnail(
         url=
-        "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif")
-
-    em.add_field(name="Fun <a:fun:940198380309737472>",
-                 value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
-                 inline=False)
-    em.add_field(name="Info <:Inform:940198203435929710>",
-                 value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally,nick`",
-                 inline=False)
-    em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,role,Translate,afk,lock,unlock,slowmode,weather,math`",
-                 inline=False)
-    em.add_field(name="Anime <:keqing:939052537699512340>",
-                 value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
-                 inline=False)
-
-    em.add_field(
-        name="Other 📜",
-        value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019) ,[Terra Music Bot](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
-        inline=False    
+        "https://media.discordapp.net/attachments/862599394712354831/984689351390801940/unknown.png"
     )
 
+    em.add_field(name="<:folder:984688392333840394> FUN",
+                 value="<:pointers:984688394955284540>`8ball`\n<:pointers:984688394955284540>`guess`\n<:pointers:984688394955284540>`imagine`\n<:pointers:984688394955284540>`giveaway`\n<:pointers:984688394955284540>`dog`\n<:pointers:984688394955284540>`cat`\n<:pointers:984688394955284540>`meme`",
+                 inline=True)
+    em.add_field(name="<:folder:984688392333840394> INFO",
+                 value="<:pointers:984688394955284540>`avatar`\n<:pointers:984688394955284540>`serverinfo`\n<:pointers:984688394955284540>`info`\n<:pointers:984688394955284540>`stats`\n<:pointers:984688394955284540>`userinfo`\n<:pointers:984688394955284540>`poll`\n<:pointers:984688394955284540>`tally`",
+                 inline=True)
+    em.add_field(name="<:folder:984688392333840394> SPECIAL",
+                 value="<:pointers:984688394955284540>`reminder`\n<:pointers:984688394955284540>`nick`\n<:pointers:984688394955284540>`translate`\n<:pointers:984688394955284540>`afk`\n<:pointers:984688394955284540>`lock`\n<:pointers:984688394955284540>`unlock`\n<:pointers:984688394955284540>`slowmode`\n<:pointers:984688394955284540>`weather`\n<:pointers:984688394955284540>`math`",
+                 inline=True)
+    em.add_field(name="<:folder:984688392333840394> ANIME",
+                 value="<:pointers:984688394955284540>`anime`\n<:pointers:984688394955284540>`character`\n<:pointers:984688394955284540>`animenews`\n<:pointers:984688394955284540>`waifu`\n<:pointers:984688394955284540>`kiss`\n<:pointers:984688394955284540>`cry`\n<:pointers:984688394955284540>`cuddle`\n<:pointers:984688394955284540>`bully`\n<:pointers:984688394955284540>`wink`\n<:pointers:984688394955284540>`slap`\n<:pointers:984688394955284540>`hug`\n<:pointers:984688394955284540>`pat`",
+                 inline=True)
+    em.add_field(
+        name="<:folder:984688392333840394> LINKS",
+        value=
+        "<:link:984697304869113916>[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)\n<:memory:940222649517375509>[AutoBot Server](https://discord.gg/nUFxsaGMQq)\n<:patreon:984698110909501442>[Patreon](https://www.patreon.com/AutoBot0521)\n<:topgg:984698778453934150>[Vote](https://top.gg/bot/858965828716331019)\n<:Inform:940198203435929710>[Terra Music](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
+        inline=True    
+    )
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
 
@@ -1458,34 +1457,34 @@ client.remove_command("help")
 @client.group(invoke_without_command=True)
 async def help(ctx):
     em = discord.Embed(
-        title="Help",
+        title="HELP <:settings:984688397400551436> ",
         description=
-        "Use **&help** `<command>` for more information about the command",
+        "Use **&help** `<command>` for more information about the command!!",
         colour=discord.Colour.random(),
         timestamp=datetime.utcnow())
 
-    em.set_image(
+    em.set_thumbnail(
         url=
-        "https://cdn.discordapp.com/attachments/858354774810689557/928949260161019944/standard_5.gif"
+        "https://media.discordapp.net/attachments/862599394712354831/984689351390801940/unknown.png"
     )
 
-    em.add_field(name="Fun <a:fun:940198380309737472>",
-                 value="`8Ball,Guess,Imagine,Giveaway,dog,cat,meme`",
-                 inline=False)
-    em.add_field(name="Info <:Inform:940198203435929710>",
-                 value="`Avatar,Serverinfo,info,Stats,Userinfo,poll,tally`",
-                 inline=False)
-    em.add_field(name="Special <a:Special:940197538810720266>",
-                 value="`Reminder,nick,Translate,afk,lock,unlock,slowmode,weather,math`",
-                 inline=False)
-    em.add_field(name="Anime <:keqing:939052537699512340>",
-                 value="`anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat`",
-                 inline=False)
+    em.add_field(name="<:folder:984688392333840394> FUN",
+                 value="<:pointers:984688394955284540>`8ball`\n<:pointers:984688394955284540>`guess`\n<:pointers:984688394955284540>`imagine`\n<:pointers:984688394955284540>`giveaway`\n<:pointers:984688394955284540>`dog`\n<:pointers:984688394955284540>`cat`\n<:pointers:984688394955284540>`meme`",
+                 inline=True)
+    em.add_field(name="<:folder:984688392333840394> INFO",
+                 value="<:pointers:984688394955284540>`avatar`\n<:pointers:984688394955284540>`serverinfo`\n<:pointers:984688394955284540>`info`\n<:pointers:984688394955284540>`stats`\n<:pointers:984688394955284540>`userinfo`\n<:pointers:984688394955284540>`poll`\n<:pointers:984688394955284540>`tally`",
+                 inline=True)
+    em.add_field(name="<:folder:984688392333840394> SPECIAL",
+                 value="<:pointers:984688394955284540>`reminder`\n<:pointers:984688394955284540>`nick`\n<:pointers:984688394955284540>`translate`\n<:pointers:984688394955284540>`afk`\n<:pointers:984688394955284540>`lock`\n<:pointers:984688394955284540>`unlock`\n<:pointers:984688394955284540>`slowmode`\n<:pointers:984688394955284540>`weather`\n<:pointers:984688394955284540>`math`",
+                 inline=True)
+    em.add_field(name="<:folder:984688392333840394> ANIME",
+                 value="<:pointers:984688394955284540>`anime`\n<:pointers:984688394955284540>`character`\n<:pointers:984688394955284540>`animenews`\n<:pointers:984688394955284540>`waifu`\n<:pointers:984688394955284540>`kiss`\n<:pointers:984688394955284540>`cry`\n<:pointers:984688394955284540>`cuddle`\n<:pointers:984688394955284540>`bully`\n<:pointers:984688394955284540>`wink`\n<:pointers:984688394955284540>`slap`\n<:pointers:984688394955284540>`hug`\n<:pointers:984688394955284540>`pat`",
+                 inline=True)
     em.add_field(
-        name="Other 📜",
+        name="<:folder:984688392333840394> LINKS",
         value=
-        "[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands), [AutoBot Help ❓](https://discord.gg/nUFxsaGMQq) , [Patreon 💖](https://www.patreon.com/AutoBot0521) , [Vote](https://top.gg/bot/858965828716331019) , [Terra Music Bot](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
-        inline=False    
+        "<:link:984697304869113916>[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)\n<:memory:940222649517375509>[AutoBot Server](https://discord.gg/nUFxsaGMQq)\n<:patreon:984698110909501442>[Patreon](https://www.patreon.com/AutoBot0521)\n<:topgg:984698778453934150>[Vote](https://top.gg/bot/858965828716331019)\n<:Inform:940198203435929710>[Terra Music](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
+        inline=True    
     )
     em.set_footer(text=f"Requested by {ctx.author}",
                     icon_url=ctx.author.avatar_url)
