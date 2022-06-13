@@ -97,9 +97,10 @@ class Utility(commands.Cog, name='Utility'):
         translator = Translator()
         translation = translator.translate(thing, dest=lang)
         embed.add_field(name="Inputed text", value=thing, inline=False)
-        embed.add_field(name="Translated text",
+        embed.add_field(name="Translated text to {dest}".format(dest=lang),
                     value=translation.text,
                     inline=False)
+        embed.set_thumbnail(url="https://media.discordapp.net/attachments/862599394712354831/985831579500830750/translator.png")            
         await ctx.reply(embed=embed)
     @trans.error
     async def trans_error(self,ctx, error):

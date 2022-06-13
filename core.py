@@ -413,9 +413,10 @@ async def trans(ctx, lang, *, thing):
     translator = Translator()
     translation = translator.translate(thing, dest=lang)
     embed.add_field(name="Inputed text", value=thing, inline=False)
-    embed.add_field(name="Translated text",
+    embed.add_field(name="Translated text to {dest}".format(dest=lang),
                     value=translation.text,
                     inline=False)
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/862599394712354831/985831579500830750/translator.png") 
     await ctx.send(embed=embed)
 
 #pokemon
