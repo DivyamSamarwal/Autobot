@@ -1,11 +1,10 @@
+
 from asyncio.tasks import wait
-from http import server
-from ntpath import join
 from time import time
 from typing import Optional
 import discord
 import random
-from discord import Guild, colour
+from discord import colour
 from discord import embeds
 from discord import message
 from discord import role
@@ -32,43 +31,40 @@ from discord import Message
 import json
 from discord import Client, Intents, Embed
 from discord import Client, Intents, Embed
-from discord_slash import SlashCommand
 from typing import Union
 import math
-import time
-from sqlalchemy import desc
 from webserver import keep_alive
 import sys
 import traceback
 import os
 from aiohttp import request
-import akinator
-from discord.ext import commands
-from akinator.async_aki import Akinator
 
+from discord.ext import commands
+
+import jishaku
 from discord.ext.commands import BucketType
 import requests
 import aiohttp
+import psutil
 intents = discord.Intents.all()
 intents = discord.Intents.default()
 intents.members = True
-client = commands.Bot(commands.when_mentioned_or('&'),intents=intents,case_insensitive=True)
+client = commands.Bot(commands.when_mentioned_or('&'),
+                      intents=intents,
+                      case_insensitive=True)
 client.launch_time = datetime.utcnow()
-slash = SlashCommand(client, sync_commands=True)
 
 
 @client.event
 async def on_ready():
-    await client.change_presence(
-        status=discord.Status.online,
-        activity=discord.Activity(
-            type=discord.ActivityType.playing,
-            name=f'/help | &help'))
+    await client.change_presence(status=discord.Status.online,
+                                 activity=discord.Activity(
+                                     type=discord.ActivityType.playing,
+                                     name=f'@Autobot'))
     print(' Hello I am AutoBot. ')
     client.load_extension('jishaku')
 
 
-     
 #on_guild_join
 @client.event
 async def on_guild_join(guild):
@@ -90,9 +86,23 @@ async def on_guild_join(guild):
         await channel.send(embed=em)
 
 
+client.lavalink_nodes = [
+    {
+        "host": "losingtime.dpaste.org",
+        "port": 2124,
+        "password": "SleepingOnTrains"
+    },
+    # Can have multiple nodes here
+]
+
+client.spotify_credentials = {
+    'client_id': '0a7f52a35b814c9396c42cd27c07a139',
+    'client_secret': 'e9bdf41a4bf046f1b62b733e4269d69e'
+}
+
 #important
 import psutil
-@client.command()
+@client.hybrid_command()
 async def usage(ctx):
     bedem = discord.Embed(title = 'System Resource Usage', description = 'See CPU and memory usage of the system.')
     bedem.add_field(name = 'CPU Usage', value = f'{psutil.cpu_percent()}%', inline = False)
@@ -100,7 +110,7 @@ async def usage(ctx):
     bedem.add_field(name = 'Available Memory', value = f'{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total}%', inline = False)
     await ctx.send(embed = bedem)
 
-@client.command()
+@client.hybrid_command()
 async def uptime(ctx):
     delta_uptime = datetime.utcnow() - client.launch_time
     hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -108,8 +118,9 @@ async def uptime(ctx):
     days, hours = divmod(hours, 24)
     await ctx.send(f"{days}d, {hours}h, {minutes}m, {seconds}s")
 
+
 #ping
-@slash.slash(name="Ping", description="Shows the latency of the bot")
+@client.hybrid_command()
 async def pong(ctx):
     embed = discord.Embed(title="Pong!",
                           description=f'{round(client.latency *1000)}ms',
@@ -121,7 +132,7 @@ async def pong(ctx):
 
 
 #Stats
-@slash.slash(name="Stats", description="Shows stats of the bot")
+@client.hybrid_command()
 async def stats(ctx):
     embed = discord.Embed(title="AutoBot Stats",
                           description="",
@@ -141,8 +152,7 @@ async def stats(ctx):
 
     await ctx.send(embed=embed)
 
-
-@slash.slash(name="Invite", description="Invite Autobot!")
+@client.hybrid_command()
 async def invite(ctx):
     embed = discord.Embed(title="Invite",
                           description="[Click Here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)",
@@ -150,12 +160,11 @@ async def invite(ctx):
                           timestamp=datetime.utcnow())
     await ctx.send(embed=embed)
 
-
 #eightball
 
 
-@slash.slash(name="8ball", description="Ask your questions and  get a reply")
-async def Eightball(ctx, *, ques):
+@client.hybrid_command()
+async def eightball(ctx, *, ques):
     responses = [
         "As I see it, yes.", "Ask again later.", "Better not tell you now.",
         "Cannot predict now.", "Concentrate and ask again.",
@@ -211,26 +220,18 @@ async def on_message(message):
 
     await client.process_commands(message)
 
-#math
- 
-
-@slash.slash(name="math",description="helps you in solving problems")
-async def math(ctx, *, expression:str):
-    calculation = eval(expression)
-    embed=discord.Embed(title="Math",description='Math: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
-    await ctx.send(embed=embed)
-
 
 datetime.utcnow()
 
 
-@client.command()
+@client.hybrid_command()
 @commands.bot_has_permissions(attach_files=True, embed_links=True)
 async def reminder(ctx, time, *, reminder):
     print(time)
     print(reminder)
     user = ctx.message.author
-    embed = discord.Embed(color=discord.Colour.random(), timestamp=datetime.utcnow())
+    embed = discord.Embed(color=discord.Colour.random(),
+                          timestamp=datetime.utcnow())
     embed.set_footer(
         text=
         "If you have any questions, suggestions or bug reports, please join our support Discord Server: Link in help command.",
@@ -272,7 +273,12 @@ async def reminder(ctx, time, *, reminder):
             'You have specified a too long duration!\nMaximum duration is 90 days.'
         )
     else:
-        embed=discord.Embed(title="Reminder ⏲️",description=f"I'll will remind you in `{counter}` about **{reminder}**",color=discord.Colour.random() ,timestamp=datetime.utcnow())
+        embed = discord.Embed(
+            title="Reminder ⏲️",
+            description=
+            f"I'll will remind you in `{counter}` about **{reminder}**",
+            color=discord.Colour.random(),
+            timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
         await asyncio.sleep(seconds)
         await ctx.reply(
@@ -281,129 +287,38 @@ async def reminder(ctx, time, *, reminder):
         return
     await ctx.send(embed=embed)
 
-#slash
 
-@slash.slash(name="Reminder",description="Reminds you after a specific time")
-async def reminder(ctx, time, *, reminder):
-    print(time)
-    print(reminder)
-    
-    embed = discord.Embed(color=discord.Colour.random(), timestamp=datetime.utcnow())
-    embed.set_footer(
-        text=
-        "If you have any questions, suggestions or bug reports, please join our support Discord Server: Link in help command.",
-        icon_url=f"{client.user.avatar_url}")
-    seconds = 0
-    if reminder is None:
-        embed.add_field(
-            name='Warning',
-            value='Please specify what do you want me to remind you about.'
-        )  # Error message
-    if time.lower().endswith("d"):
-        seconds += int(time[:-1]) * 60 * 60 * 24
-        counter = f"{seconds // 60 // 60 // 24} days"
-    if time.lower().endswith("h"):
-        seconds += int(time[:-1]) * 60 * 60
-        counter = f"{seconds // 60 // 60} hours"
-    elif time.lower().endswith("m"):
-        seconds += int(time[:-1]) * 60
-        counter = f"{seconds // 60} minutes"
-    elif time.lower().endswith("s"):
-        seconds += int(time[:-1])
-        counter = f"{seconds} seconds"
-    if seconds == 0:
-        embed.add_field(
-            name='Warning',
-            value=
-            'Please specify a proper duration, send `help reminder` for more information.'
-        )
-    elif seconds < 180:
-        embed.add_field(
-            name='Warning',
-            value=
-            'You have specified a too short duration!\nMinimum duration is 3 minutes.'
-        )
-    elif seconds > 7776000:
-        embed.add_field(
-            name='Warning',
-            value=
-            'You have specified a too long duration!\nMaximum duration is 90 days.'
-        )
-    else:
-        embed=discord.Embed(title="Reminder ⏲️",description=f"I'll will remind you in `{counter}` about **{reminder}**",color=discord.Colour.random() ,timestamp=datetime.utcnow())
-        await ctx.send(embed=embed)
-        await asyncio.sleep(seconds)
-        await ctx.reply(
-            f"{ctx.author.mention},`{counter} ago` You asked me to remind you about **{reminder}**"
-        )
-        return
+
+@client.hybrid_command()
+async def math(ctx, *, expression:str):
+    calculation = eval(expression)
+    embed=discord.Embed(title="Math",description='Expression: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
     await ctx.send(embed=embed)
 
 #avatar
-#serverinfo
-@client.command()
-async def serverinfo(ctx):
-    name = str(ctx.guild.name)
 
-    screate = f"<t:{round(ctx.guild.created_at.timestamp())}:F>"
-    owner = str(ctx.guild.owner)
-    id = str(ctx.guild.id)
-    region = str(ctx.guild.region)
-    memberCount = str(ctx.guild.member_count)
-   
 
-    icon = str(ctx.guild.icon_url)
-
-    embed = discord.Embed(title=name,
-                          description=f"ID :{id}",
-                          color=discord.Color.random(),
+@client.hybrid_command()
+async def avatar(ctx, *, user: discord.Member = None):
+    if user is None:
+        user = ctx.message.author
+    embed = discord.Embed(title="This avatar seems unsual✨...",
+                          color=discord.Colour.random(),
                           timestamp=datetime.utcnow())
-    embed.set_thumbnail(url=icon)
-    embed.add_field(name="Owner", value=owner, inline=True)
-    embed.add_field(name="Created at",value=f"{screate}")
-    embed.add_field(name="Region", value=region, inline=True)
-    embed.add_field(name="Members", value=memberCount, inline=True)
-    embed.add_field(name="Categories", value=len(ctx.guild.categories), inline=True)
-    embed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
-    embed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
-    embed.add_field(name="Roles",value=len(ctx.guild.roles),inline=True)
-    embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
 
+    embed.add_field(
+        name="Avatar Formats",
+        value=
+        f" **[Png Link]({user.avatar_url_as(format='png')})** | **[Jpg Link]({user.avatar_url_as(format='jpg')})** | **[Webp Link]({user.avatar_url_as(format='webp')})**",
+        inline=False)
+    embed.set_image(url=user.avatar_url)
+    embed.set_footer(text=f'Requested by {ctx.author.name}',
+                     icon_url=ctx.author.avatar_url)
     await ctx.send(embed=embed)
 
 
-@slash.slash(name="Avatar", description="Shows avatar of the user")
-async def avatar(ctx, * , user: discord.Member=None):
-        if user is None:
-            user = ctx.message.author
-        embed = discord.Embed( title="This avatar seems unsual✨...",
-            color=discord.Colour.random() ,timestamp=datetime.utcnow()
-        )
-        
-        embed.add_field(name="Avatar Formats",value=f" **[Png Link]({user.avatar_url_as(format='png')})** | **[Jpg Link]({user.avatar_url_as(format='jpg')})** | **[Webp Link]({user.avatar_url_as(format='webp')})**" , inline=False)
-        embed.set_image(url=user.avatar_url)
-        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
-        await ctx.send(embed=embed)    
-
-
-@client.command()
-async def avatar(ctx, * , user: discord.Member=None):
-        if user is None:
-            user = ctx.message.author
-        embed = discord.Embed( title="This avatar seems unsual✨...",
-            color=discord.Colour.random() ,timestamp=datetime.utcnow()
-        )
-        
-        embed.add_field(name="Avatar Formats",value=f" **[Png Link]({user.avatar_url_as(format='png')})** | **[Jpg Link]({user.avatar_url_as(format='jpg')})** | **[Webp Link]({user.avatar_url_as(format='webp')})**" , inline=False)
-        embed.set_image(url=user.avatar_url)
-        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
-        await ctx.send(embed=embed)    
-
-
 #translator
-@slash.slash(name="translate",
-             description="Translates from inputed language to which you want.."
-             )
+@client.hybrid_command()
 async def trans(ctx, lang, *, thing):
     embed = discord.Embed(
         title="Translator🔎",
@@ -419,38 +334,31 @@ async def trans(ctx, lang, *, thing):
     embed.set_thumbnail(url="https://media.discordapp.net/attachments/862599394712354831/985831579500830750/translator.png") 
     await ctx.send(embed=embed)
 
+
+
+#role
+@client.hybrid_command()
+@commands.has_permissions(administrator=True) #permissions
+async def role(ctx, user : discord.Member, *, role : discord.Role):
+  if role.position > ctx.author.top_role.position:
+    embed=discord.Embed(title="Hierarchy Error <a:wrong:940200609326444594>",description="That role is above your top role!",colour=discord.Colour.random(),timestamp=datetime.utcnow())  
+    return await ctx.send(embed=embed) 
+  if role in user.roles:
+      await user.remove_roles(role) 
+      embed=discord.Embed(title="Role Removed <a:tick:940195528103325726>",description=f"Removed {role} from {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
+      await ctx.send(embed=embed)
+  else:
+      await user.add_roles(role)
+      embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
+      await ctx.send(embed=embed)
+ 
 #pokemon
 
 URL_API = 'https://pokeapi.co/api/v2/pokemon/'
 
-#pokemon
-@client.command()
-async def pokemon(ctx, *, args):
-  
-    pokeName = args.lower()
-    try:
-        r = requests.get(f'{URL_API}{pokeName}')
-        packages_json = r.json()
-        packages_json.keys()
-
-        embed = discord.Embed(title="Pokemon", color=discord.Color.random())
-        embed.add_field(name="Name", value=packages_json['name'], inline=True)
-        embed.add_field(name="Pokedex Order", value=packages_json['order'], inline=False)
-
-        embed.set_thumbnail(url= f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')     
-        embed.add_field(name="Weight (kg)", value=packages_json['weight']/10, inline=False)
-        embed.add_field(name="Height (m)", value=packages_json['height']/10, inline=False)
-   
-        embed.add_field(name="Base XP", value=packages_json['base_experience'], inline=False)
-        for type in packages_json['types']: #FOR TO GET A TYPE OF A POKEMON
-            embed.add_field(name="Types", value= type['type']['name'], inline=False)
-        embed.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url )
-        await ctx.send(embed=embed)
-    except:
-        await ctx.send("Pokemon not found!")
 
 #pokemon
-@slash.slash(name="pokemon",description="Shows about of pokemon.")
+@client.hybrid_command()
 async def pokemon(ctx, *, args):
 
     pokeName = args.lower()
@@ -461,56 +369,34 @@ async def pokemon(ctx, *, args):
 
         embed = discord.Embed(title="Pokemon", color=discord.Color.random())
         embed.add_field(name="Name", value=packages_json['name'], inline=True)
-        embed.add_field(name="Pokedex Order", value=packages_json['order'], inline=False)
+        embed.add_field(name="Pokedex Order",
+                        value=packages_json['order'],
+                        inline=False)
 
-        embed.set_thumbnail(url= f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')     
-        embed.add_field(name="Weight (kg)", value=packages_json['weight']/10, inline=False)
-        embed.add_field(name="Height (m)", value=packages_json['height']/10, inline=False)
+        embed.set_thumbnail(
+            url=f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')
+        embed.add_field(name="Weight (kg)",
+                        value=packages_json['weight'] / 10,
+                        inline=False)
+        embed.add_field(name="Height (m)",
+                        value=packages_json['height'] / 10,
+                        inline=False)
 
-        embed.add_field(name="Base XP", value=packages_json['base_experience'], inline=False)
-        for type in packages_json['types']: #FOR TO GET A TYPE OF A POKEMON
-            embed.add_field(name="Types", value= type['type']['name'], inline=False)
-        embed.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url )
+        embed.add_field(name="Base XP",
+                        value=packages_json['base_experience'],
+                        inline=False)
+        for type in packages_json['types']:  #FOR TO GET A TYPE OF A POKEMON
+            embed.add_field(name="Types",
+                            value=type['type']['name'],
+                            inline=False)
+        embed.set_footer(text=f"Requested by {ctx.author} , v1.0.2",
+                         icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
     except:
         await ctx.send("Pokemon not found!")
 
 
-
-#meme
-@client.command(pass_context=True)
-async def meme(ctx):
-    embed = discord.Embed(title="",
-                          description="",
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-
-    async with aiohttp.ClientSession() as cs:
-        async with cs.get(
-                'https://www.reddit.com/r/dankmemes/new.json?sort=hot') as r:
-            res = await r.json()
-
-            embed.set_image(url=res['data']['children'][random.randint(0, 25)]
-                            ['data']['url'])
-            await ctx.send(embed=embed)
-
-
-@slash.slash(name="dog", description="Generates random dog images!!")
-async def dog(ctx):
-    async with aiohttp.ClientSession() as session:
-        request = await session.get('https://some-random-api.ml/img/dog')
-        dogjson = await request.json()
-        # This time we'll get the fact request as well!
-        request2 = await session.get('https://some-random-api.ml/facts/dog')
-        factjson = await request2.json()
-
-    embed = discord.Embed(title="Bow Bow!🐕", color=discord.Color.random())
-    embed.set_image(url=dogjson['link'])
-    embed.set_footer(text=factjson['fact'])
-    await ctx.send(embed=embed)
-
-
-@slash.slash(name="cat", description="Generates random cat images!!")
+@client.hybrid_command()
 async def cat(ctx):
     response = requests.get('https://aws.random.cat/meow')
     data = response.json()
@@ -525,8 +411,7 @@ async def cat(ctx):
 #userinfo
 
 
-
-@client.command(aliases=["ui"])
+@client.hybrid_command()
 async def userinfo(ctx, member: discord.Member = None):
     member = ctx.author if not member else member
     roles = [role for role in member.roles]
@@ -565,174 +450,6 @@ async def userinfo(ctx, member: discord.Member = None):
 
     await ctx.send(embed=embed)
 
-#slash
-@slash.slash(name="userinfo",description="shows the description about a specific user")
-async def userinfo(ctx, member: discord.Member = None):
-    member = ctx.author if not member else member
-    roles = [role for role in member.roles]
-
-    embed = discord.Embed(colour=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-
-    embed.set_author(name=f"User Info - {member}")
-    embed.set_thumbnail(url=member.avatar_url)
-    embed.set_footer(text=f"Requested by {ctx.author}",
-                     icon_url=ctx.author.avatar_url)
-
-    embed.add_field(name="ID:-", value=member.id, inline=False)
-    embed.add_field(name="Guild Name:-",
-                    value=member.display_name,
-                    inline=False)
-
-    embed.add_field(
-        name="Created At:-",
-        value=member.created_at.strftime("%a , %#d %B %Y, %I:%M %p UTC"),
-        inline=False)
-    embed.add_field(
-        name="Joined At:-",
-        value=member.joined_at.strftime("%a , %#d %B %Y, %I:%M %p  UTC"),
-        inline=False)
-
-    embed.add_field(name=f"Roles:- ({len(roles)})",
-                    value="".join([role.mention for role in roles]),
-                    inline=False)
-    embed.add_field(name="Top Role:-",
-                    value=member.top_role.mention,
-                    inline=False)
-    embed.add_field(name="Bot?", value=member.bot, inline=False)
-
-    await ctx.send(embed=embed)
-#   ----------------AKINATOR
-
-
-def w(name, desc, picture):
-    embed_win = discord.Embed(title=f"It's {name} ({desc})! Was I correct?",
-                              colour=discord.Color.random())
-    embed_win.set_image(url=picture)
-    return embed_win
-
-
-aki = Akinator()
-emojis_c = ['✅', '❌', '🤷', '👍', '👎', '⏮', '🛑']
-emojis_w = ['✅', '❌']
-
-
-@client.command(name='guess', aliases=["aki", "akinator"])
-@commands.max_concurrency(1, per=BucketType.default, wait=False)
-async def guess(ctx, *, extra):
-
-    desc_loss = ''
-    d_loss = ''
-
-    def check_c(reaction, user):
-        return user == ctx.author and str(
-            reaction.emoji) in emojis_c and reaction.message.content == q
-
-    def check_w(reaction, user):
-        return user == ctx.author and str(reaction.emoji) in emojis_w
-
-    async with ctx.typing():
-        if extra == 'people':
-            q = await aki.start_game(child_mode=True)
-        elif extra == 'objects' or extra == 'animals':
-            q = await aki.start_game(language=f'en_{extra}', child_mode=True)
-        else:
-            title_error_three = 'This game mode does not exist'
-            desc_error_three = 'Use **.help** to see a list of all the game modes available'
-            embed_var_three = discord.Embed(title=title_error_three,
-                                            description=desc_error_three,
-                                            colour=discord.Color.random())
-            await ctx.reply(embed=embed_var_three)
-            return
-
-        embed_question = discord.Embed(
-            title=
-            'Tip : Wait until all emojis finish being added before reacting'
-            ' or you will have to unreact and react again',
-            colour=discord.Color.random())
-        await ctx.reply(embed=embed_question)
-
-    while aki.progression <= 85:
-        message = await ctx.reply(q)
-
-        for m in emojis_c:
-            await message.add_reaction(m)
-
-        try:
-            symbol, username = await client.wait_for('reaction_add',
-                                                     timeout=45.0,
-                                                     check=check_c)
-        except asyncio.TimeoutError:
-            embed_game_ended = discord.Embed(
-                title='You took too long,the game has ended',
-                colour=discord.Color.random())
-            await ctx.reply(embed=embed_game_ended)
-            return
-
-        if str(symbol) == emojis_c[0]:
-            a = 'y'
-        elif str(symbol) == emojis_c[1]:
-            a = 'n'
-        elif str(symbol) == emojis_c[2]:
-            a = 'idk'
-        elif str(symbol) == emojis_c[3]:
-            a = 'p'
-        elif str(symbol) == emojis_c[4]:
-            a = 'pn'
-        elif str(symbol) == emojis_c[5]:
-            a = 'b'
-        elif str(symbol) == emojis_c[6]:
-            embed_game_end = discord.Embed(
-                title='I ended the game because you asked me to do it',
-                colour=discord.Color.random())
-            await ctx.reply(embed=embed_game_end)
-            return
-
-        if a == "b":
-            try:
-                q = await aki.back()
-            except akinator.CantGoBackAnyFurther:
-                pass
-        else:
-            q = await aki.answer(a)
-
-    await aki.win()
-
-    wm = await ctx.reply(
-        embed=w(aki.first_guess['name'], aki.first_guess['description'],
-                aki.first_guess['absolute_picture_path']))
-
-    for e in emojis_w:
-        await wm.add_reaction(e)
-
-    try:
-        s, u = await client.wait_for('reaction_add',
-                                     timeout=30.0,
-                                     check=check_w)
-    except asyncio.TimeoutError:
-        for times in aki.guesses:
-            d_loss = d_loss + times['name'] + '\n'
-        t_loss = 'Here is a list of all the people I had in mind :'
-        embed_loss = discord.Embed(title=t_loss,
-                                   description=d_loss,
-                                   colour=discord.Color.random())
-        await ctx.reply(embed=embed_loss)
-        return
-
-    if str(s) == emojis_w[0]:
-        embed_win = discord.Embed(title='Great, guessed right one more time!',
-                                  colour=discord.Color.random())
-        await ctx.reply(embed=embed_win)
-    elif str(s) == emojis_w[1]:
-        for times in aki.guesses:
-            desc_loss = desc_loss + times['name'] + '\n'
-        title_loss = 'No problem, I will win next time! But here is a list of all the people I had in mind :'
-        embed_loss = discord.Embed(title=title_loss,
-                                   description=desc_loss,
-                                   colour=discord.Color.random())
-        await ctx.reply(embed=embed_loss)
-
-
 def convert(time):
     pos = ["s", "m", "h", "d"]
 
@@ -750,7 +467,7 @@ def convert(time):
     return val * time_dict[unit]
 
 
-@client.command(aliases=["gw"])
+@client.hybrid_command()
 @commands.has_permissions(manage_messages=True)
 async def giveaway(ctx):
     await ctx.send(
@@ -834,7 +551,7 @@ async def giveaway(ctx):
     await channel.send(f"Congratulations! {winner.mention} won **{prize}**")
 
 
-@client.command()
+@client.hybrid_command()
 @commands.has_permissions(administrator=True)
 async def reroll(ctx, channel: discord.TextChannel, id_: int):
     try:
@@ -852,27 +569,7 @@ async def reroll(ctx, channel: discord.TextChannel, id_: int):
 
 
 #lock
-@client.command()
-@commands.has_permissions(manage_channels=True)
-async def lock(ctx, channel: discord.TextChannel = None):
-    channel = channel or ctx.channel
-    overwrite = channel.overwrites_for(ctx.guild.default_role)
-    overwrite.send_messages = False
-    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    em = discord.Embed(
-        title="LOCKDOWN🔒",
-        description="**To lock the channel**\n For eg.`&lock #channelname`",
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
-    em.add_field(name="Channel Succesfully locked ✅",
-                 value=f'By:- {ctx.author.mention}')
-    em.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/905072151680405544/916228759470891008/unknown.png"
-    )
-    await ctx.send(embed=em)
-#slash
-@slash.slash(name="lock",description="Locks a specific channel.")
+@client.hybrid_command()
 @commands.has_permissions(manage_channels=True)
 async def lock(ctx, channel: discord.TextChannel = None):
     channel = channel or ctx.channel
@@ -892,7 +589,8 @@ async def lock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
-@client.command()
+
+@client.hybrid_command()
 @commands.has_permissions(manage_channels=True)
 async def unlock(ctx, channel: discord.TextChannel = None):
     channel = channel or ctx.channel
@@ -912,46 +610,13 @@ async def unlock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
-#unlock 
-@slash.slash(name="unlock",description="Unlocks a locked channel")
-@commands.has_permissions(manage_channels=True)
-async def unlock(ctx, channel: discord.TextChannel = None):
-    channel = channel or ctx.channel
-    overwrite = channel.overwrites_for(ctx.guild.default_role)
-    overwrite.send_messages = True
-    await channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
-    em = discord.Embed(
-        title="UNLOCKED🔓",
-        description="**To unlock the channel**\n For eg.`&unlock #channelname`",
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
-    em.add_field(name="Channel Succesfully unlocked ✅",
-                 value=f'By:- {ctx.author.mention}')
-    em.set_thumbnail(
-        url=
-        "https://cdn.discordapp.com/attachments/895281704443465768/924537916938653706/unknown.png"
-    )
-    await ctx.send(embed=em)
-#steal
-@client.command(aliases=['emojisteal', 'addemoji', 'steal'])
-
-async def stealemoji(ctx: commands.Context, emoji: Union[discord.Emoji, discord.PartialEmoji], *, name: str):
-       
-        try:
-            emoji_bytes = await emoji.read()
-            emoji_create = await ctx.guild.create_custom_emoji(image=emoji_bytes, name=name)
-            await ctx.send(embed=discord.Embed(description=f"**<:tick:897382645321850920> Successfully created emoji - {emoji_create} with name: `{name}`**", color=discord.Color.green()))
-            
-        except Exception as e:
-            error = str(e).capitalize()
-            return await ctx.send(embed=discord.Embed(description=f"**<:error:897382665781669908> An error occurred while creating the emoji\n`{error}`**", color=discord.Color.red()))
 #weather
 # Api key from openweathermag.org
 
-api_key = ""
+api_key = "6e62189453be0c6774c53f9050e4c1b7"
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
-@client.command()
+@client.hybrid_command()
 async def weather(ctx, *, city: str):
     city_name = city
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
@@ -959,106 +624,41 @@ async def weather(ctx, *, city: str):
     x = response.json()
     channel = ctx.message.channel
     if x["cod"] != "404":
-      async with channel.typing():
+        async with channel.typing():
             y = x["main"]
             current_temperature = y["temp"]
-            current_temperature_celsiuis = str(round(current_temperature - 273.15))
+            current_temperature_celsiuis = str(
+                round(current_temperature - 273.15))
             current_pressure = y["pressure"]
             current_humidity = y["humidity"]
             z = x["weather"]
             weather_description = z[0]["description"]
-          
-            embed = discord.Embed(title=f"Weather in {city_name}",
-                              color=discord.Color.random(),
-                              timestamp=ctx.message.created_at,)
-            embed.add_field(name="Descripition", value=f"**{weather_description}**", inline=False)
-            embed.add_field(name="Temperature(C)", value=f"**{current_temperature_celsiuis}°C**", inline=False)
-            embed.add_field(name="Humidity(%)", value=f"**{current_humidity}%**", inline=False)
-            embed.add_field(name="Atmospheric Pressure(hPa)", value=f"**{current_pressure}hPa**", inline=False)
+
+            embed = discord.Embed(
+                title=f"Weather in {city_name}",
+                color=discord.Color.random(),
+                timestamp=ctx.message.created_at,
+            )
+            embed.add_field(name="Descripition",
+                            value=f"**{weather_description}**",
+                            inline=False)
+            embed.add_field(name="Temperature(C)",
+                            value=f"**{current_temperature_celsiuis}°C**",
+                            inline=False)
+            embed.add_field(name="Humidity(%)",
+                            value=f"**{current_humidity}%**",
+                            inline=False)
+            embed.add_field(name="Atmospheric Pressure(hPa)",
+                            value=f"**{current_pressure}hPa**",
+                            inline=False)
             embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
             embed.set_footer(text=f"Requested by {ctx.author.name}")
             await channel.send(embed=embed)
     else:
-        await channel.send("City not found.") 
+        await channel.send("City not found.")
 
-#slash
-@slash.slash(name="weather",description="shows the current weather if specified location")
-async def weather(ctx, *, city: str):
-    city_name = city
-    complete_url = base_url + "appid=" + api_key + "&q=" + city_name
-    response = requests.get(complete_url)
-    x = response.json()
-    
-    if x["cod"] != "404":
-
-            y = x["main"]
-            current_temperature = y["temp"]
-            current_temperature_celsiuis = str(round(current_temperature - 273.15))
-            current_pressure = y["pressure"]
-            current_humidity = y["humidity"]
-            z = x["weather"]
-            weather_description = z[0]["description"]
-
-            embed = discord.Embed(title=f"Weather in {city_name}",
-                              color=discord.Color.random(),
-                              timestamp=datetime.utcnow())
-            embed.add_field(name="Descripition", value=f"**{weather_description}**", inline=False)
-            embed.add_field(name="Temperature(C)", value=f"**{current_temperature_celsiuis}°C**", inline=False)
-            embed.add_field(name="Humidity(%)", value=f"**{current_humidity}%**", inline=False)
-            embed.add_field(name="Atmospheric Pressure(hPa)", value=f"**{current_pressure}hPa**", inline=False)
-            embed.set_thumbnail(url="https://i.ibb.co/CMrsxdX/weather.png")
-            embed.set_footer(text=f"Requested by {ctx.author.name}")
-            await ctx.send(embed=embed)
-    else:
-        await ctx.send("City not found.") 
-
-
-#role
-@client.command()
-@commands.has_permissions(administrator=True) #permissions
-async def role(ctx, user : discord.Member, *, role : discord.Role):
-  if role.position > ctx.author.top_role.position:
-    embed=discord.Embed(title="Hierarchy Error <a:wrong:940200609326444594>",description="That role is above your top role!",colour=discord.Colour.random(),timestamp=datetime.utcnow())  
-    return await ctx.send(embed=embed) 
-  if role in user.roles:
-      await user.remove_roles(role) 
-      embed=discord.Embed(title="Role Removed <a:tick:940195528103325726>",description=f"Removed {role} from {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
-      await ctx.send(embed=embed)
-  else:
-      await user.add_roles(role)
-      embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
-      await ctx.send(embed=embed)
-
-@slash.slash(name="role",description="add/remove a role from a user")
-@commands.has_permissions(administrator=True) #permissions
-async def role(ctx, user : discord.Member, *, role : discord.Role):
-  if role.position > ctx.author.top_role.position:
-    embed=discord.Embed(title="Hierarchy Error <a:wrong:940200609326444594>",description="That role is above your top role!",colour=discord.Colour.random(),timestamp=datetime.utcnow())  
-    return await ctx.send(embed=embed) 
-  if role in user.roles:
-      await user.remove_roles(role) 
-      embed=discord.Embed(title="Role Removed <a:tick:940195528103325726>",description=f"Removed {role} from {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
-      await ctx.send(embed=embed)
-  else:
-      await user.add_roles(role)
-      embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow()) 
-      await ctx.send(embed=embed)
-
-
-@slash.slash(name="Purge", description="Clean unwanted messages or spam(s)")
-@commands.has_permissions(administrator=True)
-async def clean(ctx, limit: int):
-    await ctx.channel.purge(limit=limit)
-    embed = discord.Embed(
-        title="Messages Purged✅",
-        description=f' {limit} message(s) cleared by  {ctx.author.mention}',
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
-    await ctx.send(embed=embed)
-    await ctx.message.delete()
-
-
-@client.command(aliases=['purge'])
+#------BUGS
+@client.hybrid_command()
 @commands.has_permissions(administrator=True)
 async def clean(ctx, limit: int):
     await ctx.channel.purge(limit=limit)
@@ -1081,267 +681,415 @@ async def clear_error(ctx, error):
             colour=discord.Colour.random(),
             timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
-#server
+
+
+@client.hybrid_command()
+async def serverinfo(ctx):
+    name = str(ctx.guild.name)
+
+    screate = f"<t:{round(ctx.guild.created_at.timestamp())}:F>"
+    owner = str(ctx.guild.owner)
+    id = str(ctx.guild.id)
+    region = str(ctx.guild.region)
+    memberCount = str(ctx.guild.member_count)
+   
+
+    icon = str(ctx.guild.icon_url)
+
+    embed = discord.Embed(title=name,
+                          description=f"ID :{id}",
+                          color=discord.Color.random(),
+                          timestamp=datetime.utcnow())
+    embed.set_thumbnail(url=icon)
+    embed.add_field(name="Owner", value=owner, inline=True)
+    embed.add_field(name="Created at",value=f"{screate}")
+    embed.add_field(name="Region", value=region, inline=True)
+    embed.add_field(name="Members", value=memberCount, inline=True)
+    embed.add_field(name="Categories", value=len(ctx.guild.categories), inline=True)
+    embed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
+    embed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
+    embed.add_field(name="Roles",value=len(ctx.guild.roles),inline=True)
+    embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
+
+    await ctx.send(embed=embed)
+
 
 
 #info
-@client.command()
+@client.hybrid_command()
 async def info(ctx):
 
-    em = discord.Embed(title = "Autobot", description = "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-    em.add_field(name="Developers", value="<@!780721106838618112> & <@!466569674335846400>" , inline=False)
-    em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \nGuilds :- {len(client.guilds)} \nUsers :- {(len(client.users))} ', inline=False)
-    em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
-    em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
-    em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling, watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
-    em.set_thumbnail(url="https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024")
-    em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
+    em = discord.Embed(
+        title="Autobot",
+        description=
+        "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)",
+        colour=discord.Color.random(),
+        timestamp=datetime.utcnow())
+    em.add_field(name="Developers",
+                 value="<@!780721106838618112> & <@!466569674335846400>",
+                 inline=False)
+    em.add_field(
+        name="Stats",
+        value=
+        f'Ping :- {round(client.latency *1000)}ms \nGuilds :- {len(client.guilds)} \nUsers :- {(len(client.users))} ',
+        inline=False)
+    em.add_field(
+        name="Github",
+        value=
+        "[Code can be found here](https://github.com/DivyamSamarwal/Autobot)",
+        inline=False)
+    em.add_field(
+        name="Time",
+        value=
+        "Server location 🔆 -> California, United States of America [PST](https://time.is/PT)"
+    )
+    em.add_field(
+        name="About Developer",
+        value=
+        "・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling, watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. ",
+        inline=False)
+    em.set_thumbnail(
+        url=
+        "https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024"
+    )
+    em.set_footer(text=f"Requested by {ctx.author} , v1.0.2",
+                  icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
 
-#slash
-@slash.slash(name="info",description="shows the bot info")
-async def info(ctx):
 
-    em = discord.Embed(title = "Autobot", description = "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-    em.add_field(name="Developers", value="<@!780721106838618112> & <@!466569674335846400>" , inline=False)
-    em.add_field(name="Stats",value=f'Ping :- {round(client.latency *1000)}ms \nGuilds :- {len(client.guilds)} \nUsers :- {(len(client.users))} ', inline=False)
-    em.add_field(name="Github",value="[Code can be found here](https://github.com/DivyamSamarwal/Autobot)", inline=False)
-    em.add_field(name="Time",value="Server location 🔆 -> California, United States of America [PST](https://time.is/PT)")
-    em.add_field(name="About Developer",value="・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling, watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. " ,  inline=False)
-    em.set_thumbnail(url="https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024")
-    em.set_footer(text=f"Requested by {ctx.author} , v1.0.2", icon_url=ctx.author.avatar_url  )
-    await ctx.send(embed=em)
 
-@client.command()
+@client.hybrid_command()
 @commands.has_permissions(administrator=True)
-async def lockdown(ctx, channel : discord.TextChannel=None,setting=None):
-    if setting=='--server':
+async def lockdown(ctx, channel: discord.TextChannel = None, setting=None):
+    if setting == '--server':
         for channel in ctx.guild.channels:
-            await channel.set_permissions(ctx.guild.default_role, reason=f'{ctx.author.name} locked {channel.name} with --server',send_messages=False)
-            embed=discord.Embed(
-                timestamp=ctx.message.created_at, 
-                title = "LOCKED THE SERVER 🔒",
-                description=f"successfully locked the whole server by {ctx.author.mention}",
-                color=ctx.author.color, 
-               )
+            await channel.set_permissions(
+                ctx.guild.default_role,
+                reason=f'{ctx.author.name} locked {channel.name} with --server',
+                send_messages=False)
+            embed = discord.Embed(
+                timestamp=ctx.message.created_at,
+                title="LOCKED THE SERVER 🔒",
+                description=
+                f"successfully locked the whole server by {ctx.author.mention}",
+                color=ctx.author.color,
+            )
         await ctx.send(embed=embed)
     if channel is None:
         channel = ctx.message.channel
-        await channel.set_permissions(ctx.guild.default_role, reason=f'{ctx.author.name} locked {channel.name}',send_messages=False)
-        embed=discord.Embed(
-            timestamp=ctx.message.created_at, 
-                title = "LOCKDOWN 🔒",
-                description=f"successfully locked the channel {ctx.author.mention}",
-                color=ctx.author.color, 
-               )
+        await channel.set_permissions(
+            ctx.guild.default_role,
+            reason=f'{ctx.author.name} locked {channel.name}',
+            send_messages=False)
+        embed = discord.Embed(
+            timestamp=ctx.message.created_at,
+            title="LOCKDOWN 🔒",
+            description=f"successfully locked the channel {ctx.author.mention}",
+            color=ctx.author.color,
+        )
         await ctx.send(embed=embed)
 
+
 #nickname
-@client.command(pass_context=True)
+@client.hybrid_command()
 @commands.has_permissions(manage_nicknames=True)
 async def nick(ctx, member: discord.Member, nick):
     await member.edit(nick=nick)
-    embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
+    embed = discord.Embed(
+        title="Nickname Succesfully changed <a:tick:940195528103325726>",
+        description=f'Nickname was changed for {member.mention}',
+        timestamp=datetime.utcnow(),
+        color=discord.Colour.random())
     await ctx.send(embed=embed)
+
 
 #slash
-@slash.slash(name="nick",description="changes the nickname of given user")
-@commands.has_permissions(manage_nicknames=True)
-async def nick(ctx, member: discord.Member, nick):
-    await member.edit(nick=nick)
-    embed = discord.Embed(title="Nickname Succesfully changed <a:tick:940195528103325726>",description=f'Nickname was changed for {member.mention}',timestamp=datetime.utcnow(), color=discord.Colour.random())
-    await ctx.send(embed=embed)
+
 #anime slash
-@slash.slash(name="waifu",description="shows waifu")
-async def waifu(ctx,* , reason=None):
-        """Waifu"""
+@client.hybrid_command()
+async def waifu(ctx, *, reason=None):
+    """Waifu"""
 
+    url = "https://api.waifu.pics/sfw/waifu"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=
+                f"<:keqing:939052537699512340> Requested by {ctx.author.name}",
+                color=discord.Colour.random(),
+                timestamp=datetime.utcnow())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
 
-        url = "https://api.waifu.pics/sfw/waifu"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"<:keqing:939052537699512340> Requested by {ctx.author.name}",color=discord.Colour.random(),timestamp=datetime.utcnow())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)
+@client.hybrid_command()
+@is_owner()
+async def nwaifu(ctx, *, reason=None):
+    """Waifu"""
 
-@slash.slash(name="kiss",description="kiss someone")
+    url = "https://api.waifu.pics/nsfw/waifu"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=
+                f"<:keqing:939052537699512340> Requested by {ctx.author.name}",
+                color=discord.Colour.random(),
+                timestamp=datetime.utcnow())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
 
+@client.hybrid_command()
 async def kiss_(ctx: commands.Context, user: discord.Member):
-        """Kiss someone"""
-        
+    """Kiss someone"""
 
-        url = "https://api.waifu.pics/sfw/kiss"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} kisses {user.mention}",color=discord.Colour.green())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)
+    url = "https://api.waifu.pics/sfw/kiss"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f"{ctx.author.mention} kisses {user.mention}",
+                color=discord.Colour.green())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
 
-@slash.slash(name="cry",description="cry for someting")
-async def cry_(ctx: commands.Context, * , reason=None):
-        """Anime Cry for something"""
-        
 
-        url = "https://api.waifu.pics/sfw/cry"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} is crying for \n reason : **{reason}**",color=discord.Colour.green())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)
+@client.hybrid_command()
+async def cry_(ctx: commands.Context, *, reason=None):
+    """Anime Cry for something"""
 
-@slash.slash(name="cuddle",description="cuddle someone")
+    url = "https://api.waifu.pics/sfw/cry"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=
+                f"{ctx.author.mention} is crying for \n reason : **{reason}**",
+                color=discord.Colour.green())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
+
+
+@client.hybrid_command()
 async def cuddle_(ctx: commands.Context, user: discord.Member):
-        """Cuddle Someone"""
-        
+    """Cuddle Someone"""
 
-        url = "https://api.waifu.pics/sfw/cuddle"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} cuddles {user.mention}",color=discord.Colour.green())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)
+    url = "https://api.waifu.pics/sfw/cuddle"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f"{ctx.author.mention} cuddles {user.mention}",
+                color=discord.Colour.green())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
 
-@slash.slash(name="bully",description="bully someone")
 
+@client.hybrid_command()
 async def bully_(ctx: commands.Context, user: discord.Member):
-        """Bully Someone"""
-        
+    """Bully Someone"""
 
-        url = "https://api.waifu.pics/sfw/bully"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} bullies {user.mention}",color=discord.Colour.green())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed) 
+    url = "https://api.waifu.pics/sfw/bully"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f"{ctx.author.mention} bullies {user.mention}",
+                color=discord.Colour.green())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
 
-@slash.slash(name="wink",description="hehe")
 
+@client.hybrid_command()
 async def wink_(ctx: commands.Context):
-        """wink your eye"""
-        
+    """wink your eye"""
 
-        url = "https://api.waifu.pics/sfw/wink"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} Your wink is unique",color=discord.Colour.green())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)               
-                #await ctx.send(f"API ERRORS {response.status}status.")
+    url = "https://api.waifu.pics/sfw/wink"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f"{ctx.author.mention} Your wink is unique",
+                color=discord.Colour.green())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
+            #await ctx.send(f"API ERRORS {response.status}status.")
 
-@slash.slash(name="slap",description="slap someone")
+
+@client.hybrid_command()
 async def slap_(ctx: commands.Context, user: discord.Member):
-        """Slap someone"""
-        if user.bot:
-            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't slap a bot.**", color=discord.Colour.red()))
-        if user == ctx.author:
-            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't slap yourself! Try slapping someone else.**", color=discord.Colour.red()))
+    """Slap someone"""
+    if user.bot:
+        return await ctx.send(embed=discord.Embed(
+            description=
+            "**<a:wrong:940200609326444594> You can't slap a bot.**",
+            color=discord.Colour.red()))
+    if user == ctx.author:
+        return await ctx.send(embed=discord.Embed(
+            description=
+            "**<a:wrong:940200609326444594> You can't slap yourself! Try slapping someone else.**",
+            color=discord.Colour.red()))
 
-        url = "https://neko-love.xyz/api/v1/slap"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} slaps {user.mention}",color=discord.Colour.green())
-                embed.set_image(url=data['url'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)               
-                #await ctx.send(f"API ERRORS {response.status}status.")
+    url = "https://neko-love.xyz/api/v1/slap"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f"{ctx.author.mention} slaps {user.mention}",
+                color=discord.Colour.green())
+            embed.set_image(url=data['url'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
+            #await ctx.send(f"API ERRORS {response.status}status.")
 
-@slash.slash(name="hug",description="hug someone")
-   
+
+@client.hybrid_command()
 async def hug_(ctx: commands.Context, user: discord.Member):
-        """Hug someone"""
-        if user.bot:
-            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't hug a bot.**", color=discord.Colour.red()))
-        if user == ctx.author:
-            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't hug yourself! Try hugging someone else.**", color=discord.Colour.red()))
+    """Hug someone"""
+    if user.bot:
+        return await ctx.send(embed=discord.Embed(
+            description="**<a:wrong:940200609326444594> You can't hug a bot.**",
+            color=discord.Colour.red()))
+    if user == ctx.author:
+        return await ctx.send(embed=discord.Embed(
+            description=
+            "**<a:wrong:940200609326444594> You can't hug yourself! Try hugging someone else.**",
+            color=discord.Colour.red()))
 
-        url = "https://some-random-api.ml/animu/hug"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed = discord.Embed(description=f"{ctx.author.mention} hugs {user.mention}",color=discord.Colour.green())
-                embed.set_image(url=data['link'])
-                await ctx.send(embed=embed)
-            else:
-                embed= discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)               
-                #await ctx.send(f"API ERRORS {response.status}status.")
+    url = "https://some-random-api.ml/animu/hug"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f"{ctx.author.mention} hugs {user.mention}",
+                color=discord.Colour.green())
+            embed.set_image(url=data['link'])
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
+            #await ctx.send(f"API ERRORS {response.status}status.")
 
-@slash.slash(name="pat",description="pat someone")
- 
+
+@client.hybrid_command()
 async def pat_(ctx: commands.Context, user: discord.Member):
-        """Pat someone"""
-        if user.bot:
-            return await ctx.send(embed=discord.Embed(description="** <a:wrong:940200609326444594> You can't pat a bot.**", color=discord.Colour.red()))
-        if user == ctx.author:
-            return await ctx.send(embed=discord.Embed(description="**<a:wrong:940200609326444594> You can't pat yourself! Try patting someone else.**", color=discord.Colour.red()))
+    """Pat someone"""
+    if user.bot:
+        return await ctx.send(embed=discord.Embed(
+            description=
+            "** <a:wrong:940200609326444594> You can't pat a bot.**",
+            color=discord.Colour.red()))
+    if user == ctx.author:
+        return await ctx.send(embed=discord.Embed(
+            description=
+            "**<a:wrong:940200609326444594> You can't pat yourself! Try patting someone else.**",
+            color=discord.Colour.red()))
 
-        url = "https://some-random-api.ml/animu/pat"
-        async with request("GET", url, headers={}) as response:
-            if response.status == 200:
-                data = await  response.json()
-                embed= discord.Embed(description=f'{ctx.author.mention} patted {user.mention}',color=discord.Colour.green())
-                embed.set_image(url=data['link'])
-                await ctx.send(embed=embed)
-                
-            else:
-                embed = discord.Embed(description=f"API ERRORS {response.status}status.",color=discord.Colour.red())
-                await ctx.send(embed=embed)
-                #await ctx.send(f"API ERRORS {response.status}status.")
+    url = "https://some-random-api.ml/animu/pat"
+    async with request("GET", url, headers={}) as response:
+        if response.status == 200:
+            data = await response.json()
+            embed = discord.Embed(
+                description=f'{ctx.author.mention} patted {user.mention}',
+                color=discord.Colour.green())
+            embed.set_image(url=data['link'])
+            await ctx.send(embed=embed)
+
+        else:
+            embed = discord.Embed(
+                description=f"API ERRORS {response.status}status.",
+                color=discord.Colour.red())
+            await ctx.send(embed=embed)
+            #await ctx.send(f"API ERRORS {response.status}status.")
+
 
 #slash slowmode
-@slash.slash(name="slowmode",description="set customized slowmode")
-async def slowmode(ctx,time:int):
-        if (not ctx.author.guild_permissions.manage_messages):
-            embed = discord.Embed(title="Permission error" , description="This requires `Manage Message Permission`.You don't have that!",color=discord.Colour.dark_red())
-            await ctx.send(embed=embed)
+@client.hybrid_command()
+async def slowmode(ctx, time: int):
+    if (not ctx.author.guild_permissions.manage_messages):
+        embed = discord.Embed(
+            title="Permission error",
+            description=
+            "This requires `Manage Message Permission`.You don't have that!",
+            color=discord.Colour.dark_red())
+        await ctx.send(embed=embed)
+        return
+    try:
+        if time == 0:
+            embed1 = discord.Embed(
+                title="Slowmode succesfully off",
+                description=
+                "If time has been set to 0 seconds then slowmode would be off. <a:tick:940195528103325726>",
+                color=discord.Colour.dark_teal())
+            await ctx.send(embed=embed1)
+            await ctx.channel.edit(slowmode_delay=0)
+        elif time > 21600:
+            emb = discord.Embed(
+                title="Time Error <a:wrong:940200609326444594>",
+                description="You can not set the slowmode above `6 hours`",
+                color=discord.Colour.red())
+            emb.add_field(
+                name="Quick Conversions",
+                value=
+                "1 min =  60 seconds \n 2 min = 120 seconds \n 5 min = 300 seconds \n 1 hour = 3600 seconds \n 6 hours = 21600 seconds"
+            )
+            await ctx.send(embed=emb)
             return
-        try:
-            if time == 0:
-                embed1 = discord.Embed(title="Slowmode succesfully off", description="If time has been set to 0 seconds then slowmode would be off. <a:tick:940195528103325726>",color=discord.Colour.dark_teal())
-                await ctx.send(embed=embed1)
-                await ctx.channel.edit(slowmode_delay = 0)
-            elif time > 21600:
-                emb = discord.Embed(title="Time Error <a:wrong:940200609326444594>" , description="You can not set the slowmode above `6 hours`",color=discord.Colour.red())
-                emb.add_field(name="Quick Conversions", value="1 min =  60 seconds \n 2 min = 120 seconds \n 5 min = 300 seconds \n 1 hour = 3600 seconds \n 6 hours = 21600 seconds")
-                await ctx.send(embed=emb)
-                return
-            else:
-                await ctx.channel.edit(slowmode_delay = time)
-                em = discord.Embed(title="Succesfully set! <a:tick:940195528103325726>", description=f"Slowmode set to {time} seconds" , color= discord.Colour.teal())
-                await ctx.send(embed=em)
-        except Exception:
-            await print("Oops!")
+        else:
+            await ctx.channel.edit(slowmode_delay=time)
+            em = discord.Embed(
+                title="Succesfully set! <a:tick:940195528103325726>",
+                description=f"Slowmode set to {time} seconds",
+                color=discord.Colour.teal())
+            await ctx.send(embed=em)
+    except Exception:
+        await print("Oops!")
 
 
-#help
-@slash.slash(name="help", description="Get to know about my commands")
+
+"""
+@client.hybrid_command()
 async def help(ctx):
     em = discord.Embed(
         title="HELP <:settings:984688397400551436> ",
@@ -1377,51 +1125,9 @@ async def help(ctx):
                     icon_url=ctx.author.avatar_url)
 
     await ctx.send(embed=em)
-
-
 client.remove_command("help")
 
-
-@client.group(invoke_without_command=True)
-async def help(ctx):
-    em = discord.Embed(
-        title="HELP <:settings:984688397400551436> ",
-        description=
-        "Use **&help** `<command>` for more information about the command!!",
-        colour=discord.Colour.random(),
-        timestamp=datetime.utcnow())
-
-    em.set_thumbnail(
-        url=
-        "https://media.discordapp.net/attachments/862599394712354831/984689351390801940/unknown.png"
-    )
-
-    em.add_field(name="<:folder:984688392333840394> FUN",
-                 value="<:pointers:984688394955284540>`8ball`\n<:pointers:984688394955284540>`guess`\n<:pointers:984688394955284540>`imagine`\n<:pointers:984688394955284540>`giveaway`\n<:pointers:984688394955284540>`dog`\n<:pointers:984688394955284540>`cat`\n<:pointers:984688394955284540>`meme`",
-                 inline=True)
-    em.add_field(name="<:folder:984688392333840394> INFO",
-                 value="<:pointers:984688394955284540>`avatar`\n<:pointers:984688394955284540>`serverinfo`\n<:pointers:984688394955284540>`info`\n<:pointers:984688394955284540>`stats`\n<:pointers:984688394955284540>`userinfo`\n<:pointers:984688394955284540>`poll`\n<:pointers:984688394955284540>`tally`",
-                 inline=True)
-    em.add_field(name="<:folder:984688392333840394> SPECIAL",
-                 value="<:pointers:984688394955284540>`reminder`\n<:pointers:984688394955284540>`nick`\n<:pointers:984688394955284540>`translate`\n<:pointers:984688394955284540>`afk`\n<:pointers:984688394955284540>`lock`\n<:pointers:984688394955284540>`unlock`\n<:pointers:984688394955284540>`slowmode`\n<:pointers:984688394955284540>`weather`\n<:pointers:984688394955284540>`math`",
-                 inline=True)
-    em.add_field(name="<:folder:984688392333840394> ANIME",
-                 value="<:pointers:984688394955284540>`anime`\n<:pointers:984688394955284540>`character`\n<:pointers:984688394955284540>`animenews`\n<:pointers:984688394955284540>`waifu`\n<:pointers:984688394955284540>`kiss`\n<:pointers:984688394955284540>`cry`\n<:pointers:984688394955284540>`cuddle`\n<:pointers:984688394955284540>`bully`\n<:pointers:984688394955284540>`wink`\n<:pointers:984688394955284540>`slap`\n<:pointers:984688394955284540>`hug`\n<:pointers:984688394955284540>`pat`",
-                 inline=True)
-    em.add_field(
-        name="<:folder:984688392333840394> LINKS",
-        value=
-        "<:link:984697304869113916>[Invite](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)\n<:memory:940222649517375509>[AutoBot Server](https://discord.gg/nUFxsaGMQq)\n<:patreon:984698110909501442>[Patreon](https://www.patreon.com/AutoBot0521)\n<:topgg:984698778453934150>[Vote](https://top.gg/bot/858965828716331019)\n<:Inform:940198203435929710>[Terra Music](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands)",
-        inline=True    
-    )
-    em.set_footer(text=f"Requested by {ctx.author}",
-                    icon_url=ctx.author.avatar_url)
-
-    await ctx.send(embed=em)
-
 #help inbuilds
-
-
 @help.command()
 async def math(ctx):
     em = discord.Embed(
@@ -1452,7 +1158,6 @@ async def math(ctx):
         inline=False)
     await ctx.send(embed=em)
 
-
 @help.command(aliases=["gw", "GW"])
 async def giveaway(ctx):
     em = discord.Embed(title="Giveaway",
@@ -1479,6 +1184,7 @@ async def afk(ctx):
         value="<prefix>afk")
     await ctx.send(embed=em)
 
+
 @help.command()
 async def lockdown(ctx):
     em = discord.Embed(title="Server Lockdown",
@@ -1487,7 +1193,7 @@ async def lockdown(ctx):
     em.add_field(
         name="**Usage ⚙️**",
         value=
-        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> `use this wisely(not for checking)` \n>> `you have to unlock each channel.`"    
+        ">> `&lockdown #channel_name --server`\n>> `requires admin permissions` \n>> `saves the server from the raid` \n>> `use this wisely(not for checking)` \n>> `you have to unlock each channel.`"
     )
     await ctx.send(embed=em)
 
@@ -1532,12 +1238,12 @@ async def guess(ctx):
     embed_var_helpme = discord.Embed(description=desc_helpme,
                                      colour=discord.Color.random())
     await ctx.send(embed=embed_var_helpme)
+"""
 
 import traceback
 import sys
 
-extensions=[ 'cogs.anime', 'cogs.utility','cogs.general']
-
+extensions = ['cogs.anime','cogs.utility','cogs.general']
 if __name__ == "__main__":
     for extension in extensions:
         try:
@@ -1547,22 +1253,24 @@ if __name__ == "__main__":
             traceback.print_exc()
 
 
-
-
-@client.command()
+@client.hybrid_command()
 @is_owner()
 async def check_cogs(ctx, cog_name):
     try:
         client.load_extension(f"cogs.{cog_name}")
     except commands.ExtensionAlreadyLoaded:
-        message = await ctx.send('`💎` You are the `Jishaku` of this bot. \n あなたはこのボットのジシャクです。')
+        message = await ctx.send(
+            '`💎` You are the `Jishaku` of this bot. \n あなたはこのボットのジシャクです。')
         await message.edit(content="<a:settings:940198899715555359>")
-        await message.edit(content=f'**{cog_name}** cog is loaded <a:settings:940198899715555359>')
+        await message.edit(
+            content=
+            f'**{cog_name}** cog is loaded <a:settings:940198899715555359>')
     except commands.ExtensionNotFound:
         await ctx.send("Cog not found")
     else:
         await ctx.send("Cog is unloaded")
         client.unload_extension(f"cogs.{cog_name}")
+
 
 @check_cogs.error
 async def check_cogs_error(ctx, error):
@@ -1577,6 +1285,7 @@ async def check_cogs_error(ctx, error):
 
 
 keep_alive()
+
 
 my_secret = os.environ['Token']
 client.run(my_secret)
