@@ -1,4 +1,3 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/divyamsamarwal/webnext/badge)](https://www.codefactor.io/repository/github/divyamsamarwal/webnext)
 
 [![Discord Bots](https://top.gg/api/widget/858965828716331019.svg)](https://top.gg/bot/858965828716331019)
 
