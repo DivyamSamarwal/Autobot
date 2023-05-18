@@ -1240,50 +1240,6 @@ async def guess(ctx):
     await ctx.send(embed=embed_var_helpme)
 """
 
-import traceback
-import sys
-
-extensions = ['cogs.anime','cogs.utility','cogs.general']
-if __name__ == "__main__":
-    for extension in extensions:
-        try:
-            client.load_extension(extension)
-        except Exception as e:
-            print(f'Error Loading{extension}', file=sys.stderr)
-            traceback.print_exc()
-
-
-@client.hybrid_command()
-@is_owner()
-async def check_cogs(ctx, cog_name):
-    try:
-        client.load_extension(f"cogs.{cog_name}")
-    except commands.ExtensionAlreadyLoaded:
-        message = await ctx.send(
-            '`💎` You are the `Jishaku` of this bot. \n あなたはこのボットのジシャクです。')
-        await message.edit(content="<a:settings:940198899715555359>")
-        await message.edit(
-            content=
-            f'**{cog_name}** cog is loaded <a:settings:940198899715555359>')
-    except commands.ExtensionNotFound:
-        await ctx.send("Cog not found")
-    else:
-        await ctx.send("Cog is unloaded")
-        client.unload_extension(f"cogs.{cog_name}")
-
-
-@check_cogs.error
-async def check_cogs_error(ctx, error):
-    if isinstance(error, commands.NotOwner):
-        embed = discord.Embed(
-            title="Permmissions Denied <a:wrong:940200609326444594>",
-            description=
-            "`💠` You are not `Shogunate` of this bot.\n `💠` あなたはこのボットの幕府ではありません。 ",
-            colour=discord.Colour.random(),
-            timestamp=datetime.utcnow())
-        await ctx.send(embed=embed)
-
-
 keep_alive()
 
 
