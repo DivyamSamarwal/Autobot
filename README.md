@@ -1,4 +1,4 @@
-
+# ALL COMMANDS ARE NOT FUNCTIONAL DUE TO BREAKING CHANGES IN DISCORD.PY. I'LL FIX THEM LATER
 [![Discord Bots](https://top.gg/api/widget/858965828716331019.svg)](https://top.gg/bot/858965828716331019)
 
 Here is full guide of commands of Autobot:- [Invite link](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)
