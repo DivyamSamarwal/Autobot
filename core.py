@@ -1,4 +1,3 @@
-
 from asyncio.tasks import wait
 from time import time
 from typing import Optional
@@ -18,8 +17,8 @@ import datetime
 import asyncio
 from discord import DefaultAvatar
 
-import googletrans
-from googletrans import Translator
+import google_trans_new
+from google_trans_new import google_translator
 from urllib import parse, request
 import re
 from datetime import timedelta
@@ -40,12 +39,11 @@ import os
 from aiohttp import request
 
 from discord.ext import commands
-
-import jishaku
 from discord.ext.commands import BucketType
 import requests
 import aiohttp
 import psutil
+
 intents = discord.Intents.all()
 intents = discord.Intents.default()
 intents.members = True
@@ -62,7 +60,6 @@ async def on_ready():
                                      type=discord.ActivityType.playing,
                                      name=f'@Autobot'))
     print(' Hello I am AutoBot. ')
-    client.load_extension('jishaku')
 
 
 #on_guild_join
@@ -70,19 +67,42 @@ async def on_ready():
 async def on_guild_join(guild):
     try:
         channel = guild.system_channel
-        em = discord.Embed(title = "Thanks for adding AutoBot#0521", description = "You can also add my friend **Terra#0969**, it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-        em.add_field(name="Config", value="My default prefix is **&** or **when_mentioned** <@!858965828716331019> \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.", inline=False)
-        em.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2PV16r98prv5VZyrJ8WL0usihP-cVCnw4FXAUbhtEwU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?width=670&height=670")
-        
+        em = discord.Embed(
+            title="Thanks for adding AutoBot#0521",
+            description=
+            "You can also add my friend **Terra#0969**, it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)",
+            colour=discord.Color.random(),
+            timestamp=datetime.utcnow())
+        em.add_field(
+            name="Config",
+            value=
+            "My default prefix is **&** or **when_mentioned** <@!858965828716331019> \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.",
+            inline=False)
+        em.set_thumbnail(
+            url=
+            "https://images-ext-1.discordapp.net/external/2PV16r98prv5VZyrJ8WL0usihP-cVCnw4FXAUbhtEwU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?width=670&height=670"
+        )
+
         await channel.send(embed=em)
-        
-        
+
     except:
         channel = guild.text_channels[0]
-        em = discord.Embed(title = "Thanks for adding AutoBot#0521", description = "You can also add my friend **Terra#0969**, it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)", colour=discord.Color.random(), timestamp=datetime.utcnow())
-        em.add_field(name="Config", value="My default prefix is **&** or **when_mentioned** <@!858965828716331019> \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.", inline=False)
-        em.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2PV16r98prv5VZyrJ8WL0usihP-cVCnw4FXAUbhtEwU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?width=670&height=670")
-        
+        em = discord.Embed(
+            title="Thanks for adding AutoBot#0521",
+            description=
+            "You can also add my friend **Terra#0969**, it plays 24*7 music(Youtube|Spotify|Soundcloud) [here](https://discord.com/oauth2/authorize?client_id=866674108489269288&permissions=2205281600&scope=bot%20identify%20guilds%20applications.commands&redirect_url=https://divyamsamarwal.wixsite.com/autobot/api/callback&response_type=code)",
+            colour=discord.Color.random(),
+            timestamp=datetime.utcnow())
+        em.add_field(
+            name="Config",
+            value=
+            "My default prefix is **&** or **when_mentioned** <@!858965828716331019> \n You can type **&help** and get all the useful commands. \n Please make sure I have **Administrator** permissions so that every command can use be used without a problem.",
+            inline=False)
+        em.set_thumbnail(
+            url=
+            "https://images-ext-1.discordapp.net/external/2PV16r98prv5VZyrJ8WL0usihP-cVCnw4FXAUbhtEwU/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?width=670&height=670"
+        )
+
         await channel.send(embed=em)
 
 
@@ -102,13 +122,26 @@ client.spotify_credentials = {
 
 #important
 import psutil
+
+
 @client.hybrid_command()
 async def usage(ctx):
-    bedem = discord.Embed(title = 'System Resource Usage', description = 'See CPU and memory usage of the system.')
-    bedem.add_field(name = 'CPU Usage', value = f'{psutil.cpu_percent()}%', inline = False)
-    bedem.add_field(name = 'Memory Usage', value = f'{psutil.virtual_memory().percent}%', inline = False)
-    bedem.add_field(name = 'Available Memory', value = f'{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total}%', inline = False)
-    await ctx.send(embed = bedem)
+    bedem = discord.Embed(
+        title='System Resource Usage',
+        description='See CPU and memory usage of the system.')
+    bedem.add_field(name='CPU Usage',
+                    value=f'{psutil.cpu_percent()}%',
+                    inline=False)
+    bedem.add_field(name='Memory Usage',
+                    value=f'{psutil.virtual_memory().percent}%',
+                    inline=False)
+    bedem.add_field(
+        name='Available Memory',
+        value=
+        f'{psutil.virtual_memory().available * 100 / psutil.virtual_memory().total}%',
+        inline=False)
+    await ctx.send(embed=bedem)
+
 
 @client.hybrid_command()
 async def uptime(ctx):
@@ -128,7 +161,6 @@ async def pong(ctx):
                           timestamp=datetime.utcnow())
 
     await ctx.send(embed=embed)
-
 
 
 #Stats
@@ -152,13 +184,17 @@ async def stats(ctx):
 
     await ctx.send(embed=embed)
 
+
 @client.hybrid_command()
 async def invite(ctx):
-    embed = discord.Embed(title="Invite",
-                          description="[Click Here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)",
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
+    embed = discord.Embed(
+        title="Invite",
+        description=
+        "[Click Here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)",
+        color=discord.Color.random(),
+        timestamp=datetime.utcnow())
     await ctx.send(embed=embed)
+
 
 #eightball
 
@@ -194,7 +230,7 @@ afkdict = {}
     description=
     "I'll give you the afk status and if someone pings you before you come back, I'll tell "
     "them that you are not available. You can add your own afk message!")
-async def afk(ctx,*, message="They didn't leave a message!"):
+async def afk(ctx, *, message="They didn't leave a message!"):
     global afkdict
 
     if ctx.message.author in afkdict:
@@ -288,12 +324,16 @@ async def reminder(ctx, time, *, reminder):
     await ctx.send(embed=embed)
 
 
-
 @client.hybrid_command()
-async def math(ctx, *, expression:str):
+async def math(ctx, *, expression: str):
     calculation = eval(expression)
-    embed=discord.Embed(title="Math",description='Expression: {}\nAnswer: {}'.format(expression, calculation),color=discord.Colour.random(), timestamp=datetime.utcnow())
+    embed = discord.Embed(title="Math",
+                          description='Expression: {}\nAnswer: {}'.format(
+                              expression, calculation),
+                          color=discord.Colour.random(),
+                          timestamp=datetime.utcnow())
     await ctx.send(embed=embed)
+
 
 #avatar
 
@@ -325,33 +365,47 @@ async def trans(ctx, lang, *, thing):
         description="Translates from inputed language to which you want..",
         color=discord.Color.random(),
         timestamp=datetime.utcnow())
-    translator = Translator()
+    translator = google_translator()
     translation = translator.translate(thing, dest=lang)
     embed.add_field(name="Inputed text", value=thing, inline=False)
     embed.add_field(name="Translated text to {dest}".format(dest=lang),
                     value=translation.text,
                     inline=False)
-    embed.set_thumbnail(url="https://media.discordapp.net/attachments/862599394712354831/985831579500830750/translator.png") 
+    embed.set_thumbnail(
+        url=
+        "https://media.discordapp.net/attachments/862599394712354831/985831579500830750/translator.png"
+    )
     await ctx.send(embed=embed)
-
 
 
 #role
 @client.hybrid_command()
-@commands.has_permissions(administrator=True) #permissions
-async def role(ctx, user : discord.Member, *, role : discord.Role):
-  if role.position > ctx.author.top_role.position:
-    embed=discord.Embed(title="Hierarchy Error <a:wrong:940200609326444594>",description="That role is above your top role!",colour=discord.Colour.random(),timestamp=datetime.utcnow())  
-    return await ctx.send(embed=embed) 
-  if role in user.roles:
-      await user.remove_roles(role) 
-      embed=discord.Embed(title="Role Removed <a:tick:940195528103325726>",description=f"Removed {role} from {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
-      await ctx.send(embed=embed)
-  else:
-      await user.add_roles(role)
-      embed=discord.Embed(title="Role Added <a:tick:940195528103325726>",description=f"Added {role} to {user.mention}",colour=discord.Colour.random(),timestamp=datetime.utcnow())
-      await ctx.send(embed=embed)
- 
+@commands.has_permissions(administrator=True)  #permissions
+async def role(ctx, user: discord.Member, *, role: discord.Role):
+    if role.position > ctx.author.top_role.position:
+        embed = discord.Embed(
+            title="Hierarchy Error <a:wrong:940200609326444594>",
+            description="That role is above your top role!",
+            colour=discord.Colour.random(),
+            timestamp=datetime.utcnow())
+        return await ctx.send(embed=embed)
+    if role in user.roles:
+        await user.remove_roles(role)
+        embed = discord.Embed(
+            title="Role Removed <a:tick:940195528103325726>",
+            description=f"Removed {role} from {user.mention}",
+            colour=discord.Colour.random(),
+            timestamp=datetime.utcnow())
+        await ctx.send(embed=embed)
+    else:
+        await user.add_roles(role)
+        embed = discord.Embed(title="Role Added <a:tick:940195528103325726>",
+                              description=f"Added {role} to {user.mention}",
+                              colour=discord.Colour.random(),
+                              timestamp=datetime.utcnow())
+        await ctx.send(embed=embed)
+
+
 #pokemon
 
 URL_API = 'https://pokeapi.co/api/v2/pokemon/'
@@ -431,14 +485,8 @@ async def userinfo(ctx, member: discord.Member = None):
                     value=member.display_name,
                     inline=False)
 
-    embed.add_field(
-        name="Created At:-",
-        value=f"{create}",
-        inline=False)
-    embed.add_field(
-        name="Joined At:-",
-        value=f"{joined}",
-        inline=False)
+    embed.add_field(name="Created At:-", value=f"{create}", inline=False)
+    embed.add_field(name="Joined At:-", value=f"{joined}", inline=False)
 
     embed.add_field(name=f"Roles:- ({len(roles)})",
                     value="".join([role.mention for role in roles]),
@@ -449,6 +497,7 @@ async def userinfo(ctx, member: discord.Member = None):
     embed.add_field(name="Bot?", value=member.bot, inline=False)
 
     await ctx.send(embed=embed)
+
 
 def convert(time):
     pos = ["s", "m", "h", "d"]
@@ -610,11 +659,13 @@ async def unlock(ctx, channel: discord.TextChannel = None):
     )
     await ctx.send(embed=em)
 
+
 #weather
 # Api key from openweathermag.org
 
 api_key = "6e62189453be0c6774c53f9050e4c1b7"
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
 
 @client.hybrid_command()
 async def weather(ctx, *, city: str):
@@ -657,6 +708,7 @@ async def weather(ctx, *, city: str):
     else:
         await channel.send("City not found.")
 
+
 #------BUGS
 @client.hybrid_command()
 @commands.has_permissions(administrator=True)
@@ -692,7 +744,6 @@ async def serverinfo(ctx):
     id = str(ctx.guild.id)
     region = str(ctx.guild.region)
     memberCount = str(ctx.guild.member_count)
-   
 
     icon = str(ctx.guild.icon_url)
 
@@ -702,17 +753,23 @@ async def serverinfo(ctx):
                           timestamp=datetime.utcnow())
     embed.set_thumbnail(url=icon)
     embed.add_field(name="Owner", value=owner, inline=True)
-    embed.add_field(name="Created at",value=f"{screate}")
+    embed.add_field(name="Created at", value=f"{screate}")
     embed.add_field(name="Region", value=region, inline=True)
     embed.add_field(name="Members", value=memberCount, inline=True)
-    embed.add_field(name="Categories", value=len(ctx.guild.categories), inline=True)
-    embed.add_field(name="Text Channels", value=len(ctx.guild.text_channels), inline=True)
-    embed.add_field(name="Voice Channels", value=len(ctx.guild.voice_channels), inline=True)
-    embed.add_field(name="Roles",value=len(ctx.guild.roles),inline=True)
-    embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url= ctx.author.avatar_url)
+    embed.add_field(name="Categories",
+                    value=len(ctx.guild.categories),
+                    inline=True)
+    embed.add_field(name="Text Channels",
+                    value=len(ctx.guild.text_channels),
+                    inline=True)
+    embed.add_field(name="Voice Channels",
+                    value=len(ctx.guild.voice_channels),
+                    inline=True)
+    embed.add_field(name="Roles", value=len(ctx.guild.roles), inline=True)
+    embed.set_footer(text=f'Requested by {ctx.author.name}',
+                     icon_url=ctx.author.avatar_url)
 
     await ctx.send(embed=embed)
-
 
 
 #info
@@ -755,7 +812,6 @@ async def info(ctx):
     em.set_footer(text=f"Requested by {ctx.author} , v1.0.2",
                   icon_url=ctx.author.avatar_url)
     await ctx.send(embed=em)
-
 
 
 @client.hybrid_command()
@@ -805,6 +861,7 @@ async def nick(ctx, member: discord.Member, nick):
 
 #slash
 
+
 #anime slash
 @client.hybrid_command()
 async def waifu(ctx, *, reason=None):
@@ -827,6 +884,7 @@ async def waifu(ctx, *, reason=None):
                 color=discord.Colour.red())
             await ctx.send(embed=embed)
 
+
 @client.hybrid_command()
 @is_owner()
 async def nwaifu(ctx, *, reason=None):
@@ -848,6 +906,7 @@ async def nwaifu(ctx, *, reason=None):
                 description=f"API ERRORS {response.status}status.",
                 color=discord.Colour.red())
             await ctx.send(embed=embed)
+
 
 @client.hybrid_command()
 async def kiss_(ctx: commands.Context, user: discord.Member):
@@ -1087,7 +1146,6 @@ async def slowmode(ctx, time: int):
         await print("Oops!")
 
 
-
 """
 @client.hybrid_command()
 async def help(ctx):
@@ -1241,7 +1299,6 @@ async def guess(ctx):
 """
 
 keep_alive()
-
 
 my_secret = os.environ['Token']
 client.run(my_secret)
