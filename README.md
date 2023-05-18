@@ -3,20 +3,6 @@
 
 Here is full guide of commands of Autobot:- [Invite link](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)
 & [For more information join help server](https://discord.gg/nUFxsaGMQq)
-## v1.3.0a0
-
-
-
-> Fun : 8Ball,Guess,Imagine,Giveaway,dog,cat,meme
-
-> Info : Avatar,Serverinfo,info,Stats,Userinfo,poll,tally,nick
-
-> Special : Reminder,role,Translate,afk,lock,unlock,slowmode,weather,math
-
-> Anime : anime,character,animenews,waifu,kiss,cry,cuddle,bully,wink,slap,hug,pat
-
-
-
 ### Shortforms for translation
 ```python
 SPECIAL_CASES = {
