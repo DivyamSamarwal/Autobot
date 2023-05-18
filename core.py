@@ -154,7 +154,7 @@ async def uptime(ctx):
 
 #ping
 @client.hybrid_command()
-async def pong(ctx):
+async def ping(ctx):
     embed = discord.Embed(title="Pong!",
                           description=f'{round(client.latency *1000)}ms',
                           color=discord.Color.random(),
@@ -335,28 +335,6 @@ async def math(ctx, *, expression: str):
     await ctx.send(embed=embed)
 
 
-#avatar
-
-
-@client.hybrid_command()
-async def avatar(ctx, *, user: discord.Member = None):
-    if user is None:
-        user = ctx.message.author
-    embed = discord.Embed(title="This avatar seems unsual✨...",
-                          color=discord.Colour.random(),
-                          timestamp=datetime.utcnow())
-
-    embed.add_field(
-        name="Avatar Formats",
-        value=
-        f" **[Png Link]({user.avatar_url_as(format='png')})** | **[Jpg Link]({user.avatar_url_as(format='jpg')})** | **[Webp Link]({user.avatar_url_as(format='webp')})**",
-        inline=False)
-    embed.set_image(url=user.avatar_url)
-    embed.set_footer(text=f'Requested by {ctx.author.name}',
-                     icon_url=ctx.author.avatar_url)
-    await ctx.send(embed=embed)
-
-
 #translator
 @client.hybrid_command()
 async def translate(ctx, lang, *, thing):
@@ -367,6 +345,7 @@ async def translate(ctx, lang, *, thing):
         timestamp=datetime.utcnow())
     translation = GoogleTranslator(source='auto', target=lang).translate(thing)
     embed.add_field(name="Inputed text", value=thing, inline=False)
+    embed.set_footer(text="For shortforms visit the repository in github.")
     embed.add_field(name=f"Translated text to {lang}",
                     value=translation,
                     inline=False)
@@ -410,45 +389,6 @@ async def role(ctx, user: discord.Member, *, role: discord.Role):
 URL_API = 'https://pokeapi.co/api/v2/pokemon/'
 
 
-#pokemon
-@client.hybrid_command()
-async def pokemon(ctx, *, args):
-
-    pokeName = args.lower()
-    try:
-        r = requests.get(f'{URL_API}{pokeName}')
-        packages_json = r.json()
-        packages_json.keys()
-
-        embed = discord.Embed(title="Pokemon", color=discord.Color.random())
-        embed.add_field(name="Name", value=packages_json['name'], inline=True)
-        embed.add_field(name="Pokedex Order",
-                        value=packages_json['order'],
-                        inline=False)
-
-        embed.set_thumbnail(
-            url=f'https://play.pokemonshowdown.com/sprites/ani/{pokeName}.gif')
-        embed.add_field(name="Weight (kg)",
-                        value=packages_json['weight'] / 10,
-                        inline=False)
-        embed.add_field(name="Height (m)",
-                        value=packages_json['height'] / 10,
-                        inline=False)
-
-        embed.add_field(name="Base XP",
-                        value=packages_json['base_experience'],
-                        inline=False)
-        for type in packages_json['types']:  #FOR TO GET A TYPE OF A POKEMON
-            embed.add_field(name="Types",
-                            value=type['type']['name'],
-                            inline=False)
-        embed.set_footer(text=f"Requested by {ctx.author} , v1.0.2",
-                         icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=embed)
-    except:
-        await ctx.send("Pokemon not found!")
-
-
 @client.hybrid_command()
 async def cat(ctx):
     response = requests.get('https://aws.random.cat/meow')
@@ -458,43 +398,6 @@ async def cat(ctx):
                           color=discord.Color.random())
     embed.set_image(url=data['file'])
     embed.set_footer(text="")
-    await ctx.send(embed=embed)
-
-
-#userinfo
-
-
-@client.hybrid_command()
-async def userinfo(ctx, member: discord.Member = None):
-    member = ctx.author if not member else member
-    roles = [role for role in member.roles]
-    create = f"<t:{round(member.created_at.timestamp())}:F>"
-    joined = f"<t:{round(member.joined_at.timestamp())}:F>"
-
-    embed = discord.Embed(colour=discord.Color.random(),
-                          timestamp=ctx.message.created_at)
-
-    embed.set_author(name=f"User Info - {member}")
-    embed.set_thumbnail(url=member.avatar_url)
-    embed.set_footer(text=f"Requested by {ctx.author}",
-                     icon_url=ctx.author.avatar_url)
-
-    embed.add_field(name="ID:-", value=member.id, inline=False)
-    embed.add_field(name="Guild Name:-",
-                    value=member.display_name,
-                    inline=False)
-
-    embed.add_field(name="Created At:-", value=f"{create}", inline=False)
-    embed.add_field(name="Joined At:-", value=f"{joined}", inline=False)
-
-    embed.add_field(name=f"Roles:- ({len(roles)})",
-                    value="".join([role.mention for role in roles]),
-                    inline=False)
-    embed.add_field(name="Top Role:-",
-                    value=member.top_role.mention,
-                    inline=False)
-    embed.add_field(name="Bot?", value=member.bot, inline=False)
-
     await ctx.send(embed=embed)
 
 
@@ -732,85 +635,6 @@ async def clear_error(ctx, error):
             colour=discord.Colour.random(),
             timestamp=datetime.utcnow())
         await ctx.send(embed=embed)
-
-
-@client.hybrid_command()
-async def serverinfo(ctx):
-    name = str(ctx.guild.name)
-
-    screate = f"<t:{round(ctx.guild.created_at.timestamp())}:F>"
-    owner = str(ctx.guild.owner)
-    id = str(ctx.guild.id)
-    region = str(ctx.guild.region)
-    memberCount = str(ctx.guild.member_count)
-
-    icon = str(ctx.guild.icon_url)
-
-    embed = discord.Embed(title=name,
-                          description=f"ID :{id}",
-                          color=discord.Color.random(),
-                          timestamp=datetime.utcnow())
-    embed.set_thumbnail(url=icon)
-    embed.add_field(name="Owner", value=owner, inline=True)
-    embed.add_field(name="Created at", value=f"{screate}")
-    embed.add_field(name="Region", value=region, inline=True)
-    embed.add_field(name="Members", value=memberCount, inline=True)
-    embed.add_field(name="Categories",
-                    value=len(ctx.guild.categories),
-                    inline=True)
-    embed.add_field(name="Text Channels",
-                    value=len(ctx.guild.text_channels),
-                    inline=True)
-    embed.add_field(name="Voice Channels",
-                    value=len(ctx.guild.voice_channels),
-                    inline=True)
-    embed.add_field(name="Roles", value=len(ctx.guild.roles), inline=True)
-    embed.set_footer(text=f'Requested by {ctx.author.name}',
-                     icon_url=ctx.author.avatar_url)
-
-    await ctx.send(embed=embed)
-
-
-#info
-@client.hybrid_command()
-async def info(ctx):
-
-    em = discord.Embed(
-        title="Autobot",
-        description=
-        "You can add me to your server by clicking this link [here](https://discord.com/api/oauth2/authorize?client_id=858965828716331019&permissions=8&scope=bot%20applications.commands)",
-        colour=discord.Color.random(),
-        timestamp=datetime.utcnow())
-    em.add_field(name="Developers",
-                 value="<@!780721106838618112> & <@!466569674335846400>",
-                 inline=False)
-    em.add_field(
-        name="Stats",
-        value=
-        f'Ping :- {round(client.latency *1000)}ms \nGuilds :- {len(client.guilds)} \nUsers :- {(len(client.users))} ',
-        inline=False)
-    em.add_field(
-        name="Github",
-        value=
-        "[Code can be found here](https://github.com/DivyamSamarwal/Autobot)",
-        inline=False)
-    em.add_field(
-        name="Time",
-        value=
-        "Server location 🔆 -> California, United States of America [PST](https://time.is/PT)"
-    )
-    em.add_field(
-        name="About Developer",
-        value=
-        "・he/him, kinda cool!! \n ・founder of Autobot/ [Infinite Domain ltd.](https://github.com/Infinite-Domain-Ltd) \n ・Hobbies :- cycling, watching anime & music. \n ・He deals 1 DPS but there is 1000% chance of crit rate. ",
-        inline=False)
-    em.set_thumbnail(
-        url=
-        "https://cdn.discordapp.com/avatars/858965828716331019/9d6df6a23acdf3b54f96168ed4040e5e.webp?size=1024"
-    )
-    em.set_footer(text=f"Requested by {ctx.author} , v1.0.2",
-                  icon_url=ctx.author.avatar_url)
-    await ctx.send(embed=em)
 
 
 @client.hybrid_command()
@@ -1144,7 +968,7 @@ async def slowmode(ctx, time: int):
     except Exception:
         await print("Oops!")
 
-
+# WILL FIX SOON
 """
 @client.hybrid_command()
 async def help(ctx):
