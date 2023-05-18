@@ -17,8 +17,8 @@ import datetime
 import asyncio
 from discord import DefaultAvatar
 
-import google_trans_new
-from google_trans_new import google_translator
+import deep_translator
+from deep_translator import GoogleTranslator
 from urllib import parse, request
 import re
 from datetime import timedelta
@@ -359,17 +359,16 @@ async def avatar(ctx, *, user: discord.Member = None):
 
 #translator
 @client.hybrid_command()
-async def trans(ctx, lang, *, thing):
+async def translate(ctx, lang, *, thing):
     embed = discord.Embed(
         title="Translator🔎",
         description="Translates from inputed language to which you want..",
         color=discord.Color.random(),
         timestamp=datetime.utcnow())
-    translator = google_translator()
-    translation = translator.translate(thing, dest=lang)
+    translation = GoogleTranslator(source='auto', target=lang).translate(thing)
     embed.add_field(name="Inputed text", value=thing, inline=False)
-    embed.add_field(name="Translated text to {dest}".format(dest=lang),
-                    value=translation.text,
+    embed.add_field(name=f"Translated text to {lang}",
+                    value=translation,
                     inline=False)
     embed.set_thumbnail(
         url=
