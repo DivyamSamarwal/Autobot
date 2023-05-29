@@ -1,3 +1,7 @@
+#imp
+from __future__ import annotations
+from typing import TYPE_CHECKING, NamedTuple, TypedDict
+#----
 from asyncio.tasks import wait
 from time import time
 from typing import Optional
@@ -42,7 +46,7 @@ from discord.ext import commands
 from discord.ext.commands import BucketType
 import requests
 import aiohttp
-import psutil
+
 
 intents = discord.Intents.all()
 intents = discord.Intents.default()
@@ -105,20 +109,6 @@ async def on_guild_join(guild):
 
         await channel.send(embed=em)
 
-
-client.lavalink_nodes = [
-    {
-        "host": "losingtime.dpaste.org",
-        "port": 2124,
-        "password": "SleepingOnTrains"
-    },
-    # Can have multiple nodes here
-]
-
-client.spotify_credentials = {
-    'client_id': '0a7f52a35b814c9396c42cd27c07a139',
-    'client_secret': 'e9bdf41a4bf046f1b62b733e4269d69e'
-}
 
 #important
 import psutil
@@ -577,7 +567,6 @@ async def weather(ctx, *, city: str):
     x = response.json()
     channel = ctx.message.channel
     if x["cod"] != "404":
-        async with channel.typing():
             y = x["main"]
             current_temperature = y["temp"]
             current_temperature_celsiuis = str(
@@ -732,7 +721,7 @@ async def nwaifu(ctx, *, reason=None):
 
 
 @client.hybrid_command()
-async def kiss_(ctx: commands.Context, user: discord.Member):
+async def kiss(ctx: commands.Context, user: discord.Member):
     """Kiss someone"""
 
     url = "https://api.waifu.pics/sfw/kiss"
@@ -752,7 +741,7 @@ async def kiss_(ctx: commands.Context, user: discord.Member):
 
 
 @client.hybrid_command()
-async def cry_(ctx: commands.Context, *, reason=None):
+async def cry(ctx: commands.Context, *, reason=None):
     """Anime Cry for something"""
 
     url = "https://api.waifu.pics/sfw/cry"
@@ -773,7 +762,7 @@ async def cry_(ctx: commands.Context, *, reason=None):
 
 
 @client.hybrid_command()
-async def cuddle_(ctx: commands.Context, user: discord.Member):
+async def cuddle(ctx: commands.Context, user: discord.Member):
     """Cuddle Someone"""
 
     url = "https://api.waifu.pics/sfw/cuddle"
@@ -793,7 +782,7 @@ async def cuddle_(ctx: commands.Context, user: discord.Member):
 
 
 @client.hybrid_command()
-async def bully_(ctx: commands.Context, user: discord.Member):
+async def bully(ctx: commands.Context, user: discord.Member):
     """Bully Someone"""
 
     url = "https://api.waifu.pics/sfw/bully"
@@ -813,7 +802,7 @@ async def bully_(ctx: commands.Context, user: discord.Member):
 
 
 @client.hybrid_command()
-async def wink_(ctx: commands.Context):
+async def wink(ctx: commands.Context):
     """wink your eye"""
 
     url = "https://api.waifu.pics/sfw/wink"
@@ -834,7 +823,7 @@ async def wink_(ctx: commands.Context):
 
 
 @client.hybrid_command()
-async def slap_(ctx: commands.Context, user: discord.Member):
+async def slap(ctx: commands.Context, user: discord.Member):
     """Slap someone"""
     if user.bot:
         return await ctx.send(embed=discord.Embed(
@@ -865,7 +854,7 @@ async def slap_(ctx: commands.Context, user: discord.Member):
 
 
 @client.hybrid_command()
-async def hug_(ctx: commands.Context, user: discord.Member):
+async def hug(ctx: commands.Context, user: discord.Member):
     """Hug someone"""
     if user.bot:
         return await ctx.send(embed=discord.Embed(
@@ -895,7 +884,7 @@ async def hug_(ctx: commands.Context, user: discord.Member):
 
 
 @client.hybrid_command()
-async def pat_(ctx: commands.Context, user: discord.Member):
+async def pat(ctx: commands.Context, user: discord.Member):
     """Pat someone"""
     if user.bot:
         return await ctx.send(embed=discord.Embed(
@@ -968,7 +957,7 @@ async def slowmode(ctx, time: int):
     except Exception:
         await print("Oops!")
 
-# WILL FIX SOON
+
 """
 @client.hybrid_command()
 async def help(ctx):
